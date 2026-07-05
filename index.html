@@ -3,36 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔐 Kriptografi Canggih · Auto Crack</title>
-    <!-- Font & Ikon -->
+    <title>🔐 Kriptanalisis Substitusi</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-            transition: background 0.2s, color 0.15s, border-color 0.2s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
         body {
-            background: #f4f7fc;
-            color: #1e293b;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        body.dark {
             background: #0f172a;
             color: #e2e8f0;
+            padding: 20px;
+            min-height: 100vh;
         }
-
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
-
-        /* HEADER */
         .header {
             display: flex;
             flex-wrap: wrap;
@@ -40,74 +29,51 @@
             justify-content: space-between;
             gap: 16px;
             margin-bottom: 24px;
-            background: rgba(255,255,255,0.6);
-            backdrop-filter: blur(8px);
-            padding: 16px 24px;
-            border-radius: 40px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        body.dark .header {
             background: #1e293b;
-            border-color: #334155;
+            padding: 16px 24px;
+            border-radius: 16px;
+            border: 1px solid #334155;
         }
-
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.7rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            letter-spacing: -0.5px;
         }
         .logo i {
             color: #3b82f6;
         }
-
         .tools {
             display: flex;
             flex-wrap: wrap;
-            align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
-
         .btn {
-            background: white;
+            background: #334155;
             border: none;
             padding: 8px 16px;
-            border-radius: 40px;
-            font-weight: 500;
-            font-size: 0.9rem;
+            border-radius: 8px;
+            color: #e2e8f0;
+            cursor: pointer;
+            font-size: 0.85rem;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-            border: 1px solid #e2e8f0;
-            color: #1e293b;
-            transition: 0.15s;
-        }
-        .btn i {
-            font-size: 1rem;
+            gap: 6px;
+            transition: 0.2s;
+            border: 1px solid #475569;
         }
         .btn:hover {
-            background: #f1f5f9;
-            border-color: #94a3b8;
+            background: #475569;
             transform: scale(0.97);
         }
         .btn-primary {
             background: #3b82f6;
             border-color: #3b82f6;
-            color: white;
         }
         .btn-primary:hover {
             background: #2563eb;
-            border-color: #2563eb;
         }
         .btn-success {
             background: #22c55e;
             border-color: #22c55e;
-            color: white;
         }
         .btn-success:hover {
             background: #16a34a;
@@ -115,78 +81,33 @@
         .btn-danger {
             background: #ef4444;
             border-color: #ef4444;
-            color: white;
         }
         .btn-danger:hover {
             background: #dc2626;
         }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #cbd5e1;
+        .btn-warning {
+            background: #eab308;
+            border-color: #eab308;
+            color: #0f172a;
         }
-        body.dark .btn {
-            background: #1e293b;
-            border-color: #334155;
-            color: #e2e8f0;
+        .btn-warning:hover {
+            background: #ca8a04;
         }
-        body.dark .btn:hover {
-            background: #334155;
-        }
-        body.dark .btn-outline {
-            background: transparent;
-            border-color: #475569;
-        }
-
-        /* DROP ZONE */
-        .dropzone {
-            border: 2px dashed #cbd5e1;
-            border-radius: 32px;
-            padding: 28px 16px;
-            text-align: center;
-            margin-bottom: 24px;
-            background: rgba(255,255,255,0.3);
-            backdrop-filter: blur(4px);
-            transition: 0.2s;
-            cursor: pointer;
-        }
-        .dropzone.dragover {
-            border-color: #3b82f6;
-            background: rgba(59,130,246,0.05);
-        }
-        body.dark .dropzone {
-            border-color: #334155;
-            background: #1e293b40;
-        }
-        .dropzone i {
-            font-size: 2.8rem;
-            color: #64748b;
-            margin-bottom: 8px;
-        }
-
-        /* MAIN LAYOUT */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 24px;
+            gap: 20px;
         }
-
         .card {
-            background: white;
-            border-radius: 28px;
-            padding: 20px 22px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.02);
-            border: 1px solid #e9edf2;
-        }
-        body.dark .card {
             background: #1e293b;
-            border-color: #334155;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #334155;
         }
-
         .card-title {
             font-weight: 600;
-            font-size: 1.2rem;
-            margin-bottom: 16px;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -194,144 +115,171 @@
         .card-title i {
             color: #3b82f6;
         }
-
         textarea {
             width: 100%;
-            padding: 14px 16px;
-            border-radius: 20px;
-            border: 1px solid #e2e8f0;
-            font-size: 1rem;
-            resize: vertical;
-            min-height: 180px;
-            background: #fafcff;
-            color: #0f172a;
-        }
-        body.dark textarea {
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #334155;
             background: #0f172a;
-            border-color: #334155;
             color: #e2e8f0;
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 150px;
         }
         textarea:focus {
             outline: 2px solid #3b82f6;
-            outline-offset: 1px;
         }
-
-        .mapping-grid {
+        .stats {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-height: 320px;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+            margin: 12px 0;
+            font-size: 0.85rem;
+        }
+        .stats span {
+            background: #0f172a;
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 1px solid #334155;
+        }
+        .mapping-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            max-height: 250px;
             overflow-y: auto;
-            padding-right: 6px;
+            padding-right: 4px;
         }
         .mapping-row {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 6px 12px;
-            border-radius: 40px;
-            background: #f1f5f9;
-        }
-        body.dark .mapping-row {
-            background: #2d3a4f;
+            gap: 6px;
+            background: #0f172a;
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid #334155;
         }
         .mapping-row span {
-            font-weight: 600;
-            min-width: 24px;
+            font-weight: 700;
+            min-width: 20px;
+            color: #94a3b8;
         }
         .mapping-row input {
             flex: 1;
             background: transparent;
             border: none;
-            border-bottom: 2px solid #94a3b8;
-            padding: 4px 8px;
-            font-size: 1rem;
-            font-weight: 500;
+            border-bottom: 2px solid #475569;
+            padding: 2px 6px;
+            font-size: 0.95rem;
+            font-weight: 600;
             text-transform: uppercase;
-            color: inherit;
-        }
-        body.dark .mapping-row input {
-            border-bottom-color: #64748b;
+            color: #e2e8f0;
+            width: 30px;
+            text-align: center;
         }
         .mapping-row input:focus {
             outline: none;
             border-bottom-color: #3b82f6;
         }
-
-        .stats {
+        .result-area {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 14px;
+            min-height: 120px;
+            border: 1px solid #334155;
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-top: 10px;
+        }
+        .flex-wrap {
             display: flex;
             flex-wrap: wrap;
-            gap: 16px 24px;
-            margin: 16px 0 8px;
-            font-size: 0.9rem;
+            gap: 8px;
+            margin-top: 10px;
         }
-        .stats span {
-            background: #f1f5f9;
-            padding: 4px 14px;
-            border-radius: 30px;
-        }
-        body.dark .stats span {
-            background: #2d3a4f;
-        }
-
         .progress-bar {
             width: 100%;
-            height: 6px;
-            background: #e2e8f0;
-            border-radius: 10px;
-            margin: 12px 0 6px;
+            height: 4px;
+            background: #334155;
+            border-radius: 4px;
+            margin: 8px 0;
             overflow: hidden;
         }
         .progress-bar .fill {
             height: 100%;
             width: 0%;
             background: #3b82f6;
-            border-radius: 10px;
-            transition: width 0.25s;
+            border-radius: 4px;
+            transition: width 0.3s;
         }
-
-        .flex-wrap {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 12px;
-        }
-
         .badge {
-            background: #dbeafe;
-            color: #1e4b8a;
-            padding: 2px 14px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-        }
-        body.dark .badge {
             background: #1e3a5f;
             color: #93bbfc;
-        }
-
-        .result-area {
-            background: #f8fafc;
+            padding: 2px 12px;
             border-radius: 20px;
-            padding: 14px 16px;
-            min-height: 100px;
-            border: 1px solid #e2e8f0;
-            white-space: pre-wrap;
-            font-size: 1rem;
-            line-height: 1.6;
+            font-size: 0.75rem;
+            border: 1px solid #1e3a5f;
         }
-        body.dark .result-area {
-            background: #0f172a;
-            border-color: #334155;
+        .dropzone {
+            border: 2px dashed #334155;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            background: #1e293b;
+            cursor: pointer;
+            transition: 0.2s;
         }
-
+        .dropzone:hover {
+            border-color: #3b82f6;
+        }
+        .dropzone i {
+            font-size: 2rem;
+            color: #64748b;
+        }
+        .footer-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 30px;
+            margin-top: 16px;
+            background: #1e293b;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid #334155;
+        }
+        .footer-stats span {
+            font-size: 0.9rem;
+        }
+        .footer-stats strong {
+            color: #3b82f6;
+        }
         @media (max-width: 860px) {
             .grid-2 {
                 grid-template-columns: 1fr;
+            }
+            .mapping-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
             .header {
                 flex-direction: column;
                 align-items: stretch;
             }
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        .highlight {
+            background: #eab30833;
+            padding: 0 4px;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -343,8 +291,7 @@
         <div class="tools">
             <button class="btn" @click="undo"><i class="fas fa-undo-alt"></i> Undo</button>
             <button class="btn" @click="redo"><i class="fas fa-redo-alt"></i> Redo</button>
-            <button class="btn" @click="toggleDark"><i class="fas fa-moon"></i> <span v-if="dark">Terang</span><span v-else>Gelap</span></button>
-            <button class="btn btn-success" @click="autoCrack"><i class="fas fa-bolt"></i> One-click Crack</button>
+            <button class="btn btn-success" @click="autoCrack"><i class="fas fa-bolt"></i> Auto Crack</button>
             <button class="btn btn-primary" @click="exportTXT"><i class="fas fa-file-alt"></i> TXT</button>
             <button class="btn btn-primary" @click="exportPDF"><i class="fas fa-file-pdf"></i> PDF</button>
         </div>
@@ -353,63 +300,66 @@
     <!-- DROP ZONE -->
     <div class="dropzone" @dragover.prevent="dragover=true" @dragleave="dragover=false" @drop.prevent="dropFile">
         <i class="fas fa-cloud-upload-alt"></i>
-        <p><strong>Drag & drop</strong> file .txt di sini atau klik untuk memilih</p>
+        <p><strong>Drag & drop</strong> file .txt atau klik untuk pilih</p>
         <input type="file" accept=".txt" style="display:none" ref="fileInput" @change="loadFile">
-        <button class="btn btn-outline" @click.stop="$refs.fileInput.click()" style="margin-top:8px;"><i class="fas fa-folder-open"></i> Pilih file</button>
+        <button class="btn" @click.stop="$refs.fileInput.click()" style="margin-top:8px;">
+            <i class="fas fa-folder-open"></i> Pilih File
+        </button>
     </div>
 
-    <!-- GRID UTAMA -->
+    <!-- GRID -->
     <div class="grid-2">
-        <!-- KOLOM KIRI: TEKS & STATS -->
+        <!-- KIRI -->
         <div class="card">
-            <div class="card-title"><i class="fas fa-font"></i> Teks Sandi</div>
+            <div class="card-title"><i class="fas fa-font"></i> Teks Sandi (Ciphertext)</div>
             <textarea v-model="cipherText" placeholder="Masukkan teks terenkripsi..."></textarea>
             <div class="stats">
                 <span><i class="far fa-file"></i> {{ cipherText.length }} karakter</span>
-                <span><i class="fas fa-hashtag"></i> {{ uniqueChars }} unik</span>
-                <span><i class="fas fa-chart-simple"></i> <span @click="analyzeFreq" style="cursor:pointer;text-decoration:underline;">Analisis Freq</span></span>
+                <span><i class="fas fa-hashtag"></i> {{ uniqueChars }} huruf unik</span>
+                <span><i class="fas fa-chart-bar"></i> <span @click="analyzeFreq" style="cursor:pointer;text-decoration:underline;">Frekuensi</span></span>
             </div>
             <div class="progress-bar"><div class="fill" :style="{width: progress+'%'}"></div></div>
             <div class="flex-wrap">
-                <button class="btn" @click="analyzeFreq"><i class="fas fa-chart-bar"></i> Frequency</button>
-                <button class="btn" @click="autoGuessMapping"><i class="fas fa-magic"></i> Auto Guess</button>
-                <button class="btn" @click="dictionaryMatch"><i class="fas fa-book"></i> Dictionary</button>
+                <button class="btn" @click="analyzeFreq"><i class="fas fa-chart-bar"></i> Frekuensi</button>
+                <button class="btn btn-warning" @click="autoGuessMapping"><i class="fas fa-magic"></i> Auto Guess</button>
+                <button class="btn" @click="dictionaryMatch"><i class="fas fa-book"></i> Kamus</button>
                 <button class="btn" @click="bigramTrigram"><i class="fas fa-layer-group"></i> Bigram/Trigram</button>
-                <button class="btn" @click="patternSearch"><i class="fas fa-search"></i> Pola (_he__)</button>
+                <button class="btn" @click="patternSearch"><i class="fas fa-search"></i> Cari Pola</button>
             </div>
-            <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
-                <span class="badge"><i class="far fa-save"></i> Auto-save mapping</span>
+            <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
+                <span class="badge"><i class="far fa-save"></i> Auto-save</span>
                 <span class="badge"><i class="fas fa-rotate"></i> Undo/Redo</span>
+                <span class="badge"><i class="fas fa-lightbulb"></i> Petunjuk: ETAOINS</span>
             </div>
         </div>
 
-        <!-- KOLOM KANAN: MAPPING & HASIL -->
+        <!-- KANAN -->
         <div class="card">
             <div class="card-title"><i class="fas fa-exchange-alt"></i> Mapping & Hasil</div>
             <div class="mapping-grid">
                 <div v-for="(val, key) in mapping" :key="key" class="mapping-row">
                     <span>{{ key }}</span>
-                    <i class="fas fa-arrow-right" style="color:#94a3b8;"></i>
+                    <i class="fas fa-arrow-right" style="color:#475569; font-size:0.7rem;"></i>
                     <input v-model="mapping[key]" placeholder="?" maxlength="1" @input="applyMapping">
                 </div>
             </div>
-            <div style="margin:14px 0 8px; display:flex; gap:10px; flex-wrap:wrap;">
+            <div style="margin:12px 0 8px; display:flex; gap:8px; flex-wrap:wrap;">
                 <button class="btn btn-danger" @click="resetMapping"><i class="fas fa-trash-alt"></i> Reset</button>
                 <button class="btn btn-primary" @click="applyMapping"><i class="fas fa-play"></i> Terapkan</button>
                 <button class="btn btn-success" @click="autoCrack"><i class="fas fa-crown"></i> Crack!</button>
+                <button class="btn" @click="suggestMapping"><i class="fas fa-lightbulb"></i> Saran</button>
             </div>
-            <div class="result-area" v-html="decodedHTML || 'Hasil terjemahan akan tampil di sini...'"></div>
+            <div class="result-area" v-html="decodedHTML || 'Hasil dekripsi akan tampil di sini...'"></div>
         </div>
     </div>
 
-    <!-- FOOTER STATS LANJUTAN -->
-    <div class="card" style="margin-top:12px;">
-        <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:center;">
-            <span><i class="fas fa-arrow-left"></i> Bigram: <strong>{{ bigram }}</strong></span>
-            <span><i class="fas fa-arrow-right"></i> Trigram: <strong>{{ trigram }}</strong></span>
-            <span><i class="fas fa-flag"></i> Pola ditemukan: {{ patternResult }}</span>
-            <span style="margin-left:auto;"><i class="fas fa-database"></i> Mapping tersimpan</span>
-        </div>
+    <!-- FOOTER -->
+    <div class="footer-stats">
+        <span><i class="fas fa-arrow-left"></i> Bigram: <strong>{{ bigram }}</strong></span>
+        <span><i class="fas fa-arrow-right"></i> Trigram: <strong>{{ trigram }}</strong></span>
+        <span><i class="fas fa-flag"></i> Pola: <strong>{{ patternResult }}</strong></span>
+        <span><i class="fas fa-database"></i> Mapping: {{ mappingCount }} huruf</span>
+        <span><i class="fas fa-percent"></i> Progress: {{ Math.round(progress) }}%</span>
     </div>
 </div>
 
@@ -419,8 +369,8 @@
 new Vue({
     el: '#app',
     data: {
-        dark: false,
-        cipherText: 'Uryyb Jbeyq',
+        cipherText: `mxgwx puvrm boteo tvr modovunk uv vobtw vobtw um t ptdtctk eaxvndk puwwor cunl ftzuetw tvr doftdgthwo ahqoenm pad htwuvomo tdnumn ctktv mxqtvt.
+pad nlo nludnk mojov kotdm awr, vuegvtfor mxgwx, jumunuvz nlum doftdgthwo eaxvndk ctm uvmbuduvz. "u mtc t jodk hotxnupxw tvr lotjovwk meovo clov fk bwtvo hoztv na wtvr. un ctm mxel t nlduwwuvz fafovn pad fk fuvr tvr fk maxw," mxgwx mtur.`,
         mapping: {},
         decoded: '',
         progress: 0,
@@ -431,13 +381,28 @@ new Vue({
         bigram: '-',
         trigram: '-',
         patternResult: '-',
+        commonWords: ['the','and','for','are','but','not','you','all','can','had','her','was','one','our','out','has','have','from','with','that','this','they','will','would','could','should','people','about','other','world','house','water','light','thing','right','think','place','work','great','where','after','every','still','state','hand','life','part','long','time','day','way','man','good','new']
     },
     computed: {
         uniqueChars() {
             return new Set(this.cipherText.toUpperCase().replace(/[^A-Z]/g,'')).size;
         },
         decodedHTML() {
-            return this.decoded ? this.decoded.replace(/\n/g, '<br>') : '';
+            if (!this.decoded) return '';
+            // Highlight kata yang cocok dengan kamus
+            let html = this.decoded;
+            const words = html.split(/(\s+)/);
+            html = words.map(w => {
+                const clean = w.replace(/[^a-zA-Z]/g,'');
+                if (clean.length > 2 && this.commonWords.includes(clean.toLowerCase())) {
+                    return `<span class="highlight">${w}</span>`;
+                }
+                return w;
+            }).join('');
+            return html.replace(/\n/g, '<br>');
+        },
+        mappingCount() {
+            return Object.values(this.mapping).filter(v => v && v.length > 0).length;
         }
     },
     watch: {
@@ -451,7 +416,6 @@ new Vue({
         this.autoGenerateMapping();
         this.applyMapping();
         this.saveState();
-        // restore mapping dari localStorage
         const saved = localStorage.getItem('cipherMapping');
         if (saved) {
             try {
@@ -459,6 +423,9 @@ new Vue({
                 this.applyMapping();
             } catch(e) {}
         }
+        // Load contoh CipherTeks01
+        this.cipherText = `mxgwx puvrm boteo tvr modovunk uv vobtw vobtw um t ptdtctk eaxvndk puwwor cunl ftzuetw tvr doftdgthwo ahqoenm pad htwuvomo tdnumn ctktv mxqtvt.
+pad nlo nludnk mojov kotdm awr, vuegvtfor mxgwx, jumunuvz nlum doftdgthwo eaxvndk ctm uvmbuduvz. "u mtc t jodk hotxnupxw tvr lotjovwk meovo clov fk bwtvo hoztv na wtvr. un ctm mxel t nlduwwuvz fafovn pad fk fuvr tvr fk maxw," mxgwx mtur.`;
     },
     methods: {
         autoGenerateMapping() {
@@ -467,11 +434,9 @@ new Vue({
             for (let c of chars) {
                 if (!(c in this.mapping)) newMap[c] = '';
             }
-            // retain existing mapping
             for (let k in this.mapping) {
                 if (chars.includes(k)) newMap[k] = this.mapping[k] || '';
             }
-            // urutkan
             const sorted = {};
             Object.keys(newMap).sort().forEach(k => sorted[k] = newMap[k]);
             this.mapping = sorted;
@@ -489,8 +454,9 @@ new Vue({
                 }
             }
             this.decoded = result;
-            this.progress = Math.min(100, (result.length / (this.cipherText.length || 1)) * 100);
-            // auto save
+            const total = this.cipherText.replace(/[^a-zA-Z]/g,'').length || 1;
+            const mappedCount = result.replace(/[^a-zA-Z]/g,'').length;
+            this.progress = Math.min(100, (mappedCount / total) * 100);
             localStorage.setItem('cipherMapping', JSON.stringify(this.mapping));
         },
         resetMapping() {
@@ -503,10 +469,17 @@ new Vue({
             const freq = {};
             for (let ch of text) freq[ch] = (freq[ch] || 0) + 1;
             const sorted = Object.entries(freq).sort((a,b) => b[1]-a[1]);
-            alert('Frekuensi huruf:\n' + sorted.map(([k,v]) => `${k}: ${v}`).join('\n'));
+            const total = text.length || 1;
+            let msg = '📊 FREKUENSI HURUF\n' + '='.repeat(40) + '\n';
+            msg += sorted.map(([k,v]) => {
+                const pct = ((v/total)*100).toFixed(1);
+                return `${k}: ${v} (${pct}%)`;
+            }).join('\n');
+            msg += '\n' + '='.repeat(40);
+            msg += '\n💡 Huruf paling sering di Inggris: ETAOINSHRDLU';
+            alert(msg);
         },
         autoGuessMapping() {
-            // substitusi sederhana: huruf paling sering -> E, dst (demo)
             const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
             const freq = {};
             for (let ch of text) freq[ch] = (freq[ch] || 0) + 1;
@@ -518,12 +491,51 @@ new Vue({
             this.applyMapping();
             this.saveState();
         },
+        suggestMapping() {
+            // Berdasarkan frekuensi + kata pendek
+            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
+            const freq = {};
+            for (let ch of text) freq[ch] = (freq[ch] || 0) + 1;
+            const sorted = Object.keys(freq).sort((a,b) => freq[b]-freq[a]);
+            
+            // Cari kata 1 huruf
+            const words = this.cipherText.split(/\s+/);
+            const oneLetter = words.filter(w => w.length === 1 && /[a-zA-Z]/.test(w));
+            const twoLetter = words.filter(w => w.length === 2 && /[a-zA-Z]/.test(w));
+            const threeLetter = words.filter(w => w.length === 3 && /[a-zA-Z]/.test(w));
+            
+            let msg = '💡 SARAN MAPPING\n' + '='.repeat(40) + '\n\n';
+            msg += '📌 Huruf paling sering → tebak:\n';
+            sorted.slice(0, 5).forEach((c, i) => {
+                const common = ['E','T','A','O','I','N','S','H','R','D','L','U'];
+                msg += `  ${c} → ${common[i] || '?'} (${freq[c]}x)\n`;
+            });
+            
+            if (oneLetter.length) {
+                msg += '\n📌 Kata 1 huruf: ' + [...new Set(oneLetter)].join(', ');
+                msg += '\n  → kemungkinan: A atau I\n';
+            }
+            if (twoLetter.length) {
+                const uniq2 = [...new Set(twoLetter)];
+                msg += '\n📌 Kata 2 huruf: ' + uniq2.join(', ');
+                msg += '\n  → kemungkinan: OF, TO, IN, IT, IS, AS, WE, HE, MY, BY\n';
+            }
+            if (threeLetter.length) {
+                const uniq3 = [...new Set(threeLetter)];
+                msg += '\n📌 Kata 3 huruf: ' + uniq3.join(', ');
+                msg += '\n  → kemungkinan: THE, AND, YOU, WAS, FOR, ARE, BUT, NOT, HAD\n';
+            }
+            alert(msg);
+        },
         dictionaryMatch() {
-            const words = this.decoded.split(/[\s,.;!?]+/).filter(w => w.length>2);
-            const dict = ['there','their','they','which','would','could','should','people','about','other','world','house','water','light','thing','right','think','place','work','great','where','after','every','still','state','hand','life','part','long','time','day','way','man','good','new','one','two','three','four','five','six','seven','eight','nine','ten'];
-            const found = words.filter(w => dict.includes(w.toLowerCase()));
-            if (found.length) alert('Kata dikenali: ' + found.join(', '));
-            else alert('Tidak ada kata dalam kamus sederhana.');
+            const words = this.decoded.split(/[\s,.;!?]+/).filter(w => w.length > 2);
+            const found = words.filter(w => this.commonWords.includes(w.toLowerCase()));
+            const uniqFound = [...new Set(found)];
+            if (uniqFound.length) {
+                alert('✅ Kata dikenali (' + uniqFound.length + '):\n' + uniqFound.join(', '));
+            } else {
+                alert('❌ Tidak ada kata dalam kamus. Coba perbaiki mapping!');
+            }
         },
         bigramTrigram() {
             const txt = this.decoded.toUpperCase().replace(/[^A-Z]/g,'');
@@ -538,46 +550,80 @@ new Vue({
                     trigrams[t] = (trigrams[t] || 0) + 1;
                 }
             }
-            const topB = Object.entries(bigrams).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>k+':'+v).join(' ');
-            const topT = Object.entries(trigrams).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>k+':'+v).join(' ');
+            const topB = Object.entries(bigrams).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>k+':'+v).join(' ');
+            const topT = Object.entries(trigrams).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>k+':'+v).join(' ');
             this.bigram = topB || '-';
             this.trigram = topT || '-';
+            alert('📊 Bigram teratas:\n' + topB + '\n\n📊 Trigram teratas:\n' + topT);
         },
         patternSearch() {
-            const pattern = prompt('Masukkan pola (contoh: _he__ ) , gunakan _ untuk huruf apa saja:');
+            const pattern = prompt('🔍 Cari kata dengan pola (contoh: _he__ )\n_ = huruf apa saja');
             if (!pattern) return;
             const regex = new RegExp('^' + pattern.replace(/_/g,'[A-Za-z]') + '$', 'i');
             const words = this.decoded.split(/\s+/);
             const matches = words.filter(w => regex.test(w));
-            this.patternResult = matches.length ? matches.slice(0,8).join(', ') : 'Tidak ditemukan';
-            alert('Pola "'+pattern+'" ditemukan: ' + (matches.length ? matches.slice(0,8).join(', ') : 'tidak ada'));
+            this.patternResult = matches.length ? matches.slice(0,10).join(', ') : 'Tidak ditemukan';
+            alert('🔍 Pola "'+pattern+'" ditemukan:\n' + (matches.length ? matches.slice(0,10).join(', ') : 'tidak ada'));
         },
         autoCrack() {
+            // Algoritma: frekuensi + pola + kamus
             this.autoGuessMapping();
+            
+            // Coba perbaiki dengan kata pendek
+            const words = this.cipherText.split(/\s+/);
+            const threeWords = words.filter(w => w.length === 3 && /^[a-z]+$/.test(w));
+            const unique3 = [...new Set(threeWords)];
+            
+            // Coba tebak 'the' dan 'and'
+            const common3 = ['THE','AND','YOU','WAS','FOR','ARE','BUT','NOT','HAD'];
+            for (let w of unique3) {
+                if (w.length === 3) {
+                    const chars = w.toUpperCase().split('');
+                    // Coba mapping ke 'the'
+                    let possible = true;
+                    const tempMap = {...this.mapping};
+                    // cek apakah konflik
+                    const testMap = {};
+                    for (let i=0; i<3; i++) {
+                        const c = chars[i];
+                        const p = common3[0][i];
+                        if (tempMap[c] && tempMap[c] !== p) { possible = false; break; }
+                        testMap[c] = p;
+                    }
+                    if (possible) {
+                        for (let k in testMap) {
+                            this.mapping[k] = testMap[k];
+                        }
+                        break;
+                    }
+                }
+            }
+            
             this.applyMapping();
-            this.analyzeFreq();
             this.bigramTrigram();
             this.progress = 100;
             setTimeout(() => this.progress = 0, 800);
-        },
-        toggleDark() {
-            this.dark = !this.dark;
-            document.body.classList.toggle('dark', this.dark);
+            
+            // Tampilkan hasil
+            alert('✅ Auto Crack selesai!\nLihat hasil di panel kanan.\n\n💡 Jika hasil belum sempurna, edit mapping manual.');
         },
         exportTXT() {
             const blob = new Blob([this.decoded], {type:'text/plain'});
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = 'decrypted.txt';
+            a.download = 'plaintext.txt';
             a.click();
         },
         exportPDF() {
             const element = document.createElement('div');
-            element.innerHTML = this.decoded;
+            element.innerHTML = this.decoded.replace(/\n/g, '<br>');
             element.style.padding = '20px';
-            element.style.fontSize = '16px';
+            element.style.fontSize = '14px';
+            element.style.fontFamily = 'Arial';
+            element.style.background = 'white';
+            element.style.color = 'black';
             document.body.appendChild(element);
-            html2pdf().set({ margin: 1, filename: 'decrypted.pdf' }).from(element).save().then(() => {
+            html2pdf().set({ margin: 1, filename: 'plaintext.pdf' }).from(element).save().then(() => {
                 document.body.removeChild(element);
             });
         },
