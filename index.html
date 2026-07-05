@@ -3,382 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔓 Professional Cipher Cracker</title>
+    <title>🧬 Genetic Cipher Breaker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 100%); color: #e2e8f0; font-family: 'Segoe UI', Tahoma, sans-serif; padding: 12px; min-height: 100vh; }
+        body { background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 100%); color: #e2e8f0; font-family: monospace; padding: 12px; min-height: 100vh; }
         .container { max-width: 1600px; margin: 0 auto; }
-        
-        .header { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid #334155; padding: 16px 20px; border-radius: 12px; margin-bottom: 16px; }
-        .header-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .logo { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #3b82f6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .btn { background: #334155; border: 1px solid #475569; padding: 8px 14px; border-radius: 8px; color: #e2e8f0; cursor: pointer; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; font-weight: 500; }
+        .header { background: #1e293b; border: 1px solid #334155; padding: 16px 20px; border-radius: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .logo { font-size: 1.3rem; font-weight: 700; color: #3b82f6; }
+        .btn { background: #334155; border: 1px solid #475569; padding: 8px 14px; border-radius: 8px; color: #e2e8f0; cursor: pointer; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px; }
         .btn:hover { background: #475569; }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn-success { background: #10b981; border-color: #10b981; }
-        .btn-success:hover:not(:disabled) { background: #059669; }
-        .btn-danger { background: #ef4444; border-color: #ef4444; }
-        
+        .btn-success { background: #10b981; }
+        .btn-danger { background: #ef4444; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
         .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px; }
-        .card-title { display: flex; align-items: center; gap: 8px; font-weight: 600; margin-bottom: 12px; color: #93bbfc; border-bottom: 2px solid #334155; padding-bottom: 8px; }
-        
-        textarea { width: 100%; padding: 12px; background: #0f172a; color: #e2e8f0; border: 1px solid #334155; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.85rem; resize: vertical; min-height: 150px; }
+        .card-title { font-weight: 700; margin-bottom: 12px; color: #93bbfc; border-bottom: 2px solid #334155; padding-bottom: 8px; }
+        textarea { width: 100%; padding: 12px; background: #0f172a; color: #e2e8f0; border: 1px solid #334155; border-radius: 8px; font-family: monospace; font-size: 0.85rem; resize: vertical; min-height: 150px; }
         textarea:focus { outline: none; border-color: #3b82f6; }
-        
-        .result-area { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; min-height: 150px; max-height: 400px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.8; white-space: pre-wrap; word-wrap: break-word; }
-        .result-area.success { border-color: #10b981; background: #051f1f; }
-        
-        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; margin: 12px 0; }
-        .stat-box { background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; font-size: 0.75rem; text-align: center; }
-        .stat-box strong { color: #10b981; display: block; font-size: 1rem; }
-        
+        .result-area { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; min-height: 150px; max-height: 400px; overflow-y: auto; font-family: monospace; font-size: 0.85rem; line-height: 1.8; white-space: pre-wrap; word-wrap: break-word; }
+        .result-area.good { border-color: #10b981; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+        .stat { background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; font-size: 0.8rem; text-align: center; }
+        .stat-val { color: #10b981; font-size: 1.2rem; font-weight: 700; }
         .progress { width: 100%; height: 6px; background: #334155; border-radius: 3px; overflow: hidden; margin: 8px 0; }
-        .progress-bar { height: 100%; background: linear-gradient(90deg, #10b981, #3b82f6); transition: width 0.2s; }
-        
-        .console { background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 12px; font-family: 'Courier New', monospace; font-size: 0.75rem; color: #10b981; max-height: 300px; overflow-y: auto; line-height: 1.5; }
-        .log-success { color: #86efac; }
-        .log-warning { color: #fbbf24; }
-        .log-error { color: #fca5a5; }
-        
-        .word-cloud { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-        .word { background: #0f172a; padding: 4px 10px; border-radius: 14px; border: 1px solid #334155; font-size: 0.75rem; }
-        .word.valid { border-color: #10b981; background: #064e3b; color: #86efac; }
-        
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #10b981, #3b82f6); transition: width 0.1s; }
+        .console { background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 12px; font-size: 0.75rem; color: #10b981; max-height: 300px; overflow-y: auto; line-height: 1.4; }
+        .log { margin: 2px 0; }
+        .log-good { color: #86efac; }
+        .log-warn { color: #fbbf24; }
+        .words { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .word { background: #064e3b; border: 1px solid #10b981; padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; color: #86efac; }
         @media (max-width: 1024px) { .grid-2 { grid-template-columns: 1fr; } }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
-        
-        .spinner { animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        ::-webkit-scrollbar-thumb { background: #475569; }
     </style>
 </head>
 <body>
 <div class="container" id="app">
     <div class="header">
-        <div class="header-content">
-            <div class="logo">
-                <i class="fas fa-key"></i> PROFESSIONAL CIPHER CRACKER
-            </div>
-            <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                <button class="btn btn-success" @click="crack" :disabled="cracking">
-                    <span v-if="cracking" class="spinner"><i class="fas fa-spinner"></i></span>
-                    <span v-else><i class="fas fa-skull-crossbones"></i></span>
-                    {{ cracking ? 'CRACKING...' : 'START CRACK' }}
-                </button>
-                <button class="btn btn-danger" @click="stop" v-if="cracking">
-                    <i class="fas fa-stop"></i> Stop
-                </button>
-                <button class="btn" @click="copy">
-                    <i class="fas fa-copy"></i> Copy
-                </button>
-            </div>
+        <div class="logo">🧬 GENETIC CIPHER BREAKER</div>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <button class="btn btn-success" @click="attack" :disabled="running">
+                {{ running ? '⚙️ RUNNING...' : '🚀 ATTACK' }}
+            </button>
+            <button class="btn btn-danger" @click="stop" v-if="running">⏹ STOP</button>
+            <button class="btn" @click="copy">📋 COPY</button>
         </div>
     </div>
 
     <div class="grid-2">
         <div class="card">
-            <div class="card-title"><i class="fas fa-lock"></i> CIPHERTEXT</div>
-            <textarea v-model="cipher" @input="onInput" placeholder="Paste cipher di sini..." :disabled="cracking"></textarea>
+            <div class="card-title">🔒 CIPHERTEXT</div>
+            <textarea v-model="cipher" @input="onInput" placeholder="Paste cipher..." :disabled="running"></textarea>
             <div class="stats">
-                <div class="stat-box"><strong>{{ cipher.length }}</strong> Chars</div>
-                <div class="stat-box"><strong>{{ uniqueLetters }}</strong> Unique</div>
-                <div class="stat-box"><strong>{{ wordCount }}</strong> Words</div>
+                <div class="stat"><div class="stat-val">{{ cipher.length }}</div>Chars</div>
+                <div class="stat"><div class="stat-val">{{ unique }}</div>Unique</div>
+                <div class="stat"><div class="stat-val">{{ words }}</div>Words</div>
             </div>
             <div class="progress"><div class="progress-bar" :style="{width: progress + '%'}"></div></div>
         </div>
 
         <div class="card">
-            <div class="card-title"><i class="fas fa-unlock"></i> PLAINTEXT</div>
-            <div class="result-area" :class="{success: validWords > 15}">
-{{ decoded || 'Hasil akan muncul di sini...' }}
-            </div>
+            <div class="card-title">🔓 PLAINTEXT</div>
+            <div class="result-area" :class="{good: validWords > 10}">{{ plain || 'Result...' }}</div>
             <div class="stats">
-                <div class="stat-box"><strong>{{ validWords }}</strong> Valid</div>
-                <div class="stat-box"><strong>{{ accuracy.toFixed(1) }}%</strong> Acc</div>
-                <div class="stat-box"><strong>{{ mappedCount }}/26</strong> Map</div>
+                <div class="stat"><div class="stat-val">{{ validWords }}</div>Valid</div>
+                <div class="stat"><div class="stat-val">{{ (acc).toFixed(1) }}%</div>Acc</div>
+                <div class="stat"><div class="stat-val">{{ gen }}</div>Gen</div>
             </div>
         </div>
     </div>
 
     <div class="card">
-        <div class="card-title"><i class="fas fa-terminal"></i> STATUS & LOGS</div>
-        <div style="font-size:0.85rem; margin-bottom:8px; padding:8px; background:#0f172a; border-radius:6px;">
-            <strong>🔧 Algorithm:</strong> Pattern Matching + Constraint Satisfaction + Hill Climbing<br>
-            <strong>📊 Best Score:</strong> {{ bestScore.toFixed(2) }} | <strong>Iteration:</strong> {{ iteration }}
+        <div class="card-title">📊 STATUS</div>
+        <div style="font-size: 0.9rem; margin-bottom: 8px;">
+            <strong>Population:</strong> {{ popSize }} | <strong>Best Score:</strong> {{ best.toFixed(0) }} | <strong>Generation:</strong> {{ gen }} | <strong>Top Words:</strong> {{ topWords }}
         </div>
         <div class="console">
-            <div v-for="(log, i) in logs" :key="i" :class="'log-' + log.type">{{ log.msg }}</div>
+            <div v-for="(l, i) in logs" :key="i" class="log" :class="'log-' + l.t">{{ l.m }}</div>
         </div>
     </div>
 
     <div class="card">
-        <div class="card-title"><i class="fas fa-check"></i> RECOGNIZED WORDS ({{ validWords }})</div>
-        <div class="word-cloud">
-            <div v-for="word in recognized.slice(0, 50)" :key="word" class="word valid">{{ word }}</div>
+        <div class="card-title">✅ RECOGNIZED WORDS</div>
+        <div class="words">
+            <div v-for="w in recognized.slice(0, 40)" :key="w" class="word">{{ w }}</div>
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
 <script>
-const WORDS = new Set(['the','be','to','of','and','a','in','that','have','i','it','for','not','on','with','he','as','you','do','at','this','but','his','by','from','they','we','say','her','she','or','an','will','my','one','all','would','there','their','what','so','up','out','if','about','who','get','which','go','me','when','make','can','like','time','no','just','him','know','take','people','into','year','your','good','some','could','them','see','other','than','then','now','look','only','come','its','over','think','also','back','after','use','two','how','our','work','first','well','way','even','new','want','because','any','these','give','day','most','us','is','was','are','been','being','has','had','having','does','did','each','said','tell','boy','girl','man','woman','child','hand','made','life','water','night','day','time','year','world','place','thing','name','home','face','fact','form','kind','land','part','right','side','size','sort','word','work','call','care','case','city','come','dark','deal','dear','edge','fact','fair','fall','feel','fell','file','fine','find','fire','form','four','free','full','gain','game','gate','gave','girl','give','glad','goal','goat','gold','gone','gray','grew','grow','hair','half','hall','hand','hang','hard','harm','head','hear','heat','held','help','here','hero','high','hill','hold','hole','holy','home','hope','horn','host','hour','huge','hung','hunt','hurt','idea','iron','item','jack','jail','join','joke','july','june','keep','kept','kill','kind','king','knee','knew','know','lack','lady','laid','lake','land','lane','last','late','lead','leaf','lean','left','less','lift','like','line','link','list','live','load','loan','lock','long','look','loop','lord','lose','loss','lost','loud','love','luck','mail','main','make','male','mall','many','mark','mars','mass','mate','math','meal','mean','meat','meet','menu','mere','mess','mice','mile','milk','mill','mind','mine','miss','mode','mood','moon','more','most','moth','move','much','must','mute','myth','nail','name','navy','near','neat','neck','need','nest','news','next','nice','nine','node','none','nose','note','noun','oval','oven','over','pace','pack','page','paid','pain','pair','pale','palm','park','part','pass','past','path','pave','peak','pear','peas','peel','peer','pest','pick','pile','pine','pink','pipe','plan','play','plea','plot','plug','plus','poem','poet','pole','poll','pond','pony','pool','poor','pope','pork','port','pose','post','pour','pray','prey','pull','pump','pure','push','quit','quiz','race','rage','raid','rail','rain','rake','rank','rare','rate','read','real','reap','rear','rest','rich','ride','ring','riot','rise','risk','road','roam','roar','robe','rock','rode','role','roll','roof','room','root','rope','rose','rule','rung','rush','rust','safe','sage','sail','sake','sale','salt','same','sand','save','seal','seat','seed','seek','seem','seen','self','sell','send','sent','ship','shop','shot','show','sick','side','sign','silk','sing','sink','site','size','skin','slip','slow','snow','soap','soar','soft','soil','sold','sole','some','song','soon','sort','soul','soup','sour','span','spin','spot','star','stay','stem','step','stew','stop','such','suit','sure','surf','swap','swim','tail','take','tale','talk','tall','tame','tank','tape','task','team','tear','tell','tend','tent','term','test','text','than','that','thee','them','then','they','thin','this','thou','thus','tick','tide','tied','tier','ties','till','tilt','tiny','tire','toad','toes','told','toll','tone','took','tool','tops','torn','toss','tour','town','toys','trap','tray','tree','trek','trim','trip','true','tubs','tuck','tune','turn','twin','type','ugly','unit','upon','urge','used','user','uses','vain','vary','vast','verb','very','vest','vice','view','vine','vote','wade','wage','wait','wake','walk','wall','want','ward','ware','warm','warn','wash','wasp','wave','weak','wear','weed','week','weep','well','went','were','west','what','when','where','which','while','whip','whom','wide','wife','wild','will','wind','wine','wing','wink','wire','wise','wish','with','woke','wolf','wood','wool','word','wore','work','worm','worn','wrap','yard','yarn','yawn','year','yell','your','zero','zest','zone']);
+const WORDS = new Set(['the','be','to','of','and','a','in','that','have','i','it','for','not','on','with','he','as','you','do','at','this','but','his','by','from','they','we','say','her','she','or','an','will','my','one','all','would','there','their','what','so','up','out','if','about','who','get','which','go','me','when','make','can','like','time','no','just','him','know','take','people','into','year','your','good','some','could','them','see','other','than','then','now','look','only','come','its','over','think','also','back','after','use','two','how','our','work','first','well','way','even','new','want','because','any','these','give','day','most','us','is','was','are','been','being','has','had','having','does','did','each','said','tell','boy','girl','man','woman','child','hand','made','life','water','night','time','year','world','place','thing','name','home','face','fact','form','kind','land','part','right','side','size','sort','word','work','call','care','case','city','come','dark','deal','dear','edge','face','fact','fair','fall','feel','fell','file','fine','find','fire','form','four','free','full','gain','game','gate','gave','girl','give','glad','goal','goat','gold','gone','gray','grew','grow','hair','half','hall','hand','hang','hard','harm','head','hear','heat','held','help','here','hero','high','hill','hold','hole','holy','hope','horn','host','hour','huge','hung','hunt','hurt','idea','iron','item','keep','kept','kill','kind','king','knee','knew','know','lack','lady','laid','lake','land','lane','last','late','lead','leaf','lean','left','less','lift','like','line','link','list','live','load','loan','lock','long','look','loop','lord','lose','loss','lost','loud','love','luck','mail','main','make','male','mall','many','mark','mass','mate','math','meal','mean','meat','meet','menu','mere','mess','mice','mile','milk','mill','mind','mine','miss','mode','mood','moon','more','most','moth','move','much','must','mute','myth','nail','name','navy','near','neat','neck','need','nest','news','next','nice','nine','node','none','nose','note','noun','oval','oven','over','pace','pack','page','paid','pain','pair','pale','palm','park','part','pass','past','path','pave','peak','pear','peas','peel','peer','pest','pick','pile','pine','pink','pipe','plan','play','plea','plot','plug','plus','poem','poet','pole','poll','pond','pony','pool','poor','pope','pork','port','pose','post','pour','pray','prey','pull','pump','pure','push','quit','quiz','race','rage','raid','rail','rain','rake','rank','rare','rate','read','real','reap','rear','rest','rich','ride','ring','riot','rise','risk','road','roam','roar','robe','rock','rode','role','roll','roof','room','root','rope','rose','rule','rung','rush','rust','safe','sage','sail','sake','sale','salt','same','sand','save','seal','seat','seed','seek','seem','seen','self','sell','send','sent','ship','shop','shot','show','sick','side','sign','silk','sing','sink','site','size','skin','slip','slow','snow','soap','soar','soft','soil','sold','sole','some','song','soon','sort','soul','soup','sour','span','spin','spot','star','stay','stem','step','stew','stop','such','suit','sure','surf','swap','swim','tail','take','tale','talk','tall','tame','tank','tape','task','team','tear','tell','tend','tent','term','test','text','than','that','thee','them','then','they','thin','this','thou','thus','tick','tide','tied','tier','ties','till','tilt','tiny','tire','toad','toes','told','toll','tone','took','tool','tops','torn','toss','tour','town','toys','trap','tray','tree','trek','trim','trip','true','tubs','tuck','tune','turn','twin','type','ugly','unit','upon','urge','used','user','uses','vain','vary','vast','verb','very','vest','vice','view','vine','vote','wade','wage','wait','wake','walk','wall','want','ward','ware','warm','warn','wash','wasp','wave','weak','wear','weed','week','weep','well','went','were','west','what','when','where','which','while','whip','whom','wide','wife','wild','will','wind','wine','wing','wink','wire','wise','wish','with','woke','wolf','wood','wool','word','wore','work','worm','worn','wrap','yard','yarn','yawn','year','yell','your','zero','zest','zone']);
 
-const EN_FREQ = {E:12.7,T:9.1,A:8.2,O:7.5,I:7.0,N:6.7,S:6.3,H:6.1,R:6.0,D:4.3,L:4.0,C:2.8,U:2.8,M:2.4,W:2.4,F:2.2,G:2.0,Y:2.0,P:1.9,B:1.5,V:1.0,K:0.8,J:0.15,X:0.15,Q:0.1,Z:0.07};
-
-const WORD_LIST = Array.from(WORDS).filter(w => w.length > 2).sort((a,b) => b.length - a.length);
+const ENG_FREQ = {E:12.7,T:9.1,A:8.2,O:7.5,I:7.0,N:6.7,S:6.3,H:6.1,R:6.0,D:4.3,L:4.0,C:2.8,U:2.8,M:2.4,W:2.4,F:2.2,G:2.0,Y:2.0,P:1.9,B:1.5,V:1.0,K:0.8,J:0.15,X:0.15,Q:0.1,Z:0.07};
 
 new Vue({
     el: '#app',
     data: {
         cipher: '',
-        decoded: '',
-        mapping: {},
+        plain: '',
+        running: false,
+        stop_flag: false,
         logs: [],
-        cracking: false,
-        shouldStop: false,
+        population: [],
+        popSize: 100,
+        gen: 0,
+        best: -Infinity,
         progress: 0,
-        iteration: 0,
-        bestScore: -Infinity,
-        bestMapping: {},
         validWords: 0,
-        accuracy: 0,
-        mappedCount: 0,
+        acc: 0,
         recognized: [],
-        debounceTimer: null
+        topWords: 0,
+        debounce: null
     },
     computed: {
-        uniqueLetters() { return new Set(this.cipher.toUpperCase().match(/[A-Z]/g) || []).size; },
-        wordCount() { return (this.cipher.match(/\b\w+\b/g) || []).length; }
+        unique() { return new Set(this.cipher.toUpperCase().match(/[A-Z]/g) || []).size; },
+        words() { return (this.cipher.match(/\b\w+\b/g) || []).length; }
     },
     methods: {
-        log(msg, type = 'success') {
-            this.logs.push({msg, type});
+        log(m, t = 'default') {
+            this.logs.push({m, t});
             if (this.logs.length > 100) this.logs.shift();
         },
         onInput() {
             this.cipher = this.cipher.toUpperCase();
-            clearTimeout(this.debounceTimer);
-            this.debounceTimer = setTimeout(() => this.initMap(), 300);
+            clearTimeout(this.debounce);
+            this.debounce = setTimeout(() => {}, 300);
         },
-        initMap() {
-            const map = {};
-            for (let i = 65; i <= 90; i++) map[String.fromCharCode(i)] = '';
-            this.mapping = map;
-        },
-        decode(m) {
+        decode(map) {
             let r = '';
             for (let c of this.cipher) {
-                if (/[A-Z]/.test(c) && m[c]) r += m[c];
-                else r += c;
+                r += (map[c] || c);
             }
             return r;
         },
-        evaluate(m) {
-            const text = this.decode(m).toLowerCase();
-            const words = (text.match(/\b[a-z]+\b/g) || []).map(w => w.toLowerCase());
-            const valid = words.filter(w => w.length > 2 && WORDS.has(w));
-            const uniqueValid = [...new Set(valid)];
+        eval(map) {
+            const d = this.decode(map).toLowerCase();
+            const w = (d.match(/\b[a-z]+\b/g) || []).map(x => x.toLowerCase());
+            const v = w.filter(x => x.length > 2 && WORDS.has(x));
             
             let chi = 0;
-            const freq = {};
-            const cleanText = text.toUpperCase().replace(/[^A-Z]/g, '');
-            for (let c of cleanText) freq[c] = (freq[c] || 0) + 1;
-            const len = Math.max(cleanText.length, 1);
-            for (let c = 65; c <= 90; c++) {
-                const ch = String.fromCharCode(c);
-                const obs = freq[ch] || 0;
-                const exp = (EN_FREQ[ch] || 0) * len / 100;
-                if (exp > 0) chi += Math.pow(obs - exp, 2) / exp;
+            const f = {};
+            const t = d.toUpperCase().replace(/[^A-Z]/g, '');
+            for (let c of t) f[c] = (f[c] || 0) + 1;
+            const l = Math.max(t.length, 1);
+            for (let i = 65; i <= 90; i++) {
+                const ch = String.fromCharCode(i);
+                const o = f[ch] || 0;
+                const e = (ENG_FREQ[ch] || 0) * l / 100;
+                if (e > 0) chi += Math.pow(o - e, 2) / e;
             }
             
-            return {valid: valid.length, unique: uniqueValid.length, chi: -chi, all: valid.length * 100 - chi};
+            return {valid: v.length, unique: [...new Set(v)].length, chi: chi, score: v.length * 1000 - chi};
         },
-        getPattern(word) {
-            const m = {}; let p = '';
-            for (let c of word) {
-                if (!(c in m)) m[c] = String.fromCharCode(97 + Object.keys(m).length);
-                p += m[c];
+        random() {
+            const m = {};
+            const s = 'ETAOINSHRDLUCMFYWGPBVKXQJZ'.split('').sort(() => Math.random() - 0.5);
+            const c = [...new Set(this.cipher.toUpperCase().match(/[A-Z]/g) || [])].sort();
+            for (let i = 0; i < c.length; i++) m[c[i]] = s[i];
+            for (let i = 65; i <= 90; i++) {
+                const ch = String.fromCharCode(i);
+                if (!m[ch]) m[ch] = ch;
             }
-            return p;
+            return m;
         },
-        async crack() {
-            this.cracking = true;
-            this.shouldStop = false;
+        mutate(m) {
+            const nm = JSON.parse(JSON.stringify(m));
+            const k = Object.keys(nm).filter(x => /[A-Z]/.test(x));
+            const i = Math.floor(Math.random() * k.length);
+            const j = Math.floor(Math.random() * k.length);
+            [nm[k[i]], nm[k[j]]] = [nm[k[j]], nm[k[i]]];
+            return nm;
+        },
+        cross(m1, m2) {
+            const nm = {};
+            for (let i = 65; i <= 90; i++) {
+                const ch = String.fromCharCode(i);
+                nm[ch] = Math.random() > 0.5 ? m1[ch] : m2[ch];
+            }
+            return nm;
+        },
+        async attack() {
+            this.running = true;
+            this.stop_flag = false;
             this.logs = [];
-            this.iteration = 0;
-            this.bestScore = -Infinity;
-            
+            this.gen = 0;
+            this.best = -Infinity;
+            this.progress = 0;
+
             if (!this.cipher.trim()) {
-                this.log('❌ Cipher kosong!', 'error');
-                this.cracking = false;
+                this.log('❌ Empty cipher', 'error');
+                this.running = false;
                 return;
             }
 
-            this.log('🔓 PROFESSIONAL CIPHER CRACKER STARTED', 'success');
-            this.log('Strategy: Pattern Matching + Constraint Satisfaction', 'success');
-            await this.sleep(200);
-
-            // Phase 1: Pattern Matching
-            this.log('Phase 1: Word Pattern Dictionary Attack...', 'warning');
-            const cipherWords = this.cipher.split(/\s+/).map(w => w.replace(/[^A-Z]/g, '')).filter(w => w.length > 2);
-            const patterns = {};
-            cipherWords.forEach(w => {
-                const p = this.getPattern(w);
-                if (!patterns[p]) patterns[p] = [];
-                patterns[p].push(w);
-            });
-
-            let constraintMap = {};
-            const patternMatches = {};
+            this.log('🧬 GENETIC ALGORITHM STARTED', 'good');
+            this.log('Creating initial population...', 'warn');
             
-            for (let p in patterns) {
-                const candidates = WORD_LIST.filter(dw => this.getPattern(dw.toUpperCase()) === p);
-                if (candidates.length > 0) {
-                    patternMatches[p] = {cipher: patterns[p], plain: candidates};
-                }
+            // Init population
+            this.population = [];
+            for (let i = 0; i < this.popSize; i++) {
+                this.population.push(this.random());
             }
+            await this.sleep(100);
 
-            // Try to find consistent mapping
-            const topPatterns = Object.entries(patternMatches)
-                .sort((a, b) => b[1].cipher.length - a[1].cipher.length)
-                .slice(0, 10);
+            // Generations
+            for (let gen = 0; gen < 500 && !this.stop_flag; gen++) {
+                this.gen = gen;
+                this.progress = (gen / 500) * 100;
 
-            for (let [pattern, {cipher: cWords, plain: pWords}] of topPatterns) {
-                const cWord = cWords[0].toUpperCase();
-                for (let pWord of pWords.slice(0, 3)) {
-                    const testMap = {...constraintMap};
-                    let valid = true;
-                    
-                    for (let i = 0; i < cWord.length; i++) {
-                        const c = cWord[i];
-                        const p = pWord[i].toUpperCase();
-                        
-                        if (testMap[c] && testMap[c] !== p) {
-                            valid = false;
-                            break;
-                        }
-                        testMap[c] = p;
-                    }
-                    
-                    if (valid) {
-                        constraintMap = testMap;
-                        this.log(`✓ Matched: ${cWord} → ${pWord.toUpperCase()}`, 'success');
-                        break;
-                    }
-                }
-            }
+                // Eval all
+                const scores = this.population.map((m, i) => ({
+                    map: m,
+                    idx: i,
+                    ...this.eval(m)
+                }));
 
-            this.mapping = constraintMap;
-            this.applyMapping();
-            this.bestMapping = {...constraintMap};
-            this.bestScore = this.evaluate(constraintMap).all;
-            this.log(`Initial mapping score: ${this.bestScore.toFixed(0)}`, 'warning');
-            await this.sleep(500);
-
-            // Phase 2: Frequency Analysis for unmapped
-            this.log('Phase 2: Frequency-based refinement...', 'warning');
-            const unmapped = [];
-            for (let i = 65; i <= 90; i++) {
-                const c = String.fromCharCode(i);
-                if (!this.mapping[c]) unmapped.push(c);
-            }
-            
-            const freq = {};
-            for (let c of this.cipher.toUpperCase()) {
-                if (/[A-Z]/.test(c)) freq[c] = (freq[c] || 0) + 1;
-            }
-            const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]);
-            const freqOrder = 'ETAOINSHRDLUCMFYWGPBVKXQJZ'.split('');
-
-            for (let c of unmapped) {
-                const idx = sorted.findIndex(([ch]) => ch === c);
-                if (idx >= 0 && idx < freqOrder.length) {
-                    this.mapping[c] = freqOrder[idx];
-                }
-            }
-            this.applyMapping();
-            await this.sleep(300);
-
-            // Phase 3: Hill Climbing
-            this.log('Phase 3: Hill climbing optimization...', 'warning');
-            let temp = 100;
-            let noImprove = 0;
-
-            while (temp > 1 && !this.shouldStop && noImprove < 100) {
-                this.iteration++;
-                this.progress = Math.min(99, (100 - temp));
-
-                const newMap = JSON.parse(JSON.stringify(this.mapping));
-                const keys = Object.keys(newMap).filter(k => newMap[k]);
+                scores.sort((a, b) => b.score - a.score);
                 
-                if (keys.length > 1) {
-                    const i = Math.floor(Math.random() * keys.length);
-                    const j = Math.floor(Math.random() * keys.length);
-                    [newMap[keys[i]], newMap[keys[j]]] = [newMap[keys[j]], newMap[keys[i]]];
-
-                    const newScore = this.evaluate(newMap).all;
-                    if (newScore > this.bestScore) {
-                        this.bestScore = newScore;
-                        this.mapping = newMap;
-                        this.bestMapping = newMap;
-                        noImprove = 0;
-                        this.log(`🎯 Better mapping found! Score: ${newScore.toFixed(0)}`, 'success');
-                    } else {
-                        noImprove++;
-                    }
+                if (scores[0].score > this.best) {
+                    this.best = scores[0].score;
+                    this.log(`🎯 Gen ${gen}: Score ${this.best.toFixed(0)} - ${scores[0].unique} valid words`, 'good');
                 }
 
-                temp *= 0.98;
+                this.topWords = scores[0].unique;
 
-                if (this.iteration % 50 === 0) {
-                    this.applyMapping();
-                    await this.sleep(10);
-                    if (this.validWords > 20) {
-                        this.log(`🏆 SOLUTION FOUND! ${this.validWords} valid words!`, 'success');
-                        break;
-                    }
+                // Update
+                this.population = scores.slice(0, this.popSize).map(x => x.map);
+                
+                // Selection & Reproduction
+                const newPop = [];
+                while (newPop.length < this.popSize) {
+                    const p1 = this.population[Math.floor(Math.random() * (this.popSize / 2))];
+                    const p2 = this.population[Math.floor(Math.random() * (this.popSize / 2))];
+                    let child = this.cross(p1, p2);
+                    if (Math.random() < 0.7) child = this.mutate(child);
+                    newPop.push(child);
+                }
+                this.population = newPop;
+
+                // Eval result
+                const best = scores[0];
+                this.plain = this.decode(best.map);
+                const w = (this.plain.toLowerCase().match(/\b[a-z]+\b/g) || []).map(x => x.toLowerCase());
+                const v = w.filter(x => x.length > 2 && WORDS.has(x));
+                this.validWords = v.length;
+                const uw = [...new Set(v)];
+                this.recognized = uw;
+                this.acc = (uw.length / Math.max(w.length, 1)) * 100;
+
+                if (gen % 50 === 0) await this.sleep(10);
+                if (this.validWords > 30) {
+                    this.log(`🏆 SOLUTION FOUND! ${this.validWords} words!`, 'good');
+                    break;
                 }
             }
 
-            this.mapping = this.bestMapping;
-            this.applyMapping();
             this.progress = 100;
-            
-            this.log(`✅ CRACK COMPLETE!`, 'success');
-            this.log(`Valid Words: ${this.validWords} | Accuracy: ${this.accuracy.toFixed(1)}%`, 'success');
-            this.cracking = false;
-        },
-        applyMapping() {
-            this.decoded = this.decode(this.mapping);
-            const ev = this.evaluate(this.mapping);
-            this.validWords = ev.unique;
-            const totalWords = Math.max((this.decoded.match(/\b[a-z]+\b/gi) || []).length, 1);
-            this.accuracy = (ev.unique / totalWords) * 100;
-            this.mappedCount = Object.values(this.mapping).filter(v => v).length;
-            
-            const text = this.decoded.toLowerCase();
-            const words = (text.match(/\b[a-z]+\b/g) || []).map(w => w.toLowerCase());
-            this.recognized = [...new Set(words.filter(w => w.length > 2 && WORDS.has(w)))];
+            this.log(`✅ Attack complete - ${this.validWords} valid words`, 'good');
+            this.running = false;
         },
         stop() {
-            this.shouldStop = true;
-            this.log('🛑 Stopped', 'warning');
+            this.stop_flag = true;
+            this.log('⏹ Stopped', 'warn');
         },
         copy() {
-            navigator.clipboard.writeText(this.decoded);
-            this.log('📋 Copied!', 'success');
+            navigator.clipboard.writeText(this.plain);
+            this.log('📋 Copied!', 'good');
         },
-        sleep(ms) {
-            return new Promise(r => setTimeout(r, ms));
-        }
-    },
-    mounted() {
-        this.log('System ready', 'success');
-        this.initMap();
+        sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
     }
 });
 </script>
