@@ -1,1117 +1,386 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Substitution Cipher Cracker</title>
-  <style>
-    /* ===== RESET & DASAR ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    body {
-      background: #0a0e14;
-      color: #e4edf7;
-      min-height: 100vh;
-      display: flex;
-    }
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #161f2b; }
-    ::-webkit-scrollbar-thumb { background: #2f4055; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: #4a617c; }
-
-    /* ===== SIDEBAR ===== */
-    .sidebar {
-      width: 250px;
-      min-height: 100vh;
-      background: #111a24;
-      border-right: 1px solid #1f2d3d;
-      padding: 20px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-      flex-shrink: 0;
-    }
-    .sidebar .logo {
-      font-size: 22px;
-      font-weight: 700;
-      color: #7aa9f0;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #1f2d3d;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .sidebar .logo span { color: #b8d0f0; font-weight: 400; font-size: 14px; }
-    .sidebar button {
-      background: #1a2635;
-      border: 1px solid transparent;
-      color: #c8daf5;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 500;
-      text-align: left;
-      cursor: pointer;
-      transition: 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      width: 100%;
-    }
-    .sidebar button:hover {
-      background: #26384d;
-      border-color: #3d5a7a;
-      color: #fff;
-    }
-    .sidebar button.primary {
-      background: #1a3d66;
-      color: #fff;
-      justify-content: center;
-      font-weight: 600;
-    }
-    .sidebar button.primary:hover { background: #26548a; }
-    .sidebar .divider {
-      border-top: 1px solid #1f2d3d;
-      margin: 6px 0;
-    }
-    .sidebar .file-label {
-      background: #1a2635;
-      padding: 10px 14px;
-      border-radius: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #c8daf5;
-      font-size: 13px;
-      font-weight: 500;
-      width: 100%;
-      border: 1px solid transparent;
-      transition: 0.15s;
-    }
-    .sidebar .file-label:hover {
-      background: #26384d;
-      border-color: #3d5a7a;
-      color: #fff;
-    }
-    .file-label input[type="file"] { display: none; }
-
-    /* ===== MAIN ===== */
-    .main {
-      flex: 1;
-      padding: 24px 30px;
-      overflow-y: auto;
-      max-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-    .panel {
-      background: #121c28;
-      border-radius: 16px;
-      padding: 20px 24px;
-      border: 1px solid #1e2d3e;
-    }
-    .panel h3 {
-      font-weight: 500;
-      font-size: 17px;
-      color: #9bbde8;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .panel h3 .badge {
-      background: #1a2d44;
-      padding: 2px 12px;
-      border-radius: 30px;
-      font-size: 12px;
-      color: #8bb0db;
-    }
-    .row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 18px;
-      align-items: center;
-    }
-    textarea, input[type="text"] {
-      background: #0a131e;
-      border: 1px solid #253544;
-      color: #eaf1fc;
-      padding: 12px 16px;
-      border-radius: 12px;
-      font-size: 15px;
-      width: 100%;
-      resize: vertical;
-      transition: 0.15s;
-    }
-    textarea:focus, input[type="text"]:focus {
-      outline: none;
-      border-color: #4a7ab0;
-      box-shadow: 0 0 0 3px rgba(74, 122, 176, 0.15);
-    }
-
-    /* ===== MAPPING GRID ===== */
-    .mapping-grid {
-      display: grid;
-      grid-template-columns: repeat(13, 1fr);
-      gap: 6px;
-      margin: 10px 0;
-    }
-    .mapping-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: #0e1924;
-      border-radius: 10px;
-      padding: 6px 4px;
-      border: 1px solid #1f2e40;
-    }
-    .mapping-item .cipher-char {
-      font-weight: 600;
-      color: #9bb9e0;
-      font-size: 15px;
-      letter-spacing: 0.5px;
-    }
-    .mapping-item input {
-      width: 40px;
-      height: 36px;
-      text-align: center;
-      background: #0a131e;
-      border: 1px solid #2a3d54;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 18px;
-      font-weight: 700;
-      text-transform: uppercase;
-      padding: 0;
-      margin-top: 2px;
-    }
-    .mapping-item input:focus { border-color: #5a8bc9; }
-    .mapping-item.locked input { border-color: #f0b34b; background: #1a221f; }
-    .mapping-item .lock-icon {
-      font-size: 12px;
-      cursor: pointer;
-      color: #6a8aaa;
-      margin-top: 2px;
-      user-select: none;
-    }
-    .mapping-item .lock-icon:hover { color: #f0b34b; }
-
-    /* ===== PLAINTEXT PREVIEW ===== */
-    #plaintextPreview {
-      background: #0a131e;
-      padding: 16px 20px;
-      border-radius: 14px;
-      min-height: 70px;
-      white-space: pre-wrap;
-      word-break: break-word;
-      font-size: 16px;
-      line-height: 1.7;
-      border: 1px solid #1f2e40;
-      font-family: 'Courier New', monospace;
-      max-height: 300px;
-      overflow-y: auto;
-    }
-    #plaintextPreview .unknown { color: #e06b6b; background: #2a1515; padding: 0 2px; border-radius: 3px; }
-    #plaintextPreview .changed { color: #f0c674; background: #2a2215; padding: 0 2px; border-radius: 3px; }
-
-    /* ===== STATISTIK ===== */
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
-    }
-    .stat-card {
-      background: #0a131e;
-      padding: 10px 14px;
-      border-radius: 12px;
-      border-left: 3px solid #3d70a0;
-    }
-    .stat-card .label { color: #8aacd0; font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px; }
-    .stat-card .value { font-size: 20px; font-weight: 600; margin-top: 2px; }
-
-    /* ===== TAB ===== */
-    .tabs {
-      display: flex;
-      gap: 4px;
-      flex-wrap: wrap;
-      border-bottom: 1px solid #1f2e40;
-      padding-bottom: 8px;
-      margin-bottom: 14px;
-    }
-    .tab-btn {
-      background: transparent;
-      border: none;
-      color: #8aacd0;
-      padding: 6px 18px;
-      border-radius: 20px;
-      font-weight: 500;
-      cursor: pointer;
-      font-size: 14px;
-      transition: 0.1s;
-    }
-    .tab-btn.active {
-      background: #1a2d44;
-      color: #fff;
-    }
-    .tab-btn:hover { background: #1a2635; color: #d4e4fc; }
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-
-    /* ===== FREQ TABLE ===== */
-    #freqTable {
-      max-height: 200px;
-      overflow-y: auto;
-    }
-    #freqTable table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-    #freqTable td {
-      padding: 4px 12px;
-      border-bottom: 1px solid #1a2635;
-    }
-    #freqTable .bar {
-      height: 6px;
-      background: #3d70a0;
-      border-radius: 6px;
-      transition: width 0.3s;
-    }
-
-    /* ===== NGRAM ===== */
-    .ngram-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px 14px;
-      font-size: 14px;
-    }
-    .ngram-list .ngram-item {
-      background: #0a131e;
-      padding: 4px 12px;
-      border-radius: 16px;
-      border: 1px solid #1f2e40;
-    }
-    .ngram-list .ngram-item .count { color: #7aa9f0; font-weight: 600; }
-
-    /* ===== TOAST ===== */
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: #1a2d44;
-      padding: 12px 32px;
-      border-radius: 40px;
-      border: 1px solid #3d5a7a;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.7);
-      color: #e4edf7;
-      font-weight: 500;
-      z-index: 999;
-      opacity: 0;
-      transition: 0.3s ease;
-      pointer-events: none;
-      font-size: 14px;
-      white-space: nowrap;
-    }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    /* ===== PROGRESS ===== */
-    .progress-wrap {
-      width: 100%;
-      height: 4px;
-      background: #1a2635;
-      border-radius: 10px;
-      margin-top: 8px;
-      overflow: hidden;
-    }
-    .progress-bar {
-      height: 4px;
-      background: linear-gradient(90deg, #3d70a0, #7aa9f0);
-      border-radius: 10px;
-      width: 0%;
-      transition: width 0.3s;
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 768px) {
-      body { flex-direction: column; }
-      .sidebar {
-        width: 100%;
-        min-height: auto;
-        height: auto;
-        position: relative;
-        border-right: none;
-        border-bottom: 1px solid #1f2d3d;
-        padding: 12px 14px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 4px;
-      }
-      .sidebar .logo { width: 100%; margin-bottom: 6px; }
-      .sidebar button, .sidebar .file-label { width: auto; flex: 1 0 auto; padding: 6px 12px; font-size: 12px; }
-      .main { padding: 12px 14px; max-height: none; }
-      .mapping-grid { grid-template-columns: repeat(7, 1fr); }
-      .stat-grid { grid-template-columns: repeat(2, 1fr); }
-      .toast { white-space: normal; max-width: 90%; font-size: 13px; padding: 10px 20px; }
-    }
-    @media (max-width: 480px) {
-      .mapping-grid { grid-template-columns: repeat(5, 1fr); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔓 Professional Cipher Cracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 100%); color: #e2e8f0; font-family: 'Segoe UI', Tahoma, sans-serif; padding: 12px; min-height: 100vh; }
+        .container { max-width: 1600px; margin: 0 auto; }
+        
+        .header { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid #334155; padding: 16px 20px; border-radius: 12px; margin-bottom: 16px; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .logo { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #3b82f6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .btn { background: #334155; border: 1px solid #475569; padding: 8px 14px; border-radius: 8px; color: #e2e8f0; cursor: pointer; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; font-weight: 500; }
+        .btn:hover { background: #475569; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-success { background: #10b981; border-color: #10b981; }
+        .btn-success:hover:not(:disabled) { background: #059669; }
+        .btn-danger { background: #ef4444; border-color: #ef4444; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px; }
+        .card-title { display: flex; align-items: center; gap: 8px; font-weight: 600; margin-bottom: 12px; color: #93bbfc; border-bottom: 2px solid #334155; padding-bottom: 8px; }
+        
+        textarea { width: 100%; padding: 12px; background: #0f172a; color: #e2e8f0; border: 1px solid #334155; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.85rem; resize: vertical; min-height: 150px; }
+        textarea:focus { outline: none; border-color: #3b82f6; }
+        
+        .result-area { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; min-height: 150px; max-height: 400px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.8; white-space: pre-wrap; word-wrap: break-word; }
+        .result-area.success { border-color: #10b981; background: #051f1f; }
+        
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; margin: 12px 0; }
+        .stat-box { background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; font-size: 0.75rem; text-align: center; }
+        .stat-box strong { color: #10b981; display: block; font-size: 1rem; }
+        
+        .progress { width: 100%; height: 6px; background: #334155; border-radius: 3px; overflow: hidden; margin: 8px 0; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #10b981, #3b82f6); transition: width 0.2s; }
+        
+        .console { background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 12px; font-family: 'Courier New', monospace; font-size: 0.75rem; color: #10b981; max-height: 300px; overflow-y: auto; line-height: 1.5; }
+        .log-success { color: #86efac; }
+        .log-warning { color: #fbbf24; }
+        .log-error { color: #fca5a5; }
+        
+        .word-cloud { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .word { background: #0f172a; padding: 4px 10px; border-radius: 14px; border: 1px solid #334155; font-size: 0.75rem; }
+        .word.valid { border-color: #10b981; background: #064e3b; color: #86efac; }
+        
+        @media (max-width: 1024px) { .grid-2 { grid-template-columns: 1fr; } }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+        
+        .spinner { animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
 <body>
+<div class="container" id="app">
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-key"></i> PROFESSIONAL CIPHER CRACKER
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button class="btn btn-success" @click="crack" :disabled="cracking">
+                    <span v-if="cracking" class="spinner"><i class="fas fa-spinner"></i></span>
+                    <span v-else><i class="fas fa-skull-crossbones"></i></span>
+                    {{ cracking ? 'CRACKING...' : 'START CRACK' }}
+                </button>
+                <button class="btn btn-danger" @click="stop" v-if="cracking">
+                    <i class="fas fa-stop"></i> Stop
+                </button>
+                <button class="btn" @click="copy">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            </div>
+        </div>
+    </div>
 
-<!-- ===== SIDEBAR ===== -->
-<div class="sidebar">
-  <div class="logo">🔐 Cipher<span>Cracker</span></div>
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-title"><i class="fas fa-lock"></i> CIPHERTEXT</div>
+            <textarea v-model="cipher" @input="onInput" placeholder="Paste cipher di sini..." :disabled="cracking"></textarea>
+            <div class="stats">
+                <div class="stat-box"><strong>{{ cipher.length }}</strong> Chars</div>
+                <div class="stat-box"><strong>{{ uniqueLetters }}</strong> Unique</div>
+                <div class="stat-box"><strong>{{ wordCount }}</strong> Words</div>
+            </div>
+            <div class="progress"><div class="progress-bar" :style="{width: progress + '%'}"></div></div>
+        </div>
 
-  <div class="file-label" onclick="document.getElementById('fileInput').click()">
-    📂 Import .txt
-    <input type="file" id="fileInput" accept=".txt" onchange="handleFileImport(event)">
-  </div>
-  <button onclick="pasteFromClipboard()">📋 Paste Ciphertext</button>
-  <button onclick="loadExample()">📄 Contoh Ciphertext</button>
-  <button onclick="clearAll()">🗑️ Clear Text</button>
+        <div class="card">
+            <div class="card-title"><i class="fas fa-unlock"></i> PLAINTEXT</div>
+            <div class="result-area" :class="{success: validWords > 15}">
+{{ decoded || 'Hasil akan muncul di sini...' }}
+            </div>
+            <div class="stats">
+                <div class="stat-box"><strong>{{ validWords }}</strong> Valid</div>
+                <div class="stat-box"><strong>{{ accuracy.toFixed(1) }}%</strong> Acc</div>
+                <div class="stat-box"><strong>{{ mappedCount }}/26</strong> Map</div>
+            </div>
+        </div>
+    </div>
 
-  <div class="divider"></div>
+    <div class="card">
+        <div class="card-title"><i class="fas fa-terminal"></i> STATUS & LOGS</div>
+        <div style="font-size:0.85rem; margin-bottom:8px; padding:8px; background:#0f172a; border-radius:6px;">
+            <strong>🔧 Algorithm:</strong> Pattern Matching + Constraint Satisfaction + Hill Climbing<br>
+            <strong>📊 Best Score:</strong> {{ bestScore.toFixed(2) }} | <strong>Iteration:</strong> {{ iteration }}
+        </div>
+        <div class="console">
+            <div v-for="(log, i) in logs" :key="i" :class="'log-' + log.type">{{ log.msg }}</div>
+        </div>
+    </div>
 
-  <button class="primary" onclick="runAutoCrack()">⚡ Auto Crack</button>
-  <button onclick="resetMapping()">🔄 Reset Mapping</button>
-  <button onclick="autoCompleteMapping()">🔀 Auto Complete</button>
-  <button onclick="showSwapDialog()">⇄ Swap Letters</button>
-
-  <div class="divider"></div>
-
-  <button onclick="saveSession()">💾 Save Session</button>
-  <div class="file-label" onclick="document.getElementById('loadSessionInput').click()">
-    📂 Load Session
-    <input type="file" id="loadSessionInput" accept=".json" onchange="loadSession(event)">
-  </div>
-  <button onclick="exportPlaintext()">📤 Export Plaintext</button>
-  <button onclick="exportMapping()">📤 Export Mapping</button>
-  <button onclick="copyPlaintext()">📋 Copy Plaintext</button>
-
-  <div class="divider"></div>
-
-  <button onclick="undoMapping()">↩ Undo (Ctrl+Z)</button>
-  <button onclick="redoMapping()">↪ Redo (Ctrl+Y)</button>
+    <div class="card">
+        <div class="card-title"><i class="fas fa-check"></i> RECOGNIZED WORDS ({{ validWords }})</div>
+        <div class="word-cloud">
+            <div v-for="word in recognized.slice(0, 50)" :key="word" class="word valid">{{ word }}</div>
+        </div>
+    </div>
 </div>
 
-<!-- ===== MAIN ===== -->
-<div class="main">
-  <!-- Input -->
-  <div class="panel">
-    <h3>✏️ Input Ciphertext <span class="badge" id="charCount">0 karakter</span></h3>
-    <textarea id="cipherInput" rows="4" placeholder="Tempel atau ketik ciphertext di sini..." oninput="onCipherChange()"></textarea>
-    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
-    <div style="font-size:13px; color:#6a8aaa; margin-top:6px;">💡 Seret & letakkan file .txt di area ini</div>
-  </div>
-
-  <!-- Mapping -->
-  <div class="panel">
-    <h3>🔑 Mapping <span class="badge" id="mappingStatus">Siap</span></h3>
-    <div class="mapping-grid" id="mappingGrid"></div>
-  </div>
-
-  <!-- Plaintext -->
-  <div class="panel">
-    <h3>📜 Plaintext Preview</h3>
-    <div id="plaintextPreview">(plaintext akan muncul di sini)</div>
-  </div>
-
-  <!-- Statistik -->
-  <div class="panel">
-    <div class="tabs">
-      <button class="tab-btn active" data-tab="stats" onclick="switchTab('stats')">📊 Statistik</button>
-      <button class="tab-btn" data-tab="freq" onclick="switchTab('freq')">📈 Frekuensi</button>
-      <button class="tab-btn" data-tab="ngram" onclick="switchTab('ngram')">🔡 N-gram</button>
-    </div>
-
-    <!-- Statistik -->
-    <div class="tab-panel active" id="panel-stats">
-      <div class="stat-grid" id="statGrid">
-        <div class="stat-card"><div class="label">Total Karakter</div><div class="value" id="sTotalChars">0</div></div>
-        <div class="stat-card"><div class="label">Total Huruf</div><div class="value" id="sTotalLetters">0</div></div>
-        <div class="stat-card"><div class="label">Total Kata</div><div class="value" id="sTotalWords">0</div></div>
-        <div class="stat-card"><div class="label">Index of Coincidence</div><div class="value" id="sIoc">0.0000</div></div>
-        <div class="stat-card"><div class="label">Entropi</div><div class="value" id="sEntropy">0.00</div></div>
-        <div class="stat-card"><div class="label">Fitness Score</div><div class="value" id="sFitness">0</div></div>
-        <div class="stat-card"><div class="label">Confidence</div><div class="value" id="sConfidence">0%</div></div>
-        <div class="stat-card"><div class="label">Dictionary Match</div><div class="value" id="sDictMatch">0%</div></div>
-      </div>
-    </div>
-
-    <!-- Frekuensi -->
-    <div class="tab-panel" id="panel-freq">
-      <div id="freqTable"></div>
-    </div>
-
-    <!-- N-gram -->
-    <div class="tab-panel" id="panel-ngram">
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
-        <div><h4 style="color:#8aacd0; margin-bottom:6px;">Bigram</h4><div class="ngram-list" id="bigramList"></div></div>
-        <div><h4 style="color:#8aacd0; margin-bottom:6px;">Trigram</h4><div class="ngram-list" id="trigramList"></div></div>
-        <div><h4 style="color:#8aacd0; margin-bottom:6px;">Quadgram</h4><div class="ngram-list" id="quadgramList"></div></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== TOAST ===== -->
-<div class="toast" id="toast"></div>
-
-<!-- ===== JAVASCRIPT ===== -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
 <script>
-  // ================================================================
-  //  STATE
-  // ================================================================
-  const state = {
-    ciphertext: '',
-    mapping: Array(26).fill(''),      // mapping[0] = plain untuk 'A'
-    locked: new Set(),
-    history: [],
-    historyIndex: -1,
-    maxHistory: 50,
-  };
+const WORDS = new Set(['the','be','to','of','and','a','in','that','have','i','it','for','not','on','with','he','as','you','do','at','this','but','his','by','from','they','we','say','her','she','or','an','will','my','one','all','would','there','their','what','so','up','out','if','about','who','get','which','go','me','when','make','can','like','time','no','just','him','know','take','people','into','year','your','good','some','could','them','see','other','than','then','now','look','only','come','its','over','think','also','back','after','use','two','how','our','work','first','well','way','even','new','want','because','any','these','give','day','most','us','is','was','are','been','being','has','had','having','does','did','each','said','tell','boy','girl','man','woman','child','hand','made','life','water','night','day','time','year','world','place','thing','name','home','face','fact','form','kind','land','part','right','side','size','sort','word','work','call','care','case','city','come','dark','deal','dear','edge','fact','fair','fall','feel','fell','file','fine','find','fire','form','four','free','full','gain','game','gate','gave','girl','give','glad','goal','goat','gold','gone','gray','grew','grow','hair','half','hall','hand','hang','hard','harm','head','hear','heat','held','help','here','hero','high','hill','hold','hole','holy','home','hope','horn','host','hour','huge','hung','hunt','hurt','idea','iron','item','jack','jail','join','joke','july','june','keep','kept','kill','kind','king','knee','knew','know','lack','lady','laid','lake','land','lane','last','late','lead','leaf','lean','left','less','lift','like','line','link','list','live','load','loan','lock','long','look','loop','lord','lose','loss','lost','loud','love','luck','mail','main','make','male','mall','many','mark','mars','mass','mate','math','meal','mean','meat','meet','menu','mere','mess','mice','mile','milk','mill','mind','mine','miss','mode','mood','moon','more','most','moth','move','much','must','mute','myth','nail','name','navy','near','neat','neck','need','nest','news','next','nice','nine','node','none','nose','note','noun','oval','oven','over','pace','pack','page','paid','pain','pair','pale','palm','park','part','pass','past','path','pave','peak','pear','peas','peel','peer','pest','pick','pile','pine','pink','pipe','plan','play','plea','plot','plug','plus','poem','poet','pole','poll','pond','pony','pool','poor','pope','pork','port','pose','post','pour','pray','prey','pull','pump','pure','push','quit','quiz','race','rage','raid','rail','rain','rake','rank','rare','rate','read','real','reap','rear','rest','rich','ride','ring','riot','rise','risk','road','roam','roar','robe','rock','rode','role','roll','roof','room','root','rope','rose','rule','rung','rush','rust','safe','sage','sail','sake','sale','salt','same','sand','save','seal','seat','seed','seek','seem','seen','self','sell','send','sent','ship','shop','shot','show','sick','side','sign','silk','sing','sink','site','size','skin','slip','slow','snow','soap','soar','soft','soil','sold','sole','some','song','soon','sort','soul','soup','sour','span','spin','spot','star','stay','stem','step','stew','stop','such','suit','sure','surf','swap','swim','tail','take','tale','talk','tall','tame','tank','tape','task','team','tear','tell','tend','tent','term','test','text','than','that','thee','them','then','they','thin','this','thou','thus','tick','tide','tied','tier','ties','till','tilt','tiny','tire','toad','toes','told','toll','tone','took','tool','tops','torn','toss','tour','town','toys','trap','tray','tree','trek','trim','trip','true','tubs','tuck','tune','turn','twin','type','ugly','unit','upon','urge','used','user','uses','vain','vary','vast','verb','very','vest','vice','view','vine','vote','wade','wage','wait','wake','walk','wall','want','ward','ware','warm','warn','wash','wasp','wave','weak','wear','weed','week','weep','well','went','were','west','what','when','where','which','while','whip','whom','wide','wife','wild','will','wind','wine','wing','wink','wire','wise','wish','with','woke','wolf','wood','wool','word','wore','work','worm','worn','wrap','yard','yarn','yawn','year','yell','your','zero','zest','zone']);
 
-  // Inisialisasi mapping default (A→A, B→B, ...)
-  function initMapping() {
-    for (let i = 0; i < 26; i++) state.mapping[i] = String.fromCharCode(65 + i);
-    state.locked.clear();
-    pushHistory();
-    renderMapping();
-    updatePlaintext();
-    updateAllStats();
-  }
+const EN_FREQ = {E:12.7,T:9.1,A:8.2,O:7.5,I:7.0,N:6.7,S:6.3,H:6.1,R:6.0,D:4.3,L:4.0,C:2.8,U:2.8,M:2.4,W:2.4,F:2.2,G:2.0,Y:2.0,P:1.9,B:1.5,V:1.0,K:0.8,J:0.15,X:0.15,Q:0.1,Z:0.07};
 
-  // ================================================================
-  //  UTILITY
-  // ================================================================
-  function letterIndex(ch) {
-    const c = ch.toUpperCase();
-    if (c < 'A' || c > 'Z') return -1;
-    return c.charCodeAt(0) - 65;
-  }
+const WORD_LIST = Array.from(WORDS).filter(w => w.length > 2).sort((a,b) => b.length - a.length);
 
-  function isLetter(ch) {
-    return /[A-Za-z]/.test(ch);
-  }
-
-  function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
-
-  // ================================================================
-  //  DOM REFS
-  // ================================================================
-  const cipherInput = document.getElementById('cipherInput');
-  const mappingGrid = document.getElementById('mappingGrid');
-  const plaintextPreview = document.getElementById('plaintextPreview');
-  const progressBar = document.getElementById('progressBar');
-  const toast = document.getElementById('toast');
-
-  // ================================================================
-  //  TOAST
-  // ================================================================
-  function showToast(msg, dur = 3000) {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(toast._timer);
-    toast._timer = setTimeout(() => toast.classList.remove('show'), dur);
-  }
-
-  // ================================================================
-  //  PROGRESS
-  // ================================================================
-  function setProgress(pct) {
-    progressBar.style.width = clamp(pct, 0, 100) + '%';
-  }
-
-  // ================================================================
-  //  CIPHER INPUT
-  // ================================================================
-  function onCipherChange() {
-    state.ciphertext = cipherInput.value;
-    document.getElementById('charCount').textContent = state.ciphertext.length + ' karakter';
-    updateAllStats();
-    updatePlaintext();
-  }
-
-  function handleFileImport(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      cipherInput.value = ev.target.result;
-      onCipherChange();
-      showToast('✅ File berhasil diimpor');
-    };
-    reader.onerror = () => showToast('❌ Gagal membaca file');
-    reader.readAsText(file);
-    e.target.value = '';
-  }
-
-  // Drag & Drop
-  document.addEventListener('dragover', e => e.preventDefault());
-  document.addEventListener('drop', e => {
-    e.preventDefault();
-    const files = e.dataTransfer.files;
-    if (files.length && files[0].name.endsWith('.txt')) {
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        cipherInput.value = ev.target.result;
-        onCipherChange();
-        showToast('✅ File di-drop');
-      };
-      reader.readAsText(files[0]);
-    }
-  });
-
-  function pasteFromClipboard() {
-    navigator.clipboard.readText()
-      .then(t => { cipherInput.value = t; onCipherChange(); showToast('✅ Paste berhasil'); })
-      .catch(() => showToast('❌ Gagal akses clipboard. Gunakan Ctrl+V'));
-  }
-
-  function loadExample() {
-    cipherInput.value = `WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ. WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ. WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ.`;
-    onCipherChange();
-    showToast('✅ Contoh ciphertext dimuat');
-  }
-
-  function clearAll() {
-    cipherInput.value = '';
-    onCipherChange();
-    initMapping();
-    showToast('🗑️ Dibersihkan');
-  }
-
-  // ================================================================
-  //  MAPPING RENDER
-  // ================================================================
-  function renderMapping() {
-    mappingGrid.innerHTML = '';
-    for (let i = 0; i < 26; i++) {
-      const div = document.createElement('div');
-      div.className = 'mapping-item';
-      if (state.locked.has(i)) div.classList.add('locked');
-
-      const cipherChar = String.fromCharCode(65 + i);
-      const plainChar = state.mapping[i] || '';
-
-      div.innerHTML = `
-        <span class="cipher-char">${cipherChar}</span>
-        <input type="text" maxlength="1" value="${plainChar}" data-idx="${i}" 
-               placeholder="-" spellcheck="false">
-        <span class="lock-icon" data-idx="${i}">${state.locked.has(i) ? '🔒' : '🔓'}</span>
-      `;
-
-      const input = div.querySelector('input');
-      const lockIcon = div.querySelector('.lock-icon');
-
-      input.addEventListener('input', (e) => {
-        let val = e.target.value.toUpperCase();
-        if (val && !/^[A-Z]$/.test(val)) {
-          e.target.value = '';
-          return;
-        }
-        if (val.length > 1) val = val.slice(0, 1);
-        e.target.value = val;
-        const idx = parseInt(e.target.dataset.idx);
-        if (state.locked.has(idx)) {
-          showToast('🔒 Huruf ini terkunci. Klik gembok untuk membuka.');
-          e.target.value = state.mapping[idx] || '';
-          return;
-        }
-        state.mapping[idx] = val;
-        pushHistory();
-        updatePlaintext();
-        updateAllStats();
-        renderMapping();
-      });
-
-      lockIcon.addEventListener('click', (e) => {
-        const idx = parseInt(e.target.dataset.idx);
-        if (state.locked.has(idx)) {
-          state.locked.delete(idx);
-        } else {
-          state.locked.add(idx);
-        }
-        renderMapping();
-        updatePlaintext();
-        showToast(state.locked.has(idx) ? '🔒 Terkunci' : '🔓 Terbuka');
-      });
-
-      mappingGrid.appendChild(div);
-    }
-    updateMappingStatus();
-  }
-
-  function updateMappingStatus() {
-    const empty = state.mapping.filter(x => !x).length;
-    const dup = hasDuplicateMapping();
-    const status = document.getElementById('mappingStatus');
-    if (dup) { status.textContent = '⚠️ Duplikat!'; status.style.color = '#e06b6b'; }
-    else if (empty > 0) { status.textContent = `⚠️ ${empty} huruf kosong`; status.style.color = '#f0c674'; }
-    else { status.textContent = '✅ Lengkap'; status.style.color = '#6fcf97'; }
-  }
-
-  function hasDuplicateMapping() {
-    const used = new Set();
-    for (let v of state.mapping) {
-      if (v && used.has(v)) return true;
-      if (v) used.add(v);
-    }
-    return false;
-  }
-
-  // ================================================================
-  //  HISTORY
-  // ================================================================
-  function pushHistory() {
-    const snap = [...state.mapping];
-    if (state.historyIndex < state.history.length - 1) {
-      state.history = state.history.slice(0, state.historyIndex + 1);
-    }
-    state.history.push(snap);
-    if (state.history.length > state.maxHistory) state.history.shift();
-    state.historyIndex = state.history.length - 1;
-  }
-
-  function undoMapping() {
-    if (state.historyIndex <= 0) { showToast('❌ Tidak ada undo'); return; }
-    state.historyIndex--;
-    state.mapping = [...state.history[state.historyIndex]];
-    renderMapping();
-    updatePlaintext();
-    updateAllStats();
-    showToast('↩ Undo');
-  }
-
-  function redoMapping() {
-    if (state.historyIndex >= state.history.length - 1) { showToast('❌ Tidak ada redo'); return; }
-    state.historyIndex++;
-    state.mapping = [...state.history[state.historyIndex]];
-    renderMapping();
-    updatePlaintext();
-    updateAllStats();
-    showToast('↪ Redo');
-  }
-
-  // ================================================================
-  //  PLAINTEXT UPDATE
-  // ================================================================
-  function updatePlaintext() {
-    const text = state.ciphertext;
-    let out = '';
-    let changed = 0;
-    for (let ch of text) {
-      if (isLetter(ch)) {
-        const idx = letterIndex(ch);
-        const plain = state.mapping[idx] || '';
-        const isUpper = ch === ch.toUpperCase();
-        if (plain) {
-          const display = isUpper ? plain : plain.toLowerCase();
-          const isChanged = plain !== ch.toUpperCase();
-          if (isChanged) changed++;
-          out += display;
-        } else {
-          out += ch;
-        }
-      } else {
-        out += ch;
-      }
-    }
-    state.plaintext = out;
-    // Tampilkan dengan highlight
-    let displayOut = '';
-    let pos = 0;
-    for (let ch of text) {
-      if (isLetter(ch)) {
-        const idx = letterIndex(ch);
-        const plain = state.mapping[idx] || '';
-        const isUpper = ch === ch.toUpperCase();
-        if (plain) {
-          const display = isUpper ? plain : plain.toLowerCase();
-          const isChanged = plain !== ch.toUpperCase();
-          if (!plain) {
-            displayOut += `<span class="unknown">${ch}</span>`;
-          } else if (isChanged) {
-            displayOut += `<span class="changed">${display}</span>`;
-          } else {
-            displayOut += display;
-          }
-        } else {
-          displayOut += `<span class="unknown">${ch}</span>`;
-        }
-      } else {
-        displayOut += ch;
-      }
-    }
-    plaintextPreview.innerHTML = displayOut || '(plaintext akan muncul di sini)';
-  }
-
-  // ================================================================
-  //  STATISTIK
-  // ================================================================
-  function updateAllStats() {
-    updateStats();
-    updateFreqTable();
-    updateNgrams();
-  }
-
-  function updateStats() {
-    const text = state.ciphertext;
-    const letters = text.replace(/[^A-Za-z]/g, '').toUpperCase();
-    const words = text.split(/[\s,.;!?()"]+/).filter(w => w.length > 0);
-    const totalChars = text.length;
-    const totalLetters = letters.length;
-    const totalWords = words.length;
-
-    // IOC
-    let ioc = 0;
-    if (totalLetters > 1) {
-      const freq = Array(26).fill(0);
-      for (let ch of letters) { const i = letterIndex(ch); if (i >= 0) freq[i]++; }
-      let sum = 0;
-      for (let f of freq) sum += f * (f - 1);
-      ioc = sum / (totalLetters * (totalLetters - 1));
-    }
-
-    // Entropi
-    let entropy = 0;
-    const freq = Array(26).fill(0);
-    for (let ch of letters) { const i = letterIndex(ch); if (i >= 0) freq[i]++; }
-    for (let f of freq) {
-      if (f > 0) {
-        const p = f / totalLetters;
-        entropy -= p * Math.log2(p);
-      }
-    }
-
-    // Dictionary Match (kamus sederhana)
-    const dict = new Set([
-      'THE', 'AND', 'ING', 'ION', 'TIO', 'FOR', 'YOU', 'WAS', 'HIS', 'HER',
-      'THAT', 'WITH', 'HAVE', 'FROM', 'THIS', 'THEY', 'WILL', 'YOUR', 'WHAT',
-      'ARE', 'NOT', 'ONE', 'ALL', 'CAN', 'OUT', 'SHE', 'WHO', 'WHICH', 'THERE',
-      'WHEN', 'UPON', 'SAID', 'TIME', 'MORE', 'SUCH', 'MANY', 'MOST', 'SOME',
-      'WOULD', 'MAKE', 'LIKE', 'HIM', 'INTO', 'THAN', 'DOWN', 'ABOUT', 'KNOW',
-      'TAKE', 'JUST', 'LITTLE', 'GOOD', 'VERY', 'SEE', 'COME', 'COULD', 'NOW',
-      'THEN', 'MAY', 'FIRST', 'AFTER', 'WELL', 'WAY', 'GREAT', 'LONG', 'LIFE',
-      'DAY', 'MAN', 'WOMAN', 'CHILD', 'WORLD', 'STATE', 'COUNTRY', 'YEAR',
-      'PLACE', 'WORK', 'CASE', 'POINT', 'GROUP', 'NUMBER', 'SYSTEM', 'PROCESS',
-      'RESEARCH', 'UNIVERSITY', 'STUDENT', 'PEOPLE', 'HISTORY', 'GOVERNMENT'
-    ]);
-
-    // Gunakan plaintext untuk dictionary match
-    const plainWords = state.plaintext.split(/[\s,.;!?()"]+/).filter(w => w.length > 0);
-    let dictMatches = 0;
-    for (let w of plainWords) {
-      if (w.length > 1 && dict.has(w.toUpperCase())) dictMatches++;
-    }
-    const dictPct = plainWords.length ? (dictMatches / plainWords.length * 100) : 0;
-
-    // Confidence
-    const confidence = Math.min(100, Math.round(ioc * 100 + entropy * 5 + dictPct * 0.5));
-    const fitness = Math.round(ioc * 1000 + dictPct);
-
-    document.getElementById('sTotalChars').textContent = totalChars;
-    document.getElementById('sTotalLetters').textContent = totalLetters;
-    document.getElementById('sTotalWords').textContent = totalWords;
-    document.getElementById('sIoc').textContent = ioc.toFixed(4);
-    document.getElementById('sEntropy').textContent = entropy.toFixed(2);
-    document.getElementById('sFitness').textContent = fitness;
-    document.getElementById('sConfidence').textContent = clamp(confidence, 0, 100) + '%';
-    document.getElementById('sDictMatch').textContent = dictPct.toFixed(1) + '%';
-  }
-
-  function updateFreqTable() {
-    const text = state.ciphertext.replace(/[^A-Za-z]/g, '').toUpperCase();
-    const freq = Array(26).fill(0);
-    for (let ch of text) { const i = letterIndex(ch); if (i >= 0) freq[i]++; }
-    const maxFreq = Math.max(1, ...freq);
-    let html = '<table>';
-    for (let i = 0; i < 26; i++) {
-      const pct = (freq[i] / maxFreq * 100);
-      html += `<tr>
-        <td style="width:30px; font-weight:600; color:#7aa9f0;">${String.fromCharCode(65 + i)}</td>
-        <td style="width:50px;">${freq[i]}</td>
-        <td><div class="bar" style="width:${pct}%;"></div></td>
-      </tr>`;
-    }
-    html += '</table>';
-    document.getElementById('freqTable').innerHTML = html;
-  }
-
-  function updateNgrams() {
-    const text = state.ciphertext.replace(/[^A-Za-z]/g, '').toUpperCase();
-
-    function getNgram(n) {
-      const map = new Map();
-      if (text.length < n) return [];
-      for (let i = 0; i <= text.length - n; i++) {
-        const gram = text.slice(i, i + n);
-        map.set(gram, (map.get(gram) || 0) + 1);
-      }
-      return [...map.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8);
-    }
-
-    const bigrams = getNgram(2);
-    const trigrams = getNgram(3);
-    const quadgrams = getNgram(4);
-
-    document.getElementById('bigramList').innerHTML = bigrams.map(([k, v]) =>
-      `<span class="ngram-item">${k} <span class="count">${v}</span></span>`
-    ).join('') || '<span style="color:#6a8aaa;">(minimal 2 huruf)</span>';
-
-    document.getElementById('trigramList').innerHTML = trigrams.map(([k, v]) =>
-      `<span class="ngram-item">${k} <span class="count">${v}</span></span>`
-    ).join('') || '<span style="color:#6a8aaa;">(minimal 3 huruf)</span>';
-
-    document.getElementById('quadgramList').innerHTML = quadgrams.map(([k, v]) =>
-      `<span class="ngram-item">${k} <span class="count">${v}</span></span>`
-    ).join('') || '<span style="color:#6a8aaa;">(minimal 4 huruf)</span>';
-  }
-
-  // ================================================================
-  //  TAB
-  // ================================================================
-  function switchTab(id) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector(`.tab-btn[data-tab="${id}"]`).classList.add('active');
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    document.getElementById(`panel-${id}`).classList.add('active');
-  }
-
-  // ================================================================
-  //  AUTO CRACK
-  // ================================================================
-  function runAutoCrack() {
-    if (!state.ciphertext.trim()) { showToast('❌ Masukkan ciphertext terlebih dahulu'); return; }
-    setProgress(10);
-    showToast('⏳ Memulai Auto Crack...');
-
-    setTimeout(() => {
-      try {
-        const text = state.ciphertext.replace(/[^A-Za-z]/g, '').toUpperCase();
-        if (text.length < 10) { showToast('⚠️ Ciphertext terlalu pendek'); setProgress(0); return; }
-
-        // 1. Frekuensi huruf cipher
-        const freq = Array(26).fill(0);
-        for (let ch of text) { const i = letterIndex(ch); if (i >= 0) freq[i]++; }
-        const sorted = freq.map((f, i) => ({ ch: String.fromCharCode(65 + i), freq: f }))
-          .sort((a, b) => b.freq - a.freq);
-
-        // 2. ETAOIN
-        const etaoin = 'ETAOINSHRDLCUMWFGYPBVKJXQZ'.split('');
-
-        // 3. Buat mapping sementara
-        const newMap = Array(26).fill('');
-        const used = new Set();
-        let idx = 0;
-        for (let item of sorted) {
-          if (item.freq === 0) break;
-          const cipherIdx = letterIndex(item.ch);
-          if (cipherIdx >= 0 && idx < etaoin.length) {
-            if (!used.has(etaoin[idx])) {
-              newMap[cipherIdx] = etaoin[idx];
-              used.add(etaoin[idx]);
-              idx++;
+new Vue({
+    el: '#app',
+    data: {
+        cipher: '',
+        decoded: '',
+        mapping: {},
+        logs: [],
+        cracking: false,
+        shouldStop: false,
+        progress: 0,
+        iteration: 0,
+        bestScore: -Infinity,
+        bestMapping: {},
+        validWords: 0,
+        accuracy: 0,
+        mappedCount: 0,
+        recognized: [],
+        debounceTimer: null
+    },
+    computed: {
+        uniqueLetters() { return new Set(this.cipher.toUpperCase().match(/[A-Z]/g) || []).size; },
+        wordCount() { return (this.cipher.match(/\b\w+\b/g) || []).length; }
+    },
+    methods: {
+        log(msg, type = 'success') {
+            this.logs.push({msg, type});
+            if (this.logs.length > 100) this.logs.shift();
+        },
+        onInput() {
+            this.cipher = this.cipher.toUpperCase();
+            clearTimeout(this.debounceTimer);
+            this.debounceTimer = setTimeout(() => this.initMap(), 300);
+        },
+        initMap() {
+            const map = {};
+            for (let i = 65; i <= 90; i++) map[String.fromCharCode(i)] = '';
+            this.mapping = map;
+        },
+        decode(m) {
+            let r = '';
+            for (let c of this.cipher) {
+                if (/[A-Z]/.test(c) && m[c]) r += m[c];
+                else r += c;
             }
-          }
+            return r;
+        },
+        evaluate(m) {
+            const text = this.decode(m).toLowerCase();
+            const words = (text.match(/\b[a-z]+\b/g) || []).map(w => w.toLowerCase());
+            const valid = words.filter(w => w.length > 2 && WORDS.has(w));
+            const uniqueValid = [...new Set(valid)];
+            
+            let chi = 0;
+            const freq = {};
+            const cleanText = text.toUpperCase().replace(/[^A-Z]/g, '');
+            for (let c of cleanText) freq[c] = (freq[c] || 0) + 1;
+            const len = Math.max(cleanText.length, 1);
+            for (let c = 65; c <= 90; c++) {
+                const ch = String.fromCharCode(c);
+                const obs = freq[ch] || 0;
+                const exp = (EN_FREQ[ch] || 0) * len / 100;
+                if (exp > 0) chi += Math.pow(obs - exp, 2) / exp;
+            }
+            
+            return {valid: valid.length, unique: uniqueValid.length, chi: -chi, all: valid.length * 100 - chi};
+        },
+        getPattern(word) {
+            const m = {}; let p = '';
+            for (let c of word) {
+                if (!(c in m)) m[c] = String.fromCharCode(97 + Object.keys(m).length);
+                p += m[c];
+            }
+            return p;
+        },
+        async crack() {
+            this.cracking = true;
+            this.shouldStop = false;
+            this.logs = [];
+            this.iteration = 0;
+            this.bestScore = -Infinity;
+            
+            if (!this.cipher.trim()) {
+                this.log('❌ Cipher kosong!', 'error');
+                this.cracking = false;
+                return;
+            }
+
+            this.log('🔓 PROFESSIONAL CIPHER CRACKER STARTED', 'success');
+            this.log('Strategy: Pattern Matching + Constraint Satisfaction', 'success');
+            await this.sleep(200);
+
+            // Phase 1: Pattern Matching
+            this.log('Phase 1: Word Pattern Dictionary Attack...', 'warning');
+            const cipherWords = this.cipher.split(/\s+/).map(w => w.replace(/[^A-Z]/g, '')).filter(w => w.length > 2);
+            const patterns = {};
+            cipherWords.forEach(w => {
+                const p = this.getPattern(w);
+                if (!patterns[p]) patterns[p] = [];
+                patterns[p].push(w);
+            });
+
+            let constraintMap = {};
+            const patternMatches = {};
+            
+            for (let p in patterns) {
+                const candidates = WORD_LIST.filter(dw => this.getPattern(dw.toUpperCase()) === p);
+                if (candidates.length > 0) {
+                    patternMatches[p] = {cipher: patterns[p], plain: candidates};
+                }
+            }
+
+            // Try to find consistent mapping
+            const topPatterns = Object.entries(patternMatches)
+                .sort((a, b) => b[1].cipher.length - a[1].cipher.length)
+                .slice(0, 10);
+
+            for (let [pattern, {cipher: cWords, plain: pWords}] of topPatterns) {
+                const cWord = cWords[0].toUpperCase();
+                for (let pWord of pWords.slice(0, 3)) {
+                    const testMap = {...constraintMap};
+                    let valid = true;
+                    
+                    for (let i = 0; i < cWord.length; i++) {
+                        const c = cWord[i];
+                        const p = pWord[i].toUpperCase();
+                        
+                        if (testMap[c] && testMap[c] !== p) {
+                            valid = false;
+                            break;
+                        }
+                        testMap[c] = p;
+                    }
+                    
+                    if (valid) {
+                        constraintMap = testMap;
+                        this.log(`✓ Matched: ${cWord} → ${pWord.toUpperCase()}`, 'success');
+                        break;
+                    }
+                }
+            }
+
+            this.mapping = constraintMap;
+            this.applyMapping();
+            this.bestMapping = {...constraintMap};
+            this.bestScore = this.evaluate(constraintMap).all;
+            this.log(`Initial mapping score: ${this.bestScore.toFixed(0)}`, 'warning');
+            await this.sleep(500);
+
+            // Phase 2: Frequency Analysis for unmapped
+            this.log('Phase 2: Frequency-based refinement...', 'warning');
+            const unmapped = [];
+            for (let i = 65; i <= 90; i++) {
+                const c = String.fromCharCode(i);
+                if (!this.mapping[c]) unmapped.push(c);
+            }
+            
+            const freq = {};
+            for (let c of this.cipher.toUpperCase()) {
+                if (/[A-Z]/.test(c)) freq[c] = (freq[c] || 0) + 1;
+            }
+            const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+            const freqOrder = 'ETAOINSHRDLUCMFYWGPBVKXQJZ'.split('');
+
+            for (let c of unmapped) {
+                const idx = sorted.findIndex(([ch]) => ch === c);
+                if (idx >= 0 && idx < freqOrder.length) {
+                    this.mapping[c] = freqOrder[idx];
+                }
+            }
+            this.applyMapping();
+            await this.sleep(300);
+
+            // Phase 3: Hill Climbing
+            this.log('Phase 3: Hill climbing optimization...', 'warning');
+            let temp = 100;
+            let noImprove = 0;
+
+            while (temp > 1 && !this.shouldStop && noImprove < 100) {
+                this.iteration++;
+                this.progress = Math.min(99, (100 - temp));
+
+                const newMap = JSON.parse(JSON.stringify(this.mapping));
+                const keys = Object.keys(newMap).filter(k => newMap[k]);
+                
+                if (keys.length > 1) {
+                    const i = Math.floor(Math.random() * keys.length);
+                    const j = Math.floor(Math.random() * keys.length);
+                    [newMap[keys[i]], newMap[keys[j]]] = [newMap[keys[j]], newMap[keys[i]]];
+
+                    const newScore = this.evaluate(newMap).all;
+                    if (newScore > this.bestScore) {
+                        this.bestScore = newScore;
+                        this.mapping = newMap;
+                        this.bestMapping = newMap;
+                        noImprove = 0;
+                        this.log(`🎯 Better mapping found! Score: ${newScore.toFixed(0)}`, 'success');
+                    } else {
+                        noImprove++;
+                    }
+                }
+
+                temp *= 0.98;
+
+                if (this.iteration % 50 === 0) {
+                    this.applyMapping();
+                    await this.sleep(10);
+                    if (this.validWords > 20) {
+                        this.log(`🏆 SOLUTION FOUND! ${this.validWords} valid words!`, 'success');
+                        break;
+                    }
+                }
+            }
+
+            this.mapping = this.bestMapping;
+            this.applyMapping();
+            this.progress = 100;
+            
+            this.log(`✅ CRACK COMPLETE!`, 'success');
+            this.log(`Valid Words: ${this.validWords} | Accuracy: ${this.accuracy.toFixed(1)}%`, 'success');
+            this.cracking = false;
+        },
+        applyMapping() {
+            this.decoded = this.decode(this.mapping);
+            const ev = this.evaluate(this.mapping);
+            this.validWords = ev.unique;
+            const totalWords = Math.max((this.decoded.match(/\b[a-z]+\b/gi) || []).length, 1);
+            this.accuracy = (ev.unique / totalWords) * 100;
+            this.mappedCount = Object.values(this.mapping).filter(v => v).length;
+            
+            const text = this.decoded.toLowerCase();
+            const words = (text.match(/\b[a-z]+\b/g) || []).map(w => w.toLowerCase());
+            this.recognized = [...new Set(words.filter(w => w.length > 2 && WORDS.has(w)))];
+        },
+        stop() {
+            this.shouldStop = true;
+            this.log('🛑 Stopped', 'warning');
+        },
+        copy() {
+            navigator.clipboard.writeText(this.decoded);
+            this.log('📋 Copied!', 'success');
+        },
+        sleep(ms) {
+            return new Promise(r => setTimeout(r, ms));
         }
-
-        // 4. Isi sisanya
-        let remaining = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').filter(ch => !used.has(ch));
-        let ri = 0;
-        for (let i = 0; i < 26; i++) {
-          if (!newMap[i] && ri < remaining.length) {
-            newMap[i] = remaining[ri++];
-          }
-        }
-
-        // 5. Terapkan
-        state.mapping = newMap;
-        renderMapping();
-        pushHistory();
-        updatePlaintext();
-        updateAllStats();
-        setProgress(100);
-        showToast('✅ Auto Crack selesai!');
-        setTimeout(() => setProgress(0), 800);
-      } catch (e) {
-        showToast('❌ Error: ' + e.message);
-        setProgress(0);
-      }
-    }, 100);
-  }
-
-  // ================================================================
-  //  MAPPING UTILITY
-  // ================================================================
-  function resetMapping() {
-    for (let i = 0; i < 26; i++) state.mapping[i] = String.fromCharCode(65 + i);
-    state.locked.clear();
-    renderMapping();
-    pushHistory();
-    updatePlaintext();
-    updateAllStats();
-    showToast('🔄 Mapping direset');
-  }
-
-  function autoCompleteMapping() {
-    const used = new Set(state.mapping.filter(x => x));
-    let changed = 0;
-    for (let i = 0; i < 26; i++) {
-      if (!state.mapping[i]) {
-        for (let ch of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') {
-          if (!used.has(ch) && !state.locked.has(i)) {
-            state.mapping[i] = ch;
-            used.add(ch);
-            changed++;
-            break;
-          }
-        }
-      }
+    },
+    mounted() {
+        this.log('System ready', 'success');
+        this.initMap();
     }
-    if (changed > 0) {
-      renderMapping();
-      pushHistory();
-      updatePlaintext();
-      updateAllStats();
-      showToast(`✅ ${changed} huruf dilengkapi`);
-    } else {
-      showToast('✅ Semua huruf sudah terisi');
-    }
-  }
-
-  function showSwapDialog() {
-    const input1 = prompt('Masukkan huruf cipher (A-Z):', 'A');
-    if (!input1) return;
-    const input2 = prompt('Masukkan huruf cipher kedua (A-Z):', 'B');
-    if (!input2) return;
-    const idx1 = letterIndex(input1);
-    const idx2 = letterIndex(input2);
-    if (idx1 < 0 || idx2 < 0 || idx1 > 25 || idx2 > 25) {
-      showToast('❌ Masukkan huruf A-Z yang valid');
-      return;
-    }
-    if (state.locked.has(idx1) || state.locked.has(idx2)) {
-      showToast('❌ Salah satu huruf terkunci');
-      return;
-    }
-    [state.mapping[idx1], state.mapping[idx2]] = [state.mapping[idx2], state.mapping[idx1]];
-    renderMapping();
-    pushHistory();
-    updatePlaintext();
-    updateAllStats();
-    showToast(`⇄ Swap ${input1.toUpperCase()} ↔ ${input2.toUpperCase()}`);
-  }
-
-  // ================================================================
-  //  SAVE / LOAD / EXPORT
-  // ================================================================
-  function saveSession() {
-    const data = {
-      mapping: state.mapping,
-      ciphertext: state.ciphertext,
-      locked: [...state.locked]
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'cipher_session.json';
-    a.click();
-    showToast('💾 Session disimpan');
-  }
-
-  function loadSession(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      try {
-        const data = JSON.parse(ev.target.result);
-        if (data.mapping && Array.isArray(data.mapping) && data.mapping.length === 26) {
-          state.mapping = data.mapping;
-        }
-        if (data.ciphertext !== undefined) {
-          cipherInput.value = data.ciphertext;
-          state.ciphertext = data.ciphertext;
-        }
-        if (data.locked) {
-          state.locked = new Set(data.locked);
-        }
-        renderMapping();
-        pushHistory();
-        updatePlaintext();
-        updateAllStats();
-        document.getElementById('charCount').textContent = state.ciphertext.length + ' karakter';
-        showToast('✅ Session dimuat');
-      } catch (err) {
-        showToast('❌ File tidak valid');
-      }
-    };
-    reader.readAsText(file);
-    e.target.value = '';
-  }
-
-  function exportPlaintext() {
-    if (!state.plaintext) { showToast('❌ Tidak ada plaintext'); return; }
-    const blob = new Blob([state.plaintext], { type: 'text/plain' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'plaintext.txt';
-    a.click();
-    showToast('📤 Plaintext diekspor');
-  }
-
-  function exportMapping() {
-    const data = { mapping: state.mapping, locked: [...state.locked] };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'mapping.json';
-    a.click();
-    showToast('📤 Mapping diekspor');
-  }
-
-  function copyPlaintext() {
-    if (!state.plaintext) { showToast('❌ Tidak ada plaintext'); return; }
-    navigator.clipboard.writeText(state.plaintext)
-      .then(() => showToast('📋 Plaintext disalin'))
-      .catch(() => showToast('❌ Gagal salin'));
-  }
-
-  // ================================================================
-  //  KEYBOARD SHORTCUTS
-  // ================================================================
-  document.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
-      if (!e.shiftKey) { e.preventDefault(); undoMapping(); }
-    }
-    if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
-      e.preventDefault(); redoMapping();
-    }
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-      e.preventDefault(); runAutoCrack();
-    }
-  });
-
-  // ================================================================
-  //  INIT
-  // ================================================================
-  initMapping();
-  showToast('🔐 Selamat datang! Gunakan Ctrl+Enter untuk Auto Crack', 2500);
+});
 </script>
 </body>
 </html>
