@@ -3,309 +3,679 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔐 CryptPro Advanced - Substitution Cipher Analyzer</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>🔐 Substitution Cipher Analyzer Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, monospace; }
-        body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #e2e8f0; padding: 16px; min-height: 100vh; }
-        .container { max-width: 1800px; margin: 0 auto; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 100%);
+            color: #e2e8f0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            padding: 12px;
+            min-height: 100vh;
+        }
+        .container { max-width: 1600px; margin: 0 auto; }
         
-        .header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; background: linear-gradient(90deg, #1e293b, #334155); padding: 16px 20px; border-radius: 12px; border: 2px solid #3b82f6; margin-bottom: 16px; box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2); }
-        .logo { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-        .logo i { color: #3b82f6; text-shadow: 0 0 10px rgba(59, 130, 246, 0.8); }
-        .tools { display: flex; flex-wrap: wrap; gap: 6px; }
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #334155;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tools {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
         
-        .btn { background: #334155; border: 1px solid #475569; padding: 8px 14px; border-radius: 6px; color: #e2e8f0; cursor: pointer; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 5px; transition: 0.15s; font-weight: 500; }
-        .btn:hover { background: #475569; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+        .btn {
+            background: #334155;
+            border: 1px solid #475569;
+            padding: 8px 14px;
+            border-radius: 8px;
+            color: #e2e8f0;
+            cursor: pointer;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .btn:hover {
+            background: #475569;
+            border-color: #64748b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59,130,246,0.2);
+        }
         .btn-primary { background: #3b82f6; border-color: #3b82f6; }
         .btn-primary:hover { background: #2563eb; }
-        .btn-success { background: #22c55e; border-color: #22c55e; }
-        .btn-success:hover { background: #16a34a; }
+        .btn-success { background: #10b981; border-color: #10b981; }
+        .btn-success:hover { background: #059669; }
         .btn-danger { background: #ef4444; border-color: #ef4444; }
         .btn-danger:hover { background: #dc2626; }
         .btn-warning { background: #f59e0b; border-color: #f59e0b; color: #000; }
         .btn-warning:hover { background: #d97706; }
-        .btn-purple { background: #8b5cf6; border-color: #8b5cf6; }
-        .btn-purple:hover { background: #7c3aed; }
-        .btn-sm { padding: 4px 10px; font-size: 0.7rem; }
         
-        .tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 16px; border-bottom: 2px solid #334155; }
-        .tab-btn { background: transparent; border: none; padding: 10px 16px; color: #94a3b8; cursor: pointer; font-size: 0.9rem; border-bottom: 3px solid transparent; transition: 0.2s; font-weight: 600; }
-        .tab-btn:hover { color: #e2e8f0; }
-        .tab-btn.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+        /* GRID */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
         
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            color: #93bbfc;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 8px;
+        }
+        .card-title i { color: #3b82f6; }
         
-        .card { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-radius: 12px; padding: 16px; border: 1px solid #334155; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
-        .card-title { font-weight: 700; font-size: 1rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; color: #3b82f6; }
-        .card-title i { font-size: 1.2rem; }
+        textarea {
+            width: 100%;
+            padding: 12px;
+            background: #0f172a;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            resize: vertical;
+            min-height: 150px;
+            transition: border 0.2s;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 10px rgba(59,130,246,0.3);
+        }
         
-        textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #e2e8f0; font-size: 0.85rem; resize: vertical; min-height: 120px; font-family: 'Courier New', monospace; }
-        textarea:focus { outline: none; border-color: #3b82f6; box-shadow: inset 0 0 0 2px rgba(59, 130, 246, 0.1); }
+        .input-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        .input-row input {
+            flex: 1;
+            padding: 8px 12px;
+            background: #0f172a;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+        .input-row input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
         
-        .stats { display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 8px 0; font-size: 0.75rem; }
-        .stats span { background: #0f172a; padding: 4px 12px; border-radius: 16px; border: 1px solid #334155; display: flex; align-items: center; gap: 5px; }
-        .stats strong { color: #3b82f6; }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+            margin: 12px 0;
+        }
+        .stat-box {
+            background: #0f172a;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #334155;
+            font-size: 0.75rem;
+            text-align: center;
+        }
+        .stat-box strong { color: #3b82f6; display: block; font-size: 0.9rem; }
         
-        .mapping-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; max-height: 260px; overflow-y: auto; padding: 8px; background: #0f172a; border-radius: 8px; border: 1px solid #334155; }
-        .mapping-item { background: #1e293b; padding: 8px; border-radius: 6px; border: 1px solid #334155; display: flex; flex-direction: column; gap: 4px; align-items: center; }
-        .mapping-item span { font-weight: 700; color: #94a3b8; font-size: 0.7rem; text-align: center; }
-        .mapping-item input { background: transparent; border: none; border-bottom: 2px solid #475569; padding: 2px 4px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; color: #e2e8f0; text-align: center; width: 100%; max-width: 30px; }
-        .mapping-item input:focus { outline: none; border-bottom-color: #3b82f6; }
-        .mapping-item .lock { color: #22c55e; font-size: 0.6rem; }
+        .mapping-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            gap: 6px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .mapping-item {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+        .mapping-item:hover {
+            border-color: #3b82f6;
+            background: #1e3a5f;
+        }
+        .mapping-item input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #475569;
+            padding: 2px 4px;
+            text-align: center;
+            color: #e2e8f0;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        .mapping-item input:focus {
+            outline: none;
+            border-bottom-color: #10b981;
+        }
+        .mapping-cipher { font-weight: 700; color: #94a3b8; font-size: 0.75rem; }
+        .mapping-freq { font-size: 0.7rem; color: #64748b; }
         
-        .result-area { background: #0f172a; border-radius: 8px; padding: 12px; min-height: 120px; border: 1px solid #334155; white-space: pre-wrap; word-break: break-word; font-size: 0.85rem; line-height: 1.6; overflow-y: auto; max-height: 350px; font-family: 'Courier New', monospace; }
+        .result-area {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 12px;
+            min-height: 120px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .result-area.success { border-color: #10b981; }
+        .result-area.error { border-color: #ef4444; }
         
-        .freq-chart { display: flex; flex-direction: column; gap: 6px; }
-        .freq-row { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; }
-        .freq-label { width: 40px; font-weight: 700; color: #3b82f6; }
-        .freq-bar { flex: 1; height: 20px; background: linear-gradient(90deg, #3b82f6, #8b5cf6); border-radius: 3px; position: relative; min-width: 30px; }
-        .freq-bar span { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); font-weight: 600; font-size: 0.65rem; color: #fff; }
+        .freq-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .freq-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+        }
+        .freq-label { width: 30px; font-weight: 700; color: #93bbfc; }
+        .freq-bar {
+            flex: 1;
+            height: 18px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+        }
+        .freq-text {
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: white;
+        }
         
-        .badge { background: #1e3a5f; color: #93bbfc; padding: 3px 10px; border-radius: 16px; font-size: 0.65rem; border: 1px solid #1e3a5f; display: inline-block; margin: 2px; }
-        .badge-success { background: #1d4d2d; color: #4ade80; border-color: #1d4d2d; }
-        .badge-warning { background: #5d3a0a; color: #fbbf24; border-color: #5d3a0a; }
-        .badge-danger { background: #5d2525; color: #f87171; border-color: #5d2525; }
+        .bigram-grid, .trigram-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 6px;
+        }
+        .ngram-item {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 6px;
+            text-align: center;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .ngram-item:hover {
+            border-color: #3b82f6;
+            background: #1e3a5f;
+        }
+        .ngram-text { font-weight: 700; color: #e2e8f0; }
+        .ngram-count { color: #64748b; font-size: 0.7rem; }
         
-        .progress-bar { width: 100%; height: 6px; background: #334155; border-radius: 3px; overflow: hidden; margin: 6px 0; }
-        .progress-bar .fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #8b5cf6); border-radius: 3px; transition: width 0.3s; box-shadow: 0 0 10px rgba(59, 130, 246, 0.6); }
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #334155;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #10b981);
+            transition: width 0.3s;
+            border-radius: 2px;
+        }
         
-        .highlight { background: #eab30833; padding: 0 3px; border-radius: 3px; }
-        .word-match { background: #22c55e33; padding: 0 3px; border-radius: 3px; color: #4ade80; }
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #334155;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        .tab {
+            padding: 6px 12px;
+            background: transparent;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+        }
+        .tab:hover { color: #93bbfc; }
+        .tab.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
         
-        .dropzone { border: 2px dashed #334155; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 16px; background: linear-gradient(135deg, #1e293b, #0f172a); cursor: pointer; transition: 0.2s; }
-        .dropzone:hover, .dropzone.dragging { border-color: #3b82f6; background: linear-gradient(135deg, #1e3a5f, #0f172a); }
-        .dropzone i { font-size: 2rem; color: #3b82f6; margin-bottom: 8px; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
         
-        .control-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
-        .algorithm-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin: 8px 0; }
-        .algo-btn { padding: 8px 12px; font-size: 0.75rem; text-align: center; }
+        .word-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .word-item {
+            background: #0f172a;
+            padding: 4px 10px;
+            border-radius: 16px;
+            border: 1px solid #334155;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .word-item:hover {
+            border-color: #3b82f6;
+            background: #1e3a5f;
+        }
+        .word-item.matched {
+            border-color: #10b981;
+            background: #064e3b;
+            color: #86efac;
+        }
         
-        .score-box { background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155; text-align: center; margin: 6px 0; }
-        .score-value { font-size: 1.4rem; font-weight: 700; color: #3b82f6; }
-        .score-label { font-size: 0.7rem; color: #94a3b8; margin-top: 4px; }
+        .badge {
+            display: inline-block;
+            background: #1e3a5f;
+            color: #93bbfc;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            border: 1px solid #1e3a5f;
+            margin: 2px;
+        }
         
-        .footer-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-top: 16px; background: #1e293b; padding: 12px 16px; border-radius: 10px; border: 1px solid #334155; font-size: 0.75rem; }
-        .stat-item { display: flex; flex-direction: column; gap: 3px; }
-        .stat-label { color: #94a3b8; }
-        .stat-value { color: #3b82f6; font-weight: 700; font-size: 1rem; }
+        .dropzone {
+            border: 2px dashed #334155;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            background: #1e293b;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 16px;
+        }
+        .dropzone:hover, .dropzone.hover {
+            border-color: #3b82f6;
+            background: #0f172a;
+        }
+        .dropzone i { font-size: 2rem; color: #64748b; margin-bottom: 8px; }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000; align-items: center; justify-content: center; }
-        .modal.show { display: flex; }
-        .modal-content { background: #1e293b; border: 2px solid #3b82f6; border-radius: 12px; padding: 20px; max-width: 600px; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8); }
-        .modal-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; color: #3b82f6; display: flex; align-items: center; gap: 8px; }
-        .modal-close { float: right; font-size: 1.5rem; cursor: pointer; color: #94a3b8; border: none; background: none; }
-        .modal-close:hover { color: #ef4444; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
         
-        .loading { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; margin: 0 3px; animation: pulse 1.4s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        .highlight { background: rgba(59, 130, 246, 0.3); padding: 1px 3px; border-radius: 2px; }
+        .match { background: rgba(16, 185, 129, 0.3); color: #86efac; }
+        .error-text { color: #fca5a5; }
         
-        .ngram-display { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 6px; }
-        .ngram-item { background: #0f172a; padding: 6px; border-radius: 6px; border: 1px solid #334155; text-align: center; font-size: 0.7rem; font-weight: 600; }
-        .ngram-item .gram { color: #3b82f6; font-size: 0.8rem; }
-        .ngram-item .count { color: #94a3b8; font-size: 0.65rem; }
+        @media (max-width: 1024px) {
+            .grid-3 { grid-template-columns: 1fr 1fr; }
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .grid-3, .grid-2 { grid-template-columns: 1fr; }
+            .tools { flex-direction: column; }
+            .btn { font-size: 0.7rem; padding: 6px 10px; }
+        }
         
-        @media (max-width: 1200px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
-        @media (max-width: 768px) { .grid-3, .grid-2 { grid-template-columns: 1fr; } .mapping-grid { grid-template-columns: repeat(6, 1fr); } .header { flex-direction: column; align-items: flex-start; } .tools { width: 100%; } }
+        .loading { animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
         
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0f172a; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .solution-item {
+            background: #0f172a;
+            border: 1px solid #334155;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .solution-item:hover {
+            border-color: #3b82f6;
+            background: #1e3a5f;
+        }
+        .solution-cipher { font-weight: 700; color: #93bbfc; }
+        .solution-plain { color: #10b981; }
     </style>
 </head>
 <body>
 <div class="container" id="app">
     <!-- HEADER -->
-    <header class="header">
-        <div class="logo">
-            <i class="fas fa-lock"></i> CryptPro
-            <span style="color: #3b82f6; font-size: 0.8rem; margin-left: 8px; opacity: 0.8;">Advanced v2.0</span>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-lock"></i>
+                Cipher<span style="color:#3b82f6;">Analyzer</span>
+            </div>
+            <div class="tools">
+                <button class="btn" @click="undo" title="Undo (Ctrl+Z)">
+                    <i class="fas fa-undo"></i> Undo
+                </button>
+                <button class="btn" @click="redo" title="Redo (Ctrl+Y)">
+                    <i class="fas fa-redo"></i> Redo
+                </button>
+                <button class="btn btn-warning" @click="clearAll" title="Reset semua">
+                    <i class="fas fa-trash"></i> Bersihkan
+                </button>
+                <button class="btn btn-success" @click="autoSolve" title="Crack otomatis">
+                    <i class="fas fa-crown"></i> Auto Crack
+                </button>
+                <button class="btn btn-primary" @click="exportTxt">
+                    <i class="fas fa-download"></i> TXT
+                </button>
+                <button class="btn btn-primary" @click="copyToClipboard">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            </div>
         </div>
-        <div class="tools">
-            <button class="btn" @click="undo"><i class="fas fa-undo-alt"></i> Undo</button>
-            <button class="btn" @click="redo"><i class="fas fa-redo-alt"></i> Redo</button>
-            <button class="btn btn-success" @click="smartCrack"><i class="fas fa-brain"></i> Smart Crack</button>
-            <button class="btn btn-primary" @click="exportTXT"><i class="fas fa-file-alt"></i> TXT</button>
-            <button class="btn btn-purple" @click="showStatsModal = true"><i class="fas fa-chart-pie"></i> Statistik</button>
-        </div>
-    </header>
+    </div>
 
-    <!-- DROP ZONE -->
-    <div class="dropzone" @dragover.prevent="dragState='over'" @dragleave="dragState=''" @drop.prevent="dropFile" :class="{dragging: dragState === 'over'}">
+    <!-- DROPZONE -->
+    <div class="dropzone" 
+         @dragover.prevent="dragover=true" 
+         @dragleave.prevent="dragover=false"
+         @drop.prevent="handleFileDrop"
+         :class="{hover: dragover}">
         <i class="fas fa-cloud-upload-alt"></i>
-        <p style="margin: 8px 0;"><strong>Drag & drop file .txt</strong> atau gunakan tombol di bawah</p>
-        <input type="file" accept=".txt,.json" style="display:none" ref="fileInput" @change="loadFile">
-        <button class="btn btn-primary btn-sm" @click.stop="$refs.fileInput.click()" style="margin-top: 8px;"><i class="fas fa-folder-open"></i> Pilih File</button>
+        <p><strong>Drag & drop</strong> file .txt atau <strong>klik untuk pilih</strong></p>
+        <input type="file" accept=".txt" ref="fileInput" @change="handleFileSelect" style="display:none">
+        <button class="btn" @click.stop="$refs.fileInput.click()" style="margin-top:8px;">
+            <i class="fas fa-folder-open"></i> Pilih File
+        </button>
     </div>
 
-    <!-- TABS -->
-    <div class="tabs">
-        <button class="tab-btn" :class="{active: activeTab === 'main'}" @click="activeTab = 'main'"><i class="fas fa-lock-open"></i> Analisis</button>
-        <button class="tab-btn" :class="{active: activeTab === 'samples'}" @click="activeTab = 'samples'"><i class="fas fa-book"></i> Contoh</button>
-        <button class="tab-btn" :class="{active: activeTab === 'tools'}" @click="activeTab = 'tools'"><i class="fas fa-toolbox"></i> Tools</button>
-    </div>
-
-    <!-- TAB: MAIN -->
-    <div v-show="activeTab === 'main'">
-        <div class="grid-2">
-            <div class="card">
-                <div class="card-title"><i class="fas fa-font"></i> Teks Terenkripsi</div>
-                <textarea v-model="cipherText" @input="onCipherChange" placeholder="Masukkan atau paste ciphertext di sini..."></textarea>
-                <div class="stats">
-                    <span><i class="fas fa-hashtag"></i> <strong>{{ cipherLength }}</strong> karakter</span>
-                    <span><i class="fas fa-cube"></i> <strong>{{ uniqueChars }}</strong> huruf unik</span>
-                    <span><i class="fas fa-percent"></i> <strong>{{ progress }}%</strong> mapped</span>
+    <!-- MAIN GRID -->
+    <div class="grid-2">
+        <!-- CIPHER INPUT -->
+        <div class="card">
+            <div class="card-title">
+                <i class="fas fa-lock"></i> Teks Sandi (Ciphertext)
+            </div>
+            <textarea v-model="cipherText" @input="updateCipher" placeholder="Masukkan teks sandi di sini..."></textarea>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <strong>{{ cipherText.length }}</strong>
+                    Karakter
                 </div>
-                <div class="progress-bar"><div class="fill" :style="{width: progress+'%'}"></div></div>
-                <div class="control-row">
-                    <button class="btn btn-warning" @click="autoGuess"><i class="fas fa-magic"></i> Auto Guess</button>
-                    <button class="btn" @click="analyzeFrequency"><i class="fas fa-chart-bar"></i> Frekuensi</button>
-                    <button class="btn" @click="analyzeNGrams"><i class="fas fa-layer-group"></i> N-Grams</button>
-                    <button class="btn btn-success" @click="smartCrack"><i class="fas fa-crown"></i> Crack!</button>
+                <div class="stat-box">
+                    <strong>{{ uniqueLetters }}</strong>
+                    Huruf Unik
+                </div>
+                <div class="stat-box">
+                    <strong>{{ wordCount }}</strong>
+                    Kata
+                </div>
+                <div class="stat-box">
+                    <strong>{{ mappingDone }}/{{ Object.keys(mapping).length }}</strong>
+                    Mapping
                 </div>
             </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" :style="{width: progress + '%'}"></div>
+            </div>
 
-            <div class="card">
-                <div class="card-title"><i class="fas fa-exchange-alt"></i> Substitution Mapping</div>
-                <div class="mapping-grid">
-                    <div v-for="(char, idx) in sortedChars" :key="idx" class="mapping-item">
-                        <span>{{ char }}</span>
-                        <input v-model="mapping[char]" @input="applyMapping" placeholder="?" maxlength="1" :disabled="isLocked(char)">
-                        <span v-if="isLocked(char)" class="lock"><i class="fas fa-lock"></i></span>
-                    </div>
-                </div>
-                <div class="control-row">
-                    <button class="btn btn-danger btn-sm" @click="resetMapping"><i class="fas fa-trash"></i> Reset</button>
-                    <button class="btn btn-primary btn-sm" @click="applyMapping"><i class="fas fa-play"></i> Terapkan</button>
-                    <button class="btn btn-purple btn-sm" @click="lockMapped"><i class="fas fa-lock"></i> Kunci</button>
-                </div>
+            <div style="margin-top: 12px;">
+                <button class="btn btn-primary" @click="analyzeFrequency" style="width:100%; margin-bottom:6px;">
+                    <i class="fas fa-chart-bar"></i> Analisis Frekuensi
+                </button>
+                <button class="btn" @click="analyzeBigram" style="width:100%; margin-bottom:6px;">
+                    <i class="fas fa-layer-group"></i> Bigram/Trigram
+                </button>
+                <button class="btn" @click="findPatterns" style="width:100%; margin-bottom:6px;">
+                    <i class="fas fa-search"></i> Cari Pola Kata
+                </button>
+                <button class="btn" @click="suggestMapping" style="width:100%;">
+                    <i class="fas fa-lightbulb"></i> Saran Mapping
+                </button>
             </div>
         </div>
 
-        <!-- RESULT -->
-        <div class="card" style="margin-top: 16px;">
-            <div class="card-title"><i class="fas fa-scroll"></i> Hasil Dekripsi</div>
-            <div class="result-area" v-html="decodedHTML || '<span style=\"opacity: 0.5;\">Hasil dekripsi akan tampil di sini...</span>'"></div>
-            <div class="control-row">
-                <button class="btn btn-primary btn-sm" @click="copyToClipboard"><i class="fas fa-copy"></i> Copy</button>
-                <button class="btn btn-sm" @click="decoded = ''"><i class="fas fa-eraser"></i> Clear</button>
+        <!-- RESULT OUTPUT -->
+        <div class="card">
+            <div class="card-title">
+                <i class="fas fa-unlock"></i> Hasil Dekripsi (Plaintext)
             </div>
-        </div>
-
-        <!-- SCORES -->
-        <div class="grid-3" style="margin-top: 16px;">
-            <div class="card">
-                <div class="card-title"><i class="fas fa-calculator"></i> Score Metrics</div>
-                <div class="score-box">
-                    <div class="score-value">{{ confidencePercent }}%</div>
-                    <div class="score-label">Confidence</div>
-                </div>
-                <div class="score-box">
-                    <div class="score-value">{{ validWords }}/{{ totalWords }}</div>
-                    <div class="score-label">Valid Words</div>
-                </div>
+            <div class="result-area" :class="{success: validWords > 3, error: validWords === 0}">
+{{ decodedText || 'Hasil dekripsi akan tampil di sini...' }}
             </div>
-            <div class="card">
-                <div class="card-title"><i class="fas fa-info-circle"></i> Detail</div>
-                <div style="font-size: 0.75rem; line-height: 2;">
-                    <div><strong>Mapped:</strong> {{ mappingCount }}/{{ uniqueChars }}</div>
-                    <div><strong>Bigram:</strong> {{ topBigrams }}</div>
-                    <div><strong>Trigram:</strong> {{ topTrigrams }}</div>
-                    <div><strong>Language:</strong> <span class="badge" :class="{'badge-success': confidencePercent > 60, 'badge-warning': confidencePercent > 30}">{{ detectedLanguage }}</span></div>
+            <div class="stats">
+                <div class="stat-box">
+                    <strong>{{ validWords }}</strong>
+                    Kata Valid
                 </div>
-            </div>
-            <div class="card">
-                <div class="card-title"><i class="fas fa-history"></i> Recent Actions</div>
-                <div style="font-size: 0.7rem; line-height: 1.8; max-height: 150px; overflow-y: auto;">
-                    <div v-for="(action, idx) in recentActions.slice(-6)" :key="idx" style="padding: 4px; border-bottom: 1px solid #334155;">
-                        {{ action }}
-                    </div>
-                    <div v-if="recentActions.length === 0" style="opacity: 0.5;">Belum ada aksi...</div>
+                <div class="stat-box">
+                    <strong>{{ Math.round(accuracy) }}%</strong>
+                    Akurasi
+                </div>
+                <div class="stat-box">
+                    <strong>{{ Object.keys(history).length }}</strong>
+                    Riwayat
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- TAB: SAMPLES -->
-    <div v-show="activeTab === 'samples'">
-        <div class="grid-2">
-            <div v-for="(sample, idx) in cipherSamples" :key="idx" class="card" style="cursor: pointer;" @click="loadSample(idx)">
-                <div class="card-title" style="margin-bottom: 8px;"><i class="fas fa-file-alt"></i> {{ sample.name }}</div>
-                <div style="font-size: 0.75rem; line-height: 1.6; color: #94a3b8; max-height: 80px; overflow: hidden;">{{ sample.ciphertext.substring(0, 120) }}...</div>
-                <button class="btn btn-primary btn-sm" style="margin-top: 8px; width: 100%;" @click.stop="loadSample(idx)"><i class="fas fa-download"></i> Load</button>
-            </div>
+    <!-- MAPPING GRID -->
+    <div class="card">
+        <div class="card-title">
+            <i class="fas fa-exchange-alt"></i> Substitusi Mapping (Cipher → Plaintext)
         </div>
-    </div>
-
-    <!-- TAB: TOOLS -->
-    <div v-show="activeTab === 'tools'">
-        <div class="grid-2">
-            <div class="card">
-                <div class="card-title"><i class="fas fa-chart-bar"></i> Frequency Analysis</div>
-                <div class="freq-chart">
-                    <div v-for="(item, idx) in topFreqChars.slice(0, 10)" :key="idx" class="freq-row">
-                        <div class="freq-label">{{ item.char }}</div>
-                        <div class="freq-bar" :style="{width: (item.percentage * 2) + '%'}">
-                            <span>{{ item.percentage }}%</span>
-                        </div>
-                        <div style="width: 40px; text-align: right;">{{ item.count }}x</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title"><i class="fas fa-layer-group"></i> N-Grams</div>
-                <div style="margin-bottom: 12px;">
-                    <strong style="font-size: 0.8rem; color: #e2e8f0;">Top Bigrams:</strong>
-                    <div class="ngram-display">
-                        <div v-for="(bg, idx) in topBigramsDetail.slice(0, 8)" :key="idx" class="ngram-item">
-                            <div class="gram">{{ bg.gram }}</div>
-                            <div class="count">{{ bg.count }}x</div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <strong style="font-size: 0.8rem; color: #e2e8f0;">Top Trigrams:</strong>
-                    <div class="ngram-display">
-                        <div v-for="(tg, idx) in topTrigramsDetail.slice(0, 8)" :key="idx" class="ngram-item">
-                            <div class="gram">{{ tg.gram }}</div>
-                            <div class="count">{{ tg.count }}x</div>
-                        </div>
-                    </div>
+        <div class="mapping-grid">
+            <div v-for="letter in sortedLetters" :key="letter" class="mapping-item">
+                <div class="mapping-cipher">{{ letter }}</div>
+                <input v-model="mapping[letter]" 
+                       @input="updateMapping"
+                       maxlength="1"
+                       placeholder="?"
+                       @keyup.backspace="mapping[letter] = ''">
+                <div class="mapping-freq" v-if="letterFreq[letter]">
+                    {{ letterFreq[letter] }}x
                 </div>
             </div>
         </div>
+        <div style="margin-top: 12px; display:flex; gap:6px; flex-wrap:wrap;">
+            <button class="btn btn-danger" @click="resetMapping">
+                <i class="fas fa-trash"></i> Reset Semua
+            </button>
+            <button class="btn btn-primary" @click="applyMapping">
+                <i class="fas fa-check"></i> Terapkan
+            </button>
+            <button class="btn btn-success" @click="autoSolve">
+                <i class="fas fa-crown"></i> Crack!
+            </button>
+            <button class="btn" @click="frequencyGuess">
+                <i class="fas fa-magic"></i> Tebak dari Frekuensi
+            </button>
+        </div>
     </div>
 
-    <!-- FOOTER -->
-    <div class="footer-stats">
-        <div class="stat-item"><div class="stat-label">Progress</div><div class="stat-value">{{ progress }}%</div></div>
-        <div class="stat-item"><div class="stat-label">Mapping</div><div class="stat-value">{{ mappingCount }}/{{ uniqueChars }}</div></div>
-        <div class="stat-item"><div class="stat-label">Valid Words</div><div class="stat-value">{{ validWords }}/{{ totalWords }}</div></div>
-        <div class="stat-item"><div class="stat-label">Confidence</div><div class="stat-value">{{ confidencePercent }}%</div></div>
-        <div class="stat-item"><div class="stat-label">Language</div><div class="stat-value">{{ detectedLanguage }}</div></div>
-    </div>
+    <!-- TABS ANALYSIS -->
+    <div class="card">
+        <div class="tabs">
+            <button class="tab" :class="{active: activeTab === 'freq'}" @click="activeTab = 'freq'">
+                <i class="fas fa-chart-bar"></i> Frekuensi
+            </button>
+            <button class="tab" :class="{active: activeTab === 'ngram'}" @click="activeTab = 'ngram'">
+                <i class="fas fa-layer-group"></i> N-Gram
+            </button>
+            <button class="tab" :class="{active: activeTab === 'words'}" @click="activeTab = 'words'">
+                <i class="fas fa-book"></i> Kata
+            </button>
+            <button class="tab" :class="{active: activeTab === 'solutions'}" @click="activeTab = 'solutions'">
+                <i class="fas fa-star"></i> Solusi
+            </button>
+        </div>
 
-    <!-- MODAL STATS -->
-    <div class="modal" :class="{show: showStatsModal}" @click="showStatsModal = false">
-        <div class="modal-content" @click.stop>
-            <button class="modal-close" @click="showStatsModal = false">&times;</button>
-            <div class="modal-title"><i class="fas fa-chart-pie"></i> Detailed Statistics</div>
-            <div style="font-size: 0.8rem; line-height: 2;">
-                <div><strong>Total Characters:</strong> {{ cipherLength }}</div>
-                <div><strong>Unique Characters:</strong> {{ uniqueChars }}</div>
-                <div><strong>Mapped Characters:</strong> {{ mappingCount }}</div>
-                <div><strong>Confidence:</strong> {{ confidencePercent }}%</div>
-                <div><strong>Valid Words:</strong> {{ validWords }} / {{ totalWords }}</div>
-                <div style="margin-top: 12px;"><strong>Frequency Distribution:</strong></div>
-                <div style="background: #0f172a; padding: 8px; border-radius: 6px; margin-top: 8px; max-height: 300px; overflow-y: auto;">
-                    <div v-for="item in allCharsFreq" :key="item.char" style="display: flex; justify-content: space-between; padding: 2px 0; border-bottom: 1px solid #334155;">
-                        <span><strong>{{ item.char }}:</strong></span>
-                        <span>{{ item.count }}x ({{ item.percentage }}%)</span>
+        <!-- FREQUENCY TAB -->
+        <div class="tab-content" :class="{active: activeTab === 'freq'}">
+            <div class="freq-chart">
+                <div v-for="(item, idx) in frequencyList" :key="idx" class="freq-item">
+                    <div class="freq-label">{{ item.letter }}</div>
+                    <div class="freq-bar">
+                        <div class="freq-text">{{ item.count }} ({{ item.percent }}%)</div>
+                        <div style="width:" :style="{width: item.percent + '%'}"></div>
                     </div>
                 </div>
+            </div>
+            <div style="margin-top: 12px; padding: 10px; background: #0f172a; border-radius: 6px; font-size: 0.8rem; border: 1px solid #334155;">
+                <strong>💡 Tip:</strong> Huruf paling sering dalam Bahasa Inggris adalah E, T, A, O, I, N. Cocokan dengan huruf sandi paling sering!
+            </div>
+        </div>
+
+        <!-- NGRAM TAB -->
+        <div class="tab-content" :class="{active: activeTab === 'ngram'}">
+            <div style="margin-bottom: 16px;">
+                <div class="card-title" style="margin: 0; border: none; font-size: 0.9rem; padding: 0 0 8px 0;">
+                    <i class="fas fa-arrow-right"></i> Bigram (2 huruf)
+                </div>
+                <div class="bigram-grid">
+                    <div v-for="(count, bigram) in bigramList" :key="bigram" class="ngram-item" @click="copToClip(bigram)">
+                        <div class="ngram-text">{{ bigram }}</div>
+                        <div class="ngram-count">{{ count }}x</div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="card-title" style="margin: 0; border: none; font-size: 0.9rem; padding: 0 0 8px 0;">
+                    <i class="fas fa-arrow-right"></i> Trigram (3 huruf)
+                </div>
+                <div class="trigram-grid">
+                    <div v-for="(count, trigram) in trigramList" :key="trigram" class="ngram-item" @click="copToClip(trigram)">
+                        <div class="ngram-text">{{ trigram }}</div>
+                        <div class="ngram-count">{{ count }}x</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WORDS TAB -->
+        <div class="tab-content" :class="{active: activeTab === 'words'}">
+            <div style="margin-bottom: 16px;">
+                <div class="card-title" style="margin: 0; border: none; font-size: 0.9rem; padding: 0 0 8px 0;">
+                    <i class="fas fa-check-circle"></i> Kata Terkenali ({{ validWords }})
+                </div>
+                <div class="word-list">
+                    <div v-for="word in recognizedWords" :key="word" class="word-item matched">
+                        {{ word }}
+                    </div>
+                </div>
+                <div v-if="recognizedWords.length === 0" style="color: #64748b; font-size: 0.85rem; margin-top: 8px;">
+                    Tidak ada kata terkenali. Perbaiki mapping untuk meningkatkan akurasi.
+                </div>
+            </div>
+            
+            <div>
+                <div class="card-title" style="margin: 0; border: none; font-size: 0.9rem; padding: 0 0 8px 0;">
+                    <i class="fas fa-question-circle"></i> Kata Tidak Terkenali
+                </div>
+                <div class="word-list">
+                    <div v-for="word in unknownWords.slice(0, 30)" :key="word" class="word-item">
+                        {{ word }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOLUTIONS TAB -->
+        <div class="tab-content" :class="{active: activeTab === 'solutions'}">
+            <div v-if="Object.keys(solutions).length > 0">
+                <p style="margin-bottom: 12px; font-size: 0.85rem; color: #64748b;">
+                    Pilih mapping yang benar:
+                </p>
+                <div class="solution-grid">
+                    <div v-for="(solution, idx) in solutions" :key="idx" class="solution-item" @click="applySolution(solution)">
+                        <div class="solution-cipher">{{ solution.cipher }}</div>
+                        <i class="fas fa-arrow-down" style="font-size: 0.7rem; color: #475569;"></i>
+                        <div class="solution-plain">{{ solution.plain }}</div>
+                    </div>
+                </div>
+            </div>
+            <div v-else style="color: #64748b; text-align: center; padding: 20px; font-size: 0.85rem;">
+                <i class="fas fa-info-circle"></i> Jalankan analisis untuk mendapat saran solusi
             </div>
         </div>
     </div>
@@ -313,431 +683,298 @@
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
 <script>
-// ============================================
-// ENGLISH FREQUENCY DATA
-// ============================================
-const ENGLISH_FREQ = {
-    'E': 11.1607, 'A': 8.4966, 'R': 7.5809, 'I': 7.2448, 'O': 7.1635,
-    'T': 6.9147, 'N': 6.7482, 'S': 6.3327, 'H': 6.0094, 'D': 4.2543,
-    'L': 4.0365, 'C': 2.7779, 'U': 2.7601, 'M': 2.4152, 'W': 2.3612,
-    'F': 2.2228, 'G': 2.0820, 'Y': 1.9740, 'P': 1.9133, 'B': 1.4697,
-    'V': 0.9769, 'K': 0.5731, 'J': 0.1965, 'X': 0.1508, 'Q': 0.0817, 'Z': 0.0722
+// Common English words dictionary
+const COMMON_WORDS = new Set([
+    'the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'i', 'it', 'for', 'not', 'on', 'with',
+    'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she',
+    'or', 'an', 'will', 'my', 'one', 'all', 'would', 'there', 'their', 'what', 'so', 'up', 'out', 'if',
+    'about', 'who', 'get', 'which', 'go', 'me', 'when', 'make', 'can', 'like', 'time', 'no', 'just', 'him',
+    'know', 'take', 'people', 'into', 'year', 'your', 'good', 'some', 'could', 'them', 'see', 'other', 'than',
+    'then', 'now', 'look', 'only', 'come', 'its', 'over', 'think', 'also', 'back', 'after', 'use', 'two',
+    'how', 'our', 'work', 'first', 'well', 'way', 'even', 'new', 'want', 'because', 'any', 'these', 'give',
+    'day', 'most', 'us', 'is', 'was', 'are', 'been', 'being', 'have', 'has', 'had', 'having', 'does', 'did',
+    'doing', 'would', 'could', 'should', 'may', 'might', 'must', 'can', 'will', 'shall', 'where', 'when',
+    'why', 'what', 'which', 'who', 'whom', 'whose', 'through', 'during', 'before', 'after', 'above', 'below',
+    'between', 'among', 'under', 'over', 'without', 'within', 'along', 'across', 'behind', 'beyond', 'beside',
+    'besides', 'around', 'about', 'near', 'off', 'down', 'up', 'in', 'out', 'on', 'at', 'by', 'to', 'from',
+    'with', 'than', 'as', 'like', 'if', 'unless', 'until', 'while', 'since', 'because', 'whereas', 'though',
+    'although', 'while', 'yet', 'nor', 'so', 'very', 'really', 'quite', 'rather', 'fairly', 'pretty',
+    'much', 'more', 'less', 'most', 'least', 'many', 'few', 'several', 'all', 'each', 'every', 'either',
+    'neither', 'both', 'other', 'another', 'such', 'same', 'different', 'particular', 'specific'
+]);
+
+// English letter frequency (%)
+const EN_FREQ = {
+    'E': 11.1607, 'T': 8.4966, 'A': 8.2497, 'O': 7.5106, 'I': 7.0966, 'N': 6.7483,
+    'S': 6.3279, 'H': 6.0948, 'R': 6.0027, 'D': 4.2543, 'L': 4.0365, 'C': 2.7797,
+    'U': 2.7601, 'M': 2.4152, 'W': 2.3612, 'F': 2.2228, 'G': 2.0820, 'Y': 1.9740,
+    'P': 1.9133, 'B': 1.4697, 'V': 0.9769, 'K': 0.5731, 'J': 0.1965, 'X': 0.1508, 'Q': 0.0995, 'Z': 0.0772
 };
 
-const COMMON_WORDS = [
-    'the','be','to','of','and','a','in','that','have','i','it','for','not','on','with',
-    'he','as','you','do','at','this','but','his','by','from','they','we','say','her','she',
-    'or','an','will','my','one','all','would','there','their','what','so','up','out','if',
-    'about','who','get','which','go','me','when','make','can','like','time','no','just',
-    'him','know','take','people','into','year','your','good','some','could','them','see',
-    'other','than','then','now','look','only','come','its','over','think','also','back',
-    'after','use','two','how','our','work','first','well','way','even','new','want','because',
-    'any','these','give','day','most','us','is','was','are','been','being','has','had',
-    'does','did','do','will','would','could','should','may','might','must','can','shall',
-    'there','their','they','which','would','could','should','people','about','other',
-    'world','house','water','light','thing','right','think','place','work','great',
-    'where','after','every','still','state','hand','life','part','long','time','day',
-    'way','man','good','new','said','some','them','then','than','when','more','very'
-];
-
-// ============================================
-// VUE APP
-// ============================================
 new Vue({
     el: '#app',
     data: {
-        cipherText: '',
+        cipherText: 'THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG',
+        decodedText: 'THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG',
         mapping: {},
-        decoded: '',
+        letterFreq: {},
+        frequencyList: [],
+        bigramList: {},
+        trigramList: {},
+        recognizedWords: [],
+        unknownWords: [],
+        validWords: 0,
         progress: 0,
+        accuracy: 0,
+        dragover: false,
+        activeTab: 'freq',
         history: [],
-        historyIndex: -1,
-        maxHistory: 50,
-        activeTab: 'main',
-        dragState: '',
-        showStatsModal: false,
-        lockedKeys: [],
-        recentActions: [],
-        
-        cipherSamples: [
-            { name: '📁 Cipher 01 - Contoh', ciphertext: `mxgwx puvrm boteo tvr modovunk uv vobtw vobtw um t ptdtctk eaxvndk puwwor cunl ftzuetw tvr doftdgthwo ahqoenm pad htwuvomo tdnumn ctktv mxqtvt.` },
-            { name: '📁 Cipher 02', ciphertext: `tve lescejtwnk ns tve brkbvwke nk tve bknaz vwygcgzgk pegib agb, snl bricr, cwie g ocwttelwko xwgynkx` },
-            { name: '📁 Cipher 03', ciphertext: `zw qwjc czwkw fbcwk fccwjynjp czw onwjjfvw in fkc wuwjc nj ofjpvfywlz` },
-            { name: '📁 Cipher 04', ciphertext: `jyeezyswtw au bzysrngsj dnvvtw fgrh trtesnp jszfj, stvnp etbngsj n "htnlts"` },
-            { name: '📁 Cipher 05', ciphertext: `hw kwsc hpllo pjy cbpjxmzs vhwj rzuzczji chwuw lspfwu nk vnbuhzl` },
-            { name: '📁 Cipher 06', ciphertext: `xbnvn dnvn gp mwfa hznwg tphft xbvpctb ma bnwz dbnf h dwfxnz xp yvnwxn` },
-            { name: '📁 Cipher 07', ciphertext: `icp gsuudqn vzuep udmudpdqn nid nuoqpyzufonczq zy icp cqqdu jdcql` },
-            { name: '📁 Cipher 08', ciphertext: `yshhvomba xiyb bamzs qsjossz jas jov xiwmzsb ib mf kxvtmbmzp avks` },
-            { name: '📁 Cipher 09', ciphertext: `vaf vyvof yg ilcth. yv yg geqqcgfm vc uf popdptmp tcv pdptmp` },
-            { name: '📁 Cipher 10', ciphertext: `dan vgqu nxhun vwhesajellu gf hf gpwf-hai nshyw hn ihun gj nef naldgewssw dao` }
-        ],
-        
-        topFreqChars: [],
-        topBigramsDetail: [],
-        topTrigramsDetail: []
+        solutions: [],
+        undoStack: [],
+        redoStack: []
     },
-    
     computed: {
-        cipherLength() { 
-            return this.cipherText ? this.cipherText.length : 0; 
+        uniqueLetters() {
+            return new Set(this.cipherText.toUpperCase().match(/[A-Z]/g) || []).size;
         },
-        
-        uniqueChars() {
-            if (!this.cipherText) return 0;
-            return new Set(this.cipherText.toUpperCase().replace(/[^A-Z]/g,'')).size;
+        wordCount() {
+            return (this.cipherText.match(/\b\w+\b/g) || []).length;
         },
-        
-        sortedChars() {
-            if (!this.cipherText) return [];
-            return Array.from(new Set(this.cipherText.toUpperCase().replace(/[^A-Z]/g,''))).sort();
-        },
-        
-        mappingCount() {
+        mappingDone() {
             return Object.values(this.mapping).filter(v => v && v.length > 0).length;
         },
-        
-        validWords() {
-            if (!this.decoded) return 0;
-            const words = this.decoded.split(/[\s,.;!?():\-"']+/).filter(w => w.length > 2);
-            return words.filter(w => COMMON_WORDS.includes(w.toLowerCase())).length;
-        },
-        
-        totalWords() {
-            if (!this.decoded) return 0;
-            return this.decoded.split(/[\s,.;!?():\-"']+/).filter(w => w.length > 2).length;
-        },
-        
-        confidencePercent() {
-            if (this.totalWords === 0) return 0;
-            return Math.min(100, Math.round((this.validWords / this.totalWords) * 100));
-        },
-        
-        detectedLanguage() {
-            const conf = this.confidencePercent;
-            if (conf >= 60) return '🇬🇧 English';
-            if (conf >= 30) return '🇬🇧 English (?)';
-            if (this.validWords > 0) return '📖 Unknown';
-            return '❓ Empty';
-        },
-        
-        decodedHTML() {
-            if (!this.decoded) return '';
-            let html = this.decoded;
-            const words = html.split(/(\s+)/);
-            html = words.map(w => {
-                const clean = w.replace(/[^a-zA-Z]/g,'');
-                if (clean.length > 2 && COMMON_WORDS.includes(clean.toLowerCase())) {
-                    return `<span class="word-match">${w}</span>`;
-                }
-                return w;
-            }).join('');
-            return html.replace(/\n/g, '<br>');
-        },
-        
-        allCharsFreq() {
-            if (!this.cipherText) return [];
-            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
-            const freq = {};
-            for (let c of text) freq[c] = (freq[c] || 0) + 1;
-            const total = text.length || 1;
-            return Object.entries(freq)
-                .map(([char, count]) => ({
-                    char,
-                    count,
-                    percentage: ((count / total) * 100).toFixed(1)
-                }))
-                .sort((a, b) => b.count - a.count);
-        },
-        
-        topBigrams() {
-            return this.topBigramsDetail.slice(0, 3).map(b => b.gram).join(', ') || '-';
-        },
-        
-        topTrigrams() {
-            return this.topTrigramsDetail.slice(0, 3).map(t => t.gram).join(', ') || '-';
+        sortedLetters() {
+            return Object.keys(this.mapping).sort().filter(k => /[A-Z]/.test(k));
         }
     },
-    
     watch: {
         cipherText() {
-            this.autoGenerateMapping();
-            this.applyMapping();
-            this.updateFrequencyAnalysis();
-            this.saveState();
+            this.updateAnalysis();
         }
     },
-    
     mounted() {
-        // Load sample pertama
-        this.loadSample(0);
-        // Restore saved mapping
-        const saved = localStorage.getItem('cipherMapping');
-        if (saved) {
-            try {
-                this.mapping = JSON.parse(saved);
-                this.applyMapping();
-            } catch(e) {}
-        }
-        this.addAction('Aplikasi siap');
+        this.initializeMapping();
+        this.updateAnalysis();
     },
-    
     methods: {
-        loadSample(idx) {
-            this.cipherText = this.cipherSamples[idx].ciphertext;
-            this.activeTab = 'main';
-            this.addAction(`Loaded: ${this.cipherSamples[idx].name}`);
+        initializeMapping() {
+            const letters = new Set(this.cipherText.toUpperCase().match(/[A-Z]/g) || []);
+            const mapping = {};
+            letters.forEach(letter => {
+                mapping[letter] = '';
+            });
+            this.mapping = mapping;
         },
-        
-        onCipherChange() {
-            this.autoGenerateMapping();
+        updateCipher() {
+            this.addToUndoStack();
+            this.initializeMapping();
+            this.updateAnalysis();
+        },
+        updateMapping() {
             this.applyMapping();
-            this.updateFrequencyAnalysis();
-            this.saveState();
         },
-        
-        autoGenerateMapping() {
-            const chars = [...new Set(this.cipherText.toUpperCase().replace(/[^A-Z]/g,''))];
-            const newMap = {};
-            for (let c of chars) {
-                newMap[c] = this.mapping[c] || '';
-            }
-            const sorted = {};
-            Object.keys(newMap).sort().forEach(k => sorted[k] = newMap[k]);
-            this.mapping = sorted;
-        },
-        
         applyMapping() {
-            if (!this.cipherText) {
-                this.decoded = '';
-                this.progress = 0;
-                return;
-            }
-            
             let result = '';
-            for (let ch of this.cipherText) {
-                const upper = ch.toUpperCase();
+            for (let char of this.cipherText) {
+                const upper = char.toUpperCase();
                 if (upper in this.mapping && this.mapping[upper]) {
                     const mapped = this.mapping[upper];
-                    result += (ch === ch.toLowerCase() ? mapped.toLowerCase() : mapped.toUpperCase());
+                    result += char === char.toUpperCase() ? mapped : mapped.toLowerCase();
                 } else {
-                    result += ch;
+                    result += char;
                 }
             }
-            this.decoded = result;
-            
-            const total = this.cipherText.replace(/[^a-zA-Z]/g,'').length || 1;
-            const mappedCount = result.replace(/[^a-zA-Z]/g,'').length;
-            this.progress = Math.min(100, Math.round((mappedCount / total) * 100));
-            
-            localStorage.setItem('cipherMapping', JSON.stringify(this.mapping));
-            this.updateFrequencyAnalysis();
+            this.decodedText = result;
+            this.analyzeResult();
         },
-        
-        updateFrequencyAnalysis() {
-            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
-            if (text.length === 0) return;
-            
-            // Frequency
-            const freq = {};
-            for (let c of text) freq[c] = (freq[c] || 0) + 1;
-            const total = text.length;
-            this.topFreqChars = Object.entries(freq)
-                .map(([char, count]) => ({
-                    char,
-                    count,
-                    percentage: ((count / total) * 100).toFixed(1)
-                }))
-                .sort((a, b) => b.count - a.count);
-            
-            // Bigrams
-            const bigrams = {};
-            for (let i = 0; i < text.length - 1; i++) {
-                const bg = text.substr(i, 2);
-                bigrams[bg] = (bigrams[bg] || 0) + 1;
-            }
-            this.topBigramsDetail = Object.entries(bigrams)
-                .map(([gram, count]) => ({ gram, count }))
-                .sort((a, b) => b.count - a.count)
-                .slice(0, 15);
-            
-            // Trigrams
-            const trigrams = {};
-            for (let i = 0; i < text.length - 2; i++) {
-                const tg = text.substr(i, 3);
-                trigrams[tg] = (trigrams[tg] || 0) + 1;
-            }
-            this.topTrigramsDetail = Object.entries(trigrams)
-                .map(([gram, count]) => ({ gram, count }))
-                .sort((a, b) => b.count - a.count)
-                .slice(0, 15);
-        },
-        
-        resetMapping() {
-            for (let k in this.mapping) this.mapping[k] = '';
-            this.lockedKeys = [];
+        updateAnalysis() {
+            this.analyzeFrequency();
+            this.analyzeBigram();
             this.applyMapping();
-            this.addAction('Reset mapping');
         },
-        
-        isLocked(key) {
-            return this.lockedKeys.includes(key);
-        },
-        
-        lockMapped() {
-            for (let k in this.mapping) {
-                if (this.mapping[k] && !this.lockedKeys.includes(k)) {
-                    this.lockedKeys.push(k);
-                }
-            }
-            this.addAction('Locked mapped chars');
-        },
-        
-        autoGuess() {
-            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
-            const freq = {};
-            for (let c of text) freq[c] = (freq[c] || 0) + 1;
-            const sorted = Object.keys(freq).sort((a,b) => freq[b]-freq[a]);
-            const englishOrder = Object.keys(ENGLISH_FREQ).sort((a,b) => ENGLISH_FREQ[b] - ENGLISH_FREQ[a]);
-            
-            for (let i = 0; i < Math.min(sorted.length, englishOrder.length); i++) {
-                if (!this.isLocked(sorted[i])) {
-                    this.mapping[sorted[i]] = englishOrder[i];
-                }
-            }
-            this.applyMapping();
-            this.addAction('Auto guess based on frequency');
-        },
-        
-        smartCrack() {
-            this.autoGuess();
-            
-            // Try to detect common words
-            const words = this.cipherText.split(/\s+/);
-            const threeWords = [...new Set(words.filter(w => w.length === 3 && /^[a-z]+$/.test(w)))];
-            
-            for (let target of ['THE','AND','YOU','WAS','FOR','ARE','BUT','NOT','HAD','ALL','CAN','HER','ONE','OUR','OUT']) {
-                for (let w of threeWords) {
-                    let possible = true;
-                    const testMap = {};
-                    for (let i = 0; i < 3; i++) {
-                        const c = w[i].toUpperCase();
-                        const p = target[i];
-                        if (this.mapping[c] && this.mapping[c] !== p) { possible = false; break; }
-                        testMap[c] = p;
-                    }
-                    if (possible) {
-                        for (let k in testMap) {
-                            if (!this.isLocked(k)) {
-                                this.mapping[k] = testMap[k];
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-            
-            this.applyMapping();
-            this.addAction('Smart crack completed - ' + this.confidencePercent + '% confidence');
-        },
-        
         analyzeFrequency() {
-            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
+            const text = this.cipherText.toUpperCase();
             const freq = {};
-            for (let c of text) freq[c] = (freq[c] || 0) + 1;
-            const sorted = Object.entries(freq).sort((a,b) => b[1]-a[1]);
-            const total = text.length || 1;
+            let total = 0;
+
+            for (let char of text) {
+                if (/[A-Z]/.test(char)) {
+                    freq[char] = (freq[char] || 0) + 1;
+                    total++;
+                }
+            }
+
+            this.letterFreq = freq;
+            this.frequencyList = Object.entries(freq)
+                .sort((a, b) => b[1] - a[1])
+                .map(([letter, count]) => ({
+                    letter,
+                    count,
+                    percent: ((count / total) * 100).toFixed(1)
+                }));
+        },
+        analyzeBigram() {
+            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g, '');
+            const bigrams = {};
+            const trigrams = {};
+
+            for (let i = 0; i < text.length - 1; i++) {
+                const bi = text.substr(i, 2);
+                bigrams[bi] = (bigrams[bi] || 0) + 1;
+            }
+
+            for (let i = 0; i < text.length - 2; i++) {
+                const tri = text.substr(i, 3);
+                trigrams[tri] = (trigrams[tri] || 0) + 1;
+            }
+
+            const sortedBi = Object.entries(bigrams)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 15);
+            const sortedTri = Object.entries(trigrams)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 15);
+
+            this.bigramList = Object.fromEntries(sortedBi);
+            this.trigramList = Object.fromEntries(sortedTri);
+        },
+        analyzeResult() {
+            const words = (this.decodedText.match(/\b[a-z]+\b/gi) || []).map(w => w.toLowerCase());
+            const recognized = [];
+            const unknown = [];
+
+            words.forEach(word => {
+                if (word.length > 2 && COMMON_WORDS.has(word)) {
+                    if (!recognized.includes(word)) recognized.push(word);
+                } else {
+                    if (!unknown.includes(word)) unknown.push(word);
+                }
+            });
+
+            this.recognizedWords = recognized.sort();
+            this.unknownWords = unknown.sort();
+            this.validWords = recognized.length;
             
-            let msg = '📊 FREQUENCY ANALYSIS\n' + '='.repeat(50) + '\n\n';
-            msg += sorted.map(([k,v], i) => {
-                const pct = ((v/total)*100).toFixed(1);
-                const suggestions = Object.keys(ENGLISH_FREQ)
-                    .sort((a,b) => ENGLISH_FREQ[b] - ENGLISH_FREQ[a])
-                    .slice(i, i+3)
-                    .join(', ');
-                return `${i+1}. ${k}: ${v} (${pct}%) → Try: ${suggestions}`;
-            }).join('\n');
-            alert(msg);
+            const mappedChars = Object.values(this.mapping).filter(v => v).length;
+            this.progress = (mappedChars / Object.keys(this.mapping).length) * 100;
+            this.accuracy = (this.validWords / Math.max(words.length, 1)) * 100;
         },
-        
-        analyzeNGrams() {
-            const bigramMsg = this.topBigramsDetail.map((b, i) => `${i+1}. ${b.gram}: ${b.count}x`).join('\n');
-            const trigramMsg = this.topTrigramsDetail.map((t, i) => `${i+1}. ${t.gram}: ${t.count}x`).join('\n');
-            alert(`📊 N-GRAM ANALYSIS\n\n📌 TOP BIGRAMS:\n${bigramMsg || 'Tidak ada'}\n\n📌 TOP TRIGRAMS:\n${trigramMsg || 'Tidak ada'}`);
+        findPatterns() {
+            alert('🔍 Pola Kata:\n\nCari kata dengan pola berulang (misal: HELLO = HALLO atau HELLO), ini bisa memberi petunjuk pemetaan.');
         },
-        
-        copyToClipboard() {
-            navigator.clipboard.writeText(this.decoded);
-            alert('✅ Copied to clipboard!');
+        frequencyGuess() {
+            const freq = this.frequencyList.slice(0, 6);
+            const commonLetters = ['E', 'T', 'A', 'O', 'I', 'N'];
+            
+            freq.forEach((item, idx) => {
+                this.mapping[item.letter] = commonLetters[idx];
+            });
+            
+            this.applyMapping();
         },
-        
-        exportTXT() {
-            if (!this.decoded) { alert('Tidak ada hasil untuk diexport!'); return; }
-            const blob = new Blob([this.decoded], {type:'text/plain'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'decrypted.txt';
-            a.click();
+        suggestMapping() {
+            const suggestions = [];
+            this.frequencyList.slice(0, 10).forEach((item, idx) => {
+                const commonLetters = ['E', 'T', 'A', 'O', 'I', 'N', 'S', 'H', 'R', 'D'];
+                suggestions.push(`${item.letter} → ${commonLetters[idx]} (${item.percent}%)`);
+            });
+            alert('💡 Saran Mapping Berdasarkan Frekuensi:\n\n' + suggestions.join('\n'));
         },
-        
-        dropFile(e) {
-            this.dragState = '';
-            const file = e.dataTransfer.files[0];
-            if (file && (file.type === 'text/plain' || file.name.endsWith('.txt'))) {
-                const reader = new FileReader();
-                reader.onload = (ev) => { this.cipherText = ev.target.result; };
-                reader.readAsText(file);
-                this.addAction('Loaded file: ' + file.name);
+        autoSolve() {
+            this.addToUndoStack();
+            
+            // Auto-crack menggunakan frequency analysis
+            const freq = this.frequencyList.slice(0, 15).map(f => f.letter);
+            const common = ['E', 'T', 'A', 'O', 'I', 'N', 'S', 'H', 'R', 'D', 'L', 'U', 'C', 'M', 'W'];
+            
+            freq.forEach((letter, idx) => {
+                if (idx < common.length) {
+                    this.mapping[letter] = common[idx];
+                }
+            });
+            
+            this.applyMapping();
+        },
+        resetMapping() {
+            this.addToUndoStack();
+            for (let key in this.mapping) {
+                this.mapping[key] = '';
+            }
+            this.applyMapping();
+        },
+        clearAll() {
+            if (confirm('🗑️ Bersihkan semua data? (tidak bisa diurungkan)')) {
+                this.cipherText = '';
+                this.decodedText = '';
+                this.resetMapping();
+                this.undoStack = [];
+                this.redoStack = [];
+                this.solutions = [];
             }
         },
-        
-        loadFile(e) {
+        exportTxt() {
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.decodedText));
+            element.setAttribute('download', 'plaintext.txt');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        },
+        copyToClipboard() {
+            navigator.clipboard.writeText(this.decodedText);
+            alert('✅ Teks disalin ke clipboard!');
+        },
+        handleFileDrop(e) {
+            this.dragover = false;
+            const file = e.dataTransfer.files[0];
+            if (file && file.type === 'text/plain') {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    this.cipherText = ev.target.result;
+                };
+                reader.readAsText(file);
+            }
+        },
+        handleFileSelect(e) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = (ev) => { this.cipherText = ev.target.result; };
+                reader.onload = (ev) => {
+                    this.cipherText = ev.target.result;
+                };
                 reader.readAsText(file);
-                this.addAction('Loaded file: ' + file.name);
             }
         },
-        
-        saveState() {
-            const state = JSON.stringify({ cipherText: this.cipherText, mapping: this.mapping });
-            if (this.historyIndex < this.history.length - 1) {
-                this.history = this.history.slice(0, this.historyIndex + 1);
-            }
-            if (this.history.length === 0 || this.history[this.history.length - 1] !== state) {
-                this.history.push(state);
-                if (this.history.length > this.maxHistory) this.history.shift();
-                this.historyIndex = this.history.length - 1;
-            }
+        addToUndoStack() {
+            this.undoStack.push(JSON.stringify({mapping: this.mapping, cipher: this.cipherText}));
+            this.redoStack = [];
         },
-        
         undo() {
-            if (this.historyIndex > 0) {
-                this.historyIndex--;
-                this.restoreState(this.history[this.historyIndex]);
-                this.addAction('Undo');
+            if (this.undoStack.length > 0) {
+                const current = JSON.stringify({mapping: this.mapping, cipher: this.cipherText});
+                this.redoStack.push(current);
+                const prev = JSON.parse(this.undoStack.pop());
+                this.mapping = prev.mapping;
+                this.cipherText = prev.cipher;
+                this.applyMapping();
             }
         },
-        
         redo() {
-            if (this.historyIndex < this.history.length - 1) {
-                this.historyIndex++;
-                this.restoreState(this.history[this.historyIndex]);
-                this.addAction('Redo');
+            if (this.redoStack.length > 0) {
+                this.undoStack.push(JSON.stringify({mapping: this.mapping, cipher: this.cipherText}));
+                const next = JSON.parse(this.redoStack.pop());
+                this.mapping = next.mapping;
+                this.cipherText = next.cipher;
+                this.applyMapping();
             }
         },
-        
-        restoreState(state) {
-            const parsed = JSON.parse(state);
-            this.cipherText = parsed.cipherText;
-            this.mapping = parsed.mapping;
-            this.applyMapping();
+        copToClip(text) {
+            navigator.clipboard.writeText(text);
         },
-        
-        addAction(action) {
-            this.recentActions.push(`[${new Date().toLocaleTimeString()}] ${action}`);
-            if (this.recentActions.length > 20) this.recentActions.shift();
+        applySolution(solution) {
+            // Placeholder for applying solution
+            alert('Mapping: ' + solution.cipher + ' → ' + solution.plain);
         }
     }
 });
