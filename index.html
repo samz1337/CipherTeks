@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Kriptografi Canggih · Auto Crack</title>
+    <!-- Font & Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            transition: background 0.2s, color 0.15s, border-color 0.2s;
+        }
+
+        body {
+            background: #f4f7fc;
+            color: #1e293b;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        body.dark {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 24px;
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(8px);
+            padding: 16px 24px;
+            border-radius: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        body.dark .header {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .logo i {
+            color: #3b82f6;
+        }
+
+        .tools {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            background: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            border: 1px solid #e2e8f0;
+            color: #1e293b;
+            transition: 0.15s;
+        }
+        .btn i {
+            font-size: 1rem;
+        }
+        .btn:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+            transform: scale(0.97);
+        }
+        .btn-primary {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+        .btn-success {
+            background: #22c55e;
+            border-color: #22c55e;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #16a34a;
+        }
+        .btn-danger {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+        }
+        body.dark .btn {
+            background: #1e293b;
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+        body.dark .btn:hover {
+            background: #334155;
+        }
+        body.dark .btn-outline {
+            background: transparent;
+            border-color: #475569;
+        }
+
+        /* DROP ZONE */
+        .dropzone {
+            border: 2px dashed #cbd5e1;
+            border-radius: 32px;
+            padding: 28px 16px;
+            text-align: center;
+            margin-bottom: 24px;
+            background: rgba(255,255,255,0.3);
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .dropzone.dragover {
+            border-color: #3b82f6;
+            background: rgba(59,130,246,0.05);
+        }
+        body.dark .dropzone {
+            border-color: #334155;
+            background: #1e293b40;
+        }
+        .dropzone i {
+            font-size: 2.8rem;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        /* MAIN LAYOUT */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 28px;
+            padding: 20px 22px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.02);
+            border: 1px solid #e9edf2;
+        }
+        body.dark .card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card-title i {
+            color: #3b82f6;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 180px;
+            background: #fafcff;
+            color: #0f172a;
+        }
+        body.dark textarea {
+            background: #0f172a;
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+        textarea:focus {
+            outline: 2px solid #3b82f6;
+            outline-offset: 1px;
+        }
+
+        .mapping-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 320px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+        .mapping-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 12px;
+            border-radius: 40px;
+            background: #f1f5f9;
+        }
+        body.dark .mapping-row {
+            background: #2d3a4f;
+        }
+        .mapping-row span {
+            font-weight: 600;
+            min-width: 24px;
+        }
+        .mapping-row input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #94a3b8;
+            padding: 4px 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            color: inherit;
+        }
+        body.dark .mapping-row input {
+            border-bottom-color: #64748b;
+        }
+        .mapping-row input:focus {
+            outline: none;
+            border-bottom-color: #3b82f6;
+        }
+
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 24px;
+            margin: 16px 0 8px;
+            font-size: 0.9rem;
+        }
+        .stats span {
+            background: #f1f5f9;
+            padding: 4px 14px;
+            border-radius: 30px;
+        }
+        body.dark .stats span {
+            background: #2d3a4f;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin: 12px 0 6px;
+            overflow: hidden;
+        }
+        .progress-bar .fill {
+            height: 100%;
+            width: 0%;
+            background: #3b82f6;
+            border-radius: 10px;
+            transition: width 0.25s;
+        }
+
+        .flex-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .badge {
+            background: #dbeafe;
+            color: #1e4b8a;
+            padding: 2px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+        }
+        body.dark .badge {
+            background: #1e3a5f;
+            color: #93bbfc;
+        }
+
+        .result-area {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 14px 16px;
+            min-height: 100px;
+            border: 1px solid #e2e8f0;
+            white-space: pre-wrap;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        body.dark .result-area {
+            background: #0f172a;
+            border-color: #334155;
+        }
+
+        @media (max-width: 860px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo"><i class="fas fa-robot"></i> Crypt<span style="color:#3b82f6;">AI</span></div>
+        <div class="tools">
+            <button class="btn" @click="undo"><i class="fas fa-undo-alt"></i> Undo</button>
+            <button class="btn" @click="redo"><i class="fas fa-redo-alt"></i> Redo</button>
+            <button class="btn" @click="toggleDark"><i class="fas fa-moon"></i> <span v-if="dark">Terang</span><span v-else>Gelap</span></button>
+            <button class="btn btn-success" @click="autoCrack"><i class="fas fa-bolt"></i> One-click Crack</button>
+            <button class="btn btn-primary" @click="exportTXT"><i class="fas fa-file-alt"></i> TXT</button>
+            <button class="btn btn-primary" @click="exportPDF"><i class="fas fa-file-pdf"></i> PDF</button>
+        </div>
+    </header>
+
+    <!-- DROP ZONE -->
+    <div class="dropzone" @dragover.prevent="dragover=true" @dragleave="dragover=false" @drop.prevent="dropFile">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <p><strong>Drag & drop</strong> file .txt di sini atau klik untuk memilih</p>
+        <input type="file" accept=".txt" style="display:none" ref="fileInput" @change="loadFile">
+        <button class="btn btn-outline" @click.stop="$refs.fileInput.click()" style="margin-top:8px;"><i class="fas fa-folder-open"></i> Pilih file</button>
+    </div>
+
+    <!-- GRID UTAMA -->
+    <div class="grid-2">
+        <!-- KOLOM KIRI: TEKS & STATS -->
+        <div class="card">
+            <div class="card-title"><i class="fas fa-font"></i> Teks Sandi</div>
+            <textarea v-model="cipherText" placeholder="Masukkan teks terenkripsi..."></textarea>
+            <div class="stats">
+                <span><i class="far fa-file"></i> {{ cipherText.length }} karakter</span>
+                <span><i class="fas fa-hashtag"></i> {{ uniqueChars }} unik</span>
+                <span><i class="fas fa-chart-simple"></i> <span @click="analyzeFreq" style="cursor:pointer;text-decoration:underline;">Analisis Freq</span></span>
+            </div>
+            <div class="progress-bar"><div class="fill" :style="{width: progress+'%'}"></div></div>
+            <div class="flex-wrap">
+                <button class="btn" @click="analyzeFreq"><i class="fas fa-chart-bar"></i> Frequency</button>
+                <button class="btn" @click="autoGuessMapping"><i class="fas fa-magic"></i> Auto Guess</button>
+                <button class="btn" @click="dictionaryMatch"><i class="fas fa-book"></i> Dictionary</button>
+                <button class="btn" @click="bigramTrigram"><i class="fas fa-layer-group"></i> Bigram/Trigram</button>
+                <button class="btn" @click="patternSearch"><i class="fas fa-search"></i> Pola (_he__)</button>
+            </div>
+            <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+                <span class="badge"><i class="far fa-save"></i> Auto-save mapping</span>
+                <span class="badge"><i class="fas fa-rotate"></i> Undo/Redo</span>
+            </div>
+        </div>
+
+        <!-- KOLOM KANAN: MAPPING & HASIL -->
+        <div class="card">
+            <div class="card-title"><i class="fas fa-exchange-alt"></i> Mapping & Hasil</div>
+            <div class="mapping-grid">
+                <div v-for="(val, key) in mapping" :key="key" class="mapping-row">
+                    <span>{{ key }}</span>
+                    <i class="fas fa-arrow-right" style="color:#94a3b8;"></i>
+                    <input v-model="mapping[key]" placeholder="?" maxlength="1" @input="applyMapping">
+                </div>
+            </div>
+            <div style="margin:14px 0 8px; display:flex; gap:10px; flex-wrap:wrap;">
+                <button class="btn btn-danger" @click="resetMapping"><i class="fas fa-trash-alt"></i> Reset</button>
+                <button class="btn btn-primary" @click="applyMapping"><i class="fas fa-play"></i> Terapkan</button>
+                <button class="btn btn-success" @click="autoCrack"><i class="fas fa-crown"></i> Crack!</button>
+            </div>
+            <div class="result-area" v-html="decodedHTML || 'Hasil terjemahan akan tampil di sini...'"></div>
+        </div>
+    </div>
+
+    <!-- FOOTER STATS LANJUTAN -->
+    <div class="card" style="margin-top:12px;">
+        <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:center;">
+            <span><i class="fas fa-arrow-left"></i> Bigram: <strong>{{ bigram }}</strong></span>
+            <span><i class="fas fa-arrow-right"></i> Trigram: <strong>{{ trigram }}</strong></span>
+            <span><i class="fas fa-flag"></i> Pola ditemukan: {{ patternResult }}</span>
+            <span style="margin-left:auto;"><i class="fas fa-database"></i> Mapping tersimpan</span>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+<script>
+new Vue({
+    el: '#app',
+    data: {
+        dark: false,
+        cipherText: 'Uryyb Jbeyq',
+        mapping: {},
+        decoded: '',
+        progress: 0,
+        history: [],
+        historyIndex: -1,
+        maxHistory: 30,
+        dragover: false,
+        bigram: '-',
+        trigram: '-',
+        patternResult: '-',
+    },
+    computed: {
+        uniqueChars() {
+            return new Set(this.cipherText.toUpperCase().replace(/[^A-Z]/g,'')).size;
+        },
+        decodedHTML() {
+            return this.decoded ? this.decoded.replace(/\n/g, '<br>') : '';
+        }
+    },
+    watch: {
+        cipherText() {
+            this.autoGenerateMapping();
+            this.applyMapping();
+            this.saveState();
+        }
+    },
+    mounted() {
+        this.autoGenerateMapping();
+        this.applyMapping();
+        this.saveState();
+        // restore mapping dari localStorage
+        const saved = localStorage.getItem('cipherMapping');
+        if (saved) {
+            try {
+                this.mapping = JSON.parse(saved);
+                this.applyMapping();
+            } catch(e) {}
+        }
+    },
+    methods: {
+        autoGenerateMapping() {
+            const chars = [...new Set(this.cipherText.toUpperCase().replace(/[^A-Z]/g,''))];
+            const newMap = {};
+            for (let c of chars) {
+                if (!(c in this.mapping)) newMap[c] = '';
+            }
+            // retain existing mapping
+            for (let k in this.mapping) {
+                if (chars.includes(k)) newMap[k] = this.mapping[k] || '';
+            }
+            // urutkan
+            const sorted = {};
+            Object.keys(newMap).sort().forEach(k => sorted[k] = newMap[k]);
+            this.mapping = sorted;
+        },
+        applyMapping() {
+            const map = this.mapping;
+            let result = '';
+            for (let ch of this.cipherText) {
+                const upper = ch.toUpperCase();
+                if (upper in map && map[upper] && map[upper].length > 0) {
+                    const mapped = map[upper];
+                    result += (ch === ch.toLowerCase() ? mapped.toLowerCase() : mapped.toUpperCase());
+                } else {
+                    result += ch;
+                }
+            }
+            this.decoded = result;
+            this.progress = Math.min(100, (result.length / (this.cipherText.length || 1)) * 100);
+            // auto save
+            localStorage.setItem('cipherMapping', JSON.stringify(this.mapping));
+        },
+        resetMapping() {
+            for (let k in this.mapping) this.mapping[k] = '';
+            this.applyMapping();
+            this.saveState();
+        },
+        analyzeFreq() {
+            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
+            const freq = {};
+            for (let ch of text) freq[ch] = (freq[ch] || 0) + 1;
+            const sorted = Object.entries(freq).sort((a,b) => b[1]-a[1]);
+            alert('Frekuensi huruf:\n' + sorted.map(([k,v]) => `${k}: ${v}`).join('\n'));
+        },
+        autoGuessMapping() {
+            // substitusi sederhana: huruf paling sering -> E, dst (demo)
+            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
+            const freq = {};
+            for (let ch of text) freq[ch] = (freq[ch] || 0) + 1;
+            const sorted = Object.keys(freq).sort((a,b) => freq[b]-freq[a]);
+            const common = 'ETAOINSHRDLUCMFYWGPBVKXQJZ';
+            for (let i=0; i<Math.min(sorted.length, common.length); i++) {
+                this.mapping[sorted[i]] = common[i];
+            }
+            this.applyMapping();
+            this.saveState();
+        },
+        dictionaryMatch() {
+            const words = this.decoded.split(/[\s,.;!?]+/).filter(w => w.length>2);
+            const dict = ['there','their','they','which','would','could','should','people','about','other','world','house','water','light','thing','right','think','place','work','great','where','after','every','still','state','hand','life','part','long','time','day','way','man','good','new','one','two','three','four','five','six','seven','eight','nine','ten'];
+            const found = words.filter(w => dict.includes(w.toLowerCase()));
+            if (found.length) alert('Kata dikenali: ' + found.join(', '));
+            else alert('Tidak ada kata dalam kamus sederhana.');
+        },
+        bigramTrigram() {
+            const txt = this.decoded.toUpperCase().replace(/[^A-Z]/g,'');
+            if (txt.length < 2) { this.bigram = '-'; this.trigram = '-'; return; }
+            const bigrams = {};
+            const trigrams = {};
+            for (let i=0; i<txt.length-1; i++) {
+                const b = txt.substr(i,2);
+                bigrams[b] = (bigrams[b] || 0) + 1;
+                if (i<txt.length-2) {
+                    const t = txt.substr(i,3);
+                    trigrams[t] = (trigrams[t] || 0) + 1;
+                }
+            }
+            const topB = Object.entries(bigrams).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>k+':'+v).join(' ');
+            const topT = Object.entries(trigrams).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>k+':'+v).join(' ');
+            this.bigram = topB || '-';
+            this.trigram = topT || '-';
+        },
+        patternSearch() {
+            const pattern = prompt('Masukkan pola (contoh: _he__ ) , gunakan _ untuk huruf apa saja:');
+            if (!pattern) return;
+            const regex = new RegExp('^' + pattern.replace(/_/g,'[A-Za-z]') + '$', 'i');
+            const words = this.decoded.split(/\s+/);
+            const matches = words.filter(w => regex.test(w));
+            this.patternResult = matches.length ? matches.slice(0,8).join(', ') : 'Tidak ditemukan';
+            alert('Pola "'+pattern+'" ditemukan: ' + (matches.length ? matches.slice(0,8).join(', ') : 'tidak ada'));
+        },
+        autoCrack() {
+            this.autoGuessMapping();
+            this.applyMapping();
+            this.analyzeFreq();
+            this.bigramTrigram();
+            this.progress = 100;
+            setTimeout(() => this.progress = 0, 800);
+        },
+        toggleDark() {
+            this.dark = !this.dark;
+            document.body.classList.toggle('dark', this.dark);
+        },
+        exportTXT() {
+            const blob = new Blob([this.decoded], {type:'text/plain'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'decrypted.txt';
+            a.click();
+        },
+        exportPDF() {
+            const element = document.createElement('div');
+            element.innerHTML = this.decoded;
+            element.style.padding = '20px';
+            element.style.fontSize = '16px';
+            document.body.appendChild(element);
+            html2pdf().set({ margin: 1, filename: 'decrypted.pdf' }).from(element).save().then(() => {
+                document.body.removeChild(element);
+            });
+        },
+        dropFile(e) {
+            this.dragover = false;
+            const file = e.dataTransfer.files[0];
+            if (file && file.type === 'text/plain') {
+                const reader = new FileReader();
+                reader.onload = (ev) => { this.cipherText = ev.target.result; };
+                reader.readAsText(file);
+            }
+        },
+        loadFile(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => { this.cipherText = ev.target.result; };
+                reader.readAsText(file);
+            }
+        },
+        saveState() {
+            const state = JSON.stringify({ cipherText: this.cipherText, mapping: this.mapping });
+            if (this.historyIndex < this.history.length-1) {
+                this.history = this.history.slice(0, this.historyIndex+1);
+            }
+            if (this.history.length === 0 || this.history[this.history.length-1] !== state) {
+                this.history.push(state);
+                if (this.history.length > this.maxHistory) this.history.shift();
+                this.historyIndex = this.history.length-1;
+            }
+        },
+        undo() {
+            if (this.historyIndex > 0) {
+                this.historyIndex--;
+                this.restoreState(this.history[this.historyIndex]);
+            }
+        },
+        redo() {
+            if (this.historyIndex < this.history.length-1) {
+                this.historyIndex++;
+                this.restoreState(this.history[this.historyIndex]);
+            }
+        },
+        restoreState(state) {
+            const parsed = JSON.parse(state);
+            this.cipherText = parsed.cipherText;
+            this.mapping = parsed.mapping;
+            this.applyMapping();
+        }
+    }
+});
+</script>
+</body>
+</html>
