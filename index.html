@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔐 Substitution Cipher Analyzer Pro</title>
+    <title>🔐 Advanced Cipher Analyzer Pro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -16,7 +16,6 @@
         }
         .container { max-width: 1600px; margin: 0 auto; }
         
-        /* HEADER */
         .header {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border: 1px solid #334155;
@@ -42,11 +41,6 @@
             align-items: center;
             gap: 8px;
         }
-        .tools {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
         
         .btn {
             background: #334155;
@@ -62,12 +56,7 @@
             transition: all 0.2s;
             font-weight: 500;
         }
-        .btn:hover {
-            background: #475569;
-            border-color: #64748b;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59,130,246,0.2);
-        }
+        .btn:hover { background: #475569; }
         .btn-primary { background: #3b82f6; border-color: #3b82f6; }
         .btn-primary:hover { background: #2563eb; }
         .btn-success { background: #10b981; border-color: #10b981; }
@@ -77,20 +66,7 @@
         .btn-warning { background: #f59e0b; border-color: #f59e0b; color: #000; }
         .btn-warning:hover { background: #d97706; }
         
-        /* GRID */
-        .grid-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
         .card {
             background: #1e293b;
             border: 1px solid #334155;
@@ -109,7 +85,6 @@
             border-bottom: 2px solid #334155;
             padding-bottom: 8px;
         }
-        .card-title i { color: #3b82f6; }
         
         textarea {
             width: 100%;
@@ -122,37 +97,28 @@
             font-size: 0.9rem;
             resize: vertical;
             min-height: 150px;
-            transition: border 0.2s;
         }
-        textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 10px rgba(59,130,246,0.3);
-        }
+        textarea:focus { outline: none; border-color: #3b82f6; }
         
-        .input-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 8px;
-            align-items: center;
-        }
-        .input-row input {
-            flex: 1;
-            padding: 8px 12px;
+        .result-area {
             background: #0f172a;
-            color: #e2e8f0;
             border: 1px solid #334155;
-            border-radius: 6px;
-            font-size: 0.85rem;
+            border-radius: 8px;
+            padding: 12px;
+            min-height: 120px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
-        .input-row input:focus {
-            outline: none;
-            border-color: #3b82f6;
-        }
+        .result-area.success { border-color: #10b981; background: #051f1f; }
         
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             gap: 8px;
             margin: 12px 0;
         }
@@ -172,111 +138,31 @@
             gap: 6px;
             max-height: 300px;
             overflow-y: auto;
-            padding-right: 4px;
+            margin-bottom: 12px;
         }
         .mapping-item {
             background: #0f172a;
             border: 1px solid #334155;
             border-radius: 6px;
             padding: 6px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
+            text-align: center;
+            cursor: pointer;
             transition: all 0.2s;
         }
-        .mapping-item:hover {
-            border-color: #3b82f6;
-            background: #1e3a5f;
-        }
+        .mapping-item:hover { border-color: #3b82f6; background: #1e3a5f; }
         .mapping-item input {
             width: 100%;
             background: transparent;
             border: none;
             border-bottom: 2px solid #475569;
-            padding: 2px 4px;
+            padding: 2px;
             text-align: center;
             color: #e2e8f0;
             font-weight: 700;
-            font-size: 0.9rem;
             text-transform: uppercase;
         }
-        .mapping-item input:focus {
-            outline: none;
-            border-bottom-color: #10b981;
-        }
+        .mapping-item input:focus { outline: none; border-bottom-color: #10b981; }
         .mapping-cipher { font-weight: 700; color: #94a3b8; font-size: 0.75rem; }
-        .mapping-freq { font-size: 0.7rem; color: #64748b; }
-        
-        .result-area {
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 12px;
-            min-height: 120px;
-            max-height: 400px;
-            overflow-y: auto;
-            font-size: 0.9rem;
-            line-height: 1.8;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        .result-area.success { border-color: #10b981; }
-        .result-area.error { border-color: #ef4444; }
-        
-        .freq-chart {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .freq-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
-        }
-        .freq-label { width: 30px; font-weight: 700; color: #93bbfc; }
-        .freq-bar {
-            flex: 1;
-            height: 18px;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-            border-radius: 3px;
-            position: relative;
-            overflow: hidden;
-        }
-        .freq-text {
-            position: absolute;
-            right: 4px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: white;
-        }
-        
-        .bigram-grid, .trigram-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-            gap: 6px;
-        }
-        .ngram-item {
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 6px;
-            padding: 6px;
-            text-align: center;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .ngram-item:hover {
-            border-color: #3b82f6;
-            background: #1e3a5f;
-        }
-        .ngram-text { font-weight: 700; color: #e2e8f0; }
-        .ngram-count { color: #64748b; font-size: 0.7rem; }
         
         .progress-bar {
             width: 100%;
@@ -290,37 +176,43 @@
             height: 100%;
             background: linear-gradient(90deg, #3b82f6, #10b981);
             transition: width 0.3s;
-            border-radius: 2px;
         }
         
-        .tabs {
+        .freq-chart {
             display: flex;
-            gap: 4px;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #334155;
-            overflow-x: auto;
-            padding-bottom: 4px;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 300px;
+            overflow-y: auto;
         }
-        .tab {
-            padding: 6px 12px;
-            background: transparent;
-            border: none;
-            color: #64748b;
-            cursor: pointer;
+        .freq-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 0.8rem;
-            font-weight: 500;
-            transition: all 0.2s;
-            border-bottom: 2px solid transparent;
-            white-space: nowrap;
         }
-        .tab:hover { color: #93bbfc; }
-        .tab.active {
-            color: #3b82f6;
-            border-bottom-color: #3b82f6;
+        .freq-label { width: 25px; font-weight: 700; color: #93bbfc; }
+        .freq-bar {
+            flex: 1;
+            height: 16px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 3px;
         }
         
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .console {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: #10b981;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+        .console-line { margin: 2px 0; }
         
         .word-list {
             display: flex;
@@ -334,356 +226,152 @@
             border-radius: 16px;
             border: 1px solid #334155;
             font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.2s;
         }
-        .word-item:hover {
-            border-color: #3b82f6;
-            background: #1e3a5f;
-        }
-        .word-item.matched {
-            border-color: #10b981;
-            background: #064e3b;
-            color: #86efac;
-        }
+        .word-item.matched { border-color: #10b981; background: #064e3b; color: #86efac; }
         
-        .badge {
+        .loading {
             display: inline-block;
-            background: #1e3a5f;
-            color: #93bbfc;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            border: 1px solid #1e3a5f;
-            margin: 2px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
-        .dropzone {
-            border: 2px dashed #334155;
-            border-radius: 12px;
-            padding: 24px;
-            text-align: center;
-            background: #1e293b;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-bottom: 16px;
-        }
-        .dropzone:hover, .dropzone.hover {
-            border-color: #3b82f6;
-            background: #0f172a;
-        }
-        .dropzone i { font-size: 2rem; color: #64748b; margin-bottom: 8px; }
-        
+        @media (max-width: 1024px) { .grid-2 { grid-template-columns: 1fr; } }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
-        
-        .highlight { background: rgba(59, 130, 246, 0.3); padding: 1px 3px; border-radius: 2px; }
-        .match { background: rgba(16, 185, 129, 0.3); color: #86efac; }
-        .error-text { color: #fca5a5; }
-        
-        @media (max-width: 1024px) {
-            .grid-3 { grid-template-columns: 1fr 1fr; }
-            .grid-2 { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 640px) {
-            .grid-3, .grid-2 { grid-template-columns: 1fr; }
-            .tools { flex-direction: column; }
-            .btn { font-size: 0.7rem; padding: 6px 10px; }
-        }
-        
-        .loading { animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-        
-        .solution-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 6px;
-            margin-top: 8px;
-        }
-        .solution-item {
-            background: #0f172a;
-            border: 1px solid #334155;
-            padding: 8px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .solution-item:hover {
-            border-color: #3b82f6;
-            background: #1e3a5f;
-        }
-        .solution-cipher { font-weight: 700; color: #93bbfc; }
-        .solution-plain { color: #10b981; }
     </style>
 </head>
 <body>
 <div class="container" id="app">
-    <!-- HEADER -->
     <div class="header">
         <div class="header-content">
             <div class="logo">
                 <i class="fas fa-lock"></i>
-                Cipher<span style="color:#3b82f6;">Analyzer</span>
+                Advanced Cipher Analyzer
             </div>
-            <div class="tools">
-                <button class="btn" @click="undo" title="Undo (Ctrl+Z)">
-                    <i class="fas fa-undo"></i> Undo
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button class="btn btn-success" @click="advancedCrack" :disabled="cracking">
+                    <span v-if="cracking" class="loading"><i class="fas fa-spinner"></i></span>
+                    <span v-else><i class="fas fa-rocket"></i></span>
+                    {{ cracking ? 'CRACKING...' : 'SMART CRACK' }}
                 </button>
-                <button class="btn" @click="redo" title="Redo (Ctrl+Y)">
-                    <i class="fas fa-redo"></i> Redo
+                <button class="btn btn-primary" @click="frequencyGuess">
+                    <i class="fas fa-chart-bar"></i> Frekuensi
                 </button>
-                <button class="btn btn-warning" @click="clearAll" title="Reset semua">
-                    <i class="fas fa-trash"></i> Bersihkan
+                <button class="btn btn-danger" @click="resetAll">
+                    <i class="fas fa-trash"></i> Reset
                 </button>
-                <button class="btn btn-success" @click="autoSolve" title="Crack otomatis">
-                    <i class="fas fa-crown"></i> Auto Crack
-                </button>
-                <button class="btn btn-primary" @click="exportTxt">
-                    <i class="fas fa-download"></i> TXT
-                </button>
-                <button class="btn btn-primary" @click="copyToClipboard">
+                <button class="btn" @click="copyResult">
                     <i class="fas fa-copy"></i> Copy
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- DROPZONE -->
-    <div class="dropzone" 
-         @dragover.prevent="dragover=true" 
-         @dragleave.prevent="dragover=false"
-         @drop.prevent="handleFileDrop"
-         :class="{hover: dragover}">
-        <i class="fas fa-cloud-upload-alt"></i>
-        <p><strong>Drag & drop</strong> file .txt atau <strong>klik untuk pilih</strong></p>
-        <input type="file" accept=".txt" ref="fileInput" @change="handleFileSelect" style="display:none">
-        <button class="btn" @click.stop="$refs.fileInput.click()" style="margin-top:8px;">
-            <i class="fas fa-folder-open"></i> Pilih File
-        </button>
-    </div>
-
-    <!-- MAIN GRID -->
     <div class="grid-2">
-        <!-- CIPHER INPUT -->
         <div class="card">
             <div class="card-title">
-                <i class="fas fa-lock"></i> Teks Sandi (Ciphertext)
+                <i class="fas fa-lock"></i> Ciphertext Input
             </div>
-            <textarea v-model="cipherText" @input="updateCipher" placeholder="Masukkan teks sandi di sini..."></textarea>
-            
+            <textarea v-model="cipherText" @input="onCipherChange" placeholder="Paste ciphertext di sini..."></textarea>
             <div class="stats">
                 <div class="stat-box">
-                    <strong>{{ cipherText.length }}</strong>
-                    Karakter
+                    <strong>{{ cipherText.length }}</strong> Char
                 </div>
                 <div class="stat-box">
-                    <strong>{{ uniqueLetters }}</strong>
-                    Huruf Unik
+                    <strong>{{ uniqueLetters }}</strong> Unique
                 </div>
                 <div class="stat-box">
-                    <strong>{{ wordCount }}</strong>
-                    Kata
-                </div>
-                <div class="stat-box">
-                    <strong>{{ mappingDone }}/{{ Object.keys(mapping).length }}</strong>
-                    Mapping
+                    <strong>{{ wordCount }}</strong> Words
                 </div>
             </div>
-            
             <div class="progress-bar">
                 <div class="progress-fill" :style="{width: progress + '%'}"></div>
             </div>
-
-            <div style="margin-top: 12px;">
-                <button class="btn btn-primary" @click="analyzeFrequency" style="width:100%; margin-bottom:6px;">
-                    <i class="fas fa-chart-bar"></i> Analisis Frekuensi
-                </button>
-                <button class="btn" @click="analyzeBigram" style="width:100%; margin-bottom:6px;">
-                    <i class="fas fa-layer-group"></i> Bigram/Trigram
-                </button>
-                <button class="btn" @click="findPatterns" style="width:100%; margin-bottom:6px;">
-                    <i class="fas fa-search"></i> Cari Pola Kata
-                </button>
-                <button class="btn" @click="suggestMapping" style="width:100%;">
-                    <i class="fas fa-lightbulb"></i> Saran Mapping
+            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
+                <button class="btn btn-primary" @click="analyzeFrequency" style="flex:1;">
+                    <i class="fas fa-chart-pie"></i> Analyze
                 </button>
             </div>
         </div>
 
-        <!-- RESULT OUTPUT -->
         <div class="card">
             <div class="card-title">
-                <i class="fas fa-unlock"></i> Hasil Dekripsi (Plaintext)
+                <i class="fas fa-unlock"></i> Plaintext Result
             </div>
-            <div class="result-area" :class="{success: validWords > 3, error: validWords === 0}">
-{{ decodedText || 'Hasil dekripsi akan tampil di sini...' }}
+            <div class="result-area" :class="{success: validWords > 3}">
+{{ decodedText || 'Hasil akan muncul di sini...' }}
             </div>
             <div class="stats">
                 <div class="stat-box">
-                    <strong>{{ validWords }}</strong>
-                    Kata Valid
+                    <strong>{{ validWords }}</strong> Valid Words
                 </div>
                 <div class="stat-box">
-                    <strong>{{ Math.round(accuracy) }}%</strong>
-                    Akurasi
+                    <strong>{{ Math.round(accuracy) }}%</strong> Accuracy
                 </div>
                 <div class="stat-box">
-                    <strong>{{ Object.keys(history).length }}</strong>
-                    Riwayat
+                    <strong>{{ mappingDone }}/{{ Object.keys(mapping).length }}</strong> Mapped
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MAPPING GRID -->
     <div class="card">
         <div class="card-title">
-            <i class="fas fa-exchange-alt"></i> Substitusi Mapping (Cipher → Plaintext)
+            <i class="fas fa-exchange-alt"></i> Character Mapping
         </div>
         <div class="mapping-grid">
             <div v-for="letter in sortedLetters" :key="letter" class="mapping-item">
                 <div class="mapping-cipher">{{ letter }}</div>
-                <input v-model="mapping[letter]" 
-                       @input="updateMapping"
-                       maxlength="1"
-                       placeholder="?"
-                       @keyup.backspace="mapping[letter] = ''">
-                <div class="mapping-freq" v-if="letterFreq[letter]">
-                    {{ letterFreq[letter] }}x
-                </div>
+                <input v-model="mapping[letter]" maxlength="1" @input="updateMapping">
             </div>
-        </div>
-        <div style="margin-top: 12px; display:flex; gap:6px; flex-wrap:wrap;">
-            <button class="btn btn-danger" @click="resetMapping">
-                <i class="fas fa-trash"></i> Reset Semua
-            </button>
-            <button class="btn btn-primary" @click="applyMapping">
-                <i class="fas fa-check"></i> Terapkan
-            </button>
-            <button class="btn btn-success" @click="autoSolve">
-                <i class="fas fa-crown"></i> Crack!
-            </button>
-            <button class="btn" @click="frequencyGuess">
-                <i class="fas fa-magic"></i> Tebak dari Frekuensi
-            </button>
         </div>
     </div>
 
-    <!-- TABS ANALYSIS -->
     <div class="card">
-        <div class="tabs">
-            <button class="tab" :class="{active: activeTab === 'freq'}" @click="activeTab = 'freq'">
-                <i class="fas fa-chart-bar"></i> Frekuensi
-            </button>
-            <button class="tab" :class="{active: activeTab === 'ngram'}" @click="activeTab = 'ngram'">
-                <i class="fas fa-layer-group"></i> N-Gram
-            </button>
-            <button class="tab" :class="{active: activeTab === 'words'}" @click="activeTab = 'words'">
-                <i class="fas fa-book"></i> Kata
-            </button>
-            <button class="tab" :class="{active: activeTab === 'solutions'}" @click="activeTab = 'solutions'">
-                <i class="fas fa-star"></i> Solusi
-            </button>
+        <div class="card-title">
+            <i class="fas fa-chart-bar"></i> Frequency Analysis
         </div>
-
-        <!-- FREQUENCY TAB -->
-        <div class="tab-content" :class="{active: activeTab === 'freq'}">
-            <div class="freq-chart">
-                <div v-for="(item, idx) in frequencyList" :key="idx" class="freq-item">
-                    <div class="freq-label">{{ item.letter }}</div>
-                    <div class="freq-bar">
-                        <div class="freq-text">{{ item.count }} ({{ item.percent }}%)</div>
-                        <div style="width:" :style="{width: item.percent + '%'}"></div>
-                    </div>
-                </div>
-            </div>
-            <div style="margin-top: 12px; padding: 10px; background: #0f172a; border-radius: 6px; font-size: 0.8rem; border: 1px solid #334155;">
-                <strong>💡 Tip:</strong> Huruf paling sering dalam Bahasa Inggris adalah E, T, A, O, I, N. Cocokan dengan huruf sandi paling sering!
+        <div class="freq-chart">
+            <div v-for="(item, idx) in frequencyList" :key="idx" class="freq-item">
+                <div class="freq-label">{{ item.letter }}</div>
+                <div class="freq-bar" :style="{width: item.percent * 2 + '%'}"></div>
+                <div style="min-width:50px;">{{ item.count }} ({{ item.percent }}%)</div>
             </div>
         </div>
+    </div>
 
-        <!-- NGRAM TAB -->
-        <div class="tab-content" :class="{active: activeTab === 'ngram'}">
-            <div style="margin-bottom: 16px;">
-                <div class="card-title" style="margin: 0; border: none; font-size: 0.9rem; padding: 0 0 8px 0;">
-                    <i class="fas fa-arrow-right"></i> Bigram (2 huruf)
-                </div>
-                <div class="bigram-grid">
-                    <div v-for="(count, bigram) in bigramList" :key="bigram" class="ngram-item" @click="copToClip(bigram)">
-                        <div class="ngram-text">{{ bigram }}</div>
-                        <div class="ngram-count">{{ count }}x</div>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <div class="card-title" style="margin: 0; border: none; font-size: 0.9rem; padding: 0 0 8px 0;">
-                    <i class="fas fa-arrow-right"></i> Trigram (3 huruf)
-                </div>
-                <div class="trigram-grid">
-                    <div v-for="(count, trigram) in trigramList" :key="trigram" class="ngram-item" @click="copToClip(trigram)">
-                        <div class="ngram-text">{{ trigram }}</div>
-                        <div class="ngram-count">{{ count }}x</div>
-                    </div>
-                </div>
+    <div class="card">
+        <div class="card-title">
+            <i class="fas fa-terminal"></i> Algoritma Status
+        </div>
+        <div class="console">
+            <div v-for="(log, idx) in consoleLogs" :key="idx" class="console-line">
+                {{ log }}
             </div>
         </div>
+    </div>
 
-        <!-- WORDS TAB -->
-        <div class="tab-content" :class="{active: activeTab === 'words'}">
-            <div style="margin-bottom: 16px;">
-                <div class="card-title" style="margin: 0; border: none; font-size: 0.9rem; padding: 0 0 8px 0;">
-                    <i class="fas fa-check-circle"></i> Kata Terkenali ({{ validWords }})
-                </div>
-                <div class="word-list">
-                    <div v-for="word in recognizedWords" :key="word" class="word-item matched">
-                        {{ word }}
-                    </div>
-                </div>
-                <div v-if="recognizedWords.length === 0" style="color: #64748b; font-size: 0.85rem; margin-top: 8px;">
-                    Tidak ada kata terkenali. Perbaiki mapping untuk meningkatkan akurasi.
-                </div>
-            </div>
-            
-            <div>
-                <div class="card-title" style="margin: 0; border: none; font-size: 0.9rem; padding: 0 0 8px 0;">
-                    <i class="fas fa-question-circle"></i> Kata Tidak Terkenali
-                </div>
-                <div class="word-list">
-                    <div v-for="word in unknownWords.slice(0, 30)" :key="word" class="word-item">
-                        {{ word }}
-                    </div>
-                </div>
+    <div class="card">
+        <div class="card-title">
+            <i class="fas fa-check-circle"></i> Recognized Words
+        </div>
+        <div class="word-list">
+            <div v-for="word in recognizedWords" :key="word" class="word-item matched">
+                {{ word }}
             </div>
         </div>
-
-        <!-- SOLUTIONS TAB -->
-        <div class="tab-content" :class="{active: activeTab === 'solutions'}">
-            <div v-if="Object.keys(solutions).length > 0">
-                <p style="margin-bottom: 12px; font-size: 0.85rem; color: #64748b;">
-                    Pilih mapping yang benar:
-                </p>
-                <div class="solution-grid">
-                    <div v-for="(solution, idx) in solutions" :key="idx" class="solution-item" @click="applySolution(solution)">
-                        <div class="solution-cipher">{{ solution.cipher }}</div>
-                        <i class="fas fa-arrow-down" style="font-size: 0.7rem; color: #475569;"></i>
-                        <div class="solution-plain">{{ solution.plain }}</div>
-                    </div>
-                </div>
-            </div>
-            <div v-else style="color: #64748b; text-align: center; padding: 20px; font-size: 0.85rem;">
-                <i class="fas fa-info-circle"></i> Jalankan analisis untuk mendapat saran solusi
-            </div>
+        <div v-if="recognizedWords.length === 0" style="color:#64748b; font-size:0.85rem; margin-top:8px;">
+            Tidak ada kata dikenali. Jalankan analisis untuk crack.
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
 <script>
-// Common English words dictionary
 const COMMON_WORDS = new Set([
     'the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'i', 'it', 'for', 'not', 'on', 'with',
     'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she',
@@ -693,17 +381,48 @@ const COMMON_WORDS = new Set([
     'then', 'now', 'look', 'only', 'come', 'its', 'over', 'think', 'also', 'back', 'after', 'use', 'two',
     'how', 'our', 'work', 'first', 'well', 'way', 'even', 'new', 'want', 'because', 'any', 'these', 'give',
     'day', 'most', 'us', 'is', 'was', 'are', 'been', 'being', 'have', 'has', 'had', 'having', 'does', 'did',
-    'doing', 'would', 'could', 'should', 'may', 'might', 'must', 'can', 'will', 'shall', 'where', 'when',
-    'why', 'what', 'which', 'who', 'whom', 'whose', 'through', 'during', 'before', 'after', 'above', 'below',
-    'between', 'among', 'under', 'over', 'without', 'within', 'along', 'across', 'behind', 'beyond', 'beside',
-    'besides', 'around', 'about', 'near', 'off', 'down', 'up', 'in', 'out', 'on', 'at', 'by', 'to', 'from',
-    'with', 'than', 'as', 'like', 'if', 'unless', 'until', 'while', 'since', 'because', 'whereas', 'though',
-    'although', 'while', 'yet', 'nor', 'so', 'very', 'really', 'quite', 'rather', 'fairly', 'pretty',
-    'much', 'more', 'less', 'most', 'least', 'many', 'few', 'several', 'all', 'each', 'every', 'either',
-    'neither', 'both', 'other', 'another', 'such', 'same', 'different', 'particular', 'specific'
+    'each', 'which', 'their', 'said', 'each', 'tell', 'boy', 'girl', 'man', 'woman', 'child', 'hand', 'made',
+    'life', 'water', 'night', 'day', 'time', 'year', 'world', 'place', 'thing', 'name', 'home', 'face',
+    'fact', 'form', 'kind', 'land', 'part', 'right', 'side', 'size', 'sort', 'word', 'work', 'life', 'game',
+    'call', 'care', 'case', 'city', 'come', 'dark', 'deal', 'dear', 'edge', 'face', 'fact', 'fair', 'fall',
+    'feel', 'fell', 'file', 'fine', 'find', 'fire', 'form', 'four', 'free', 'full', 'gain', 'game', 'gate',
+    'gave', 'girl', 'give', 'glad', 'goal', 'goat', 'gold', 'gone', 'good', 'gray', 'grew', 'grew', 'gray',
+    'grey', 'grow', 'hair', 'half', 'hall', 'hand', 'hang', 'hard', 'harm', 'have', 'head', 'hear', 'heat',
+    'held', 'help', 'here', 'hero', 'high', 'hill', 'hold', 'hole', 'holy', 'home', 'hope', 'horn', 'host',
+    'hour', 'huge', 'hung', 'hunt', 'hurt', 'idea', 'iron', 'item', 'jack', 'jail', 'join', 'joke', 'july',
+    'june', 'keep', 'kept', 'kill', 'kind', 'king', 'knee', 'knew', 'know', 'lack', 'lady', 'laid', 'lake',
+    'land', 'lane', 'last', 'late', 'lead', 'leaf', 'lean', 'left', 'less', 'life', 'lift', 'like', 'line',
+    'link', 'list', 'live', 'load', 'loan', 'lock', 'long', 'look', 'loop', 'lord', 'lose', 'loss', 'lost',
+    'loud', 'love', 'luck', 'made', 'mail', 'main', 'make', 'male', 'mall', 'many', 'mark', 'mars', 'mass',
+    'mate', 'math', 'meal', 'mean', 'meat', 'meet', 'menu', 'mere', 'mess', 'mice', 'mile', 'milk', 'mill',
+    'mind', 'mine', 'miss', 'mode', 'mood', 'moon', 'more', 'most', 'moth', 'move', 'much', 'must', 'mute',
+    'myth', 'nail', 'name', 'navy', 'near', 'neat', 'neck', 'need', 'nest', 'nets', 'news', 'next', 'nice',
+    'nine', 'node', 'none', 'nose', 'note', 'noun', 'oval', 'oven', 'over', 'pace', 'pack', 'page', 'paid',
+    'pain', 'pair', 'pale', 'palm', 'park', 'part', 'pass', 'past', 'path', 'pave', 'peak', 'pear', 'peas',
+    'peel', 'peer', 'pest', 'pick', 'pile', 'pine', 'pink', 'pipe', 'plan', 'play', 'plea', 'plot', 'plug',
+    'plus', 'poem', 'poet', 'pole', 'poll', 'pond', 'pony', 'pool', 'poor', 'pope', 'pork', 'port', 'pose',
+    'post', 'pour', 'pray', 'prey', 'pull', 'pump', 'pure', 'push', 'quit', 'quiz', 'race', 'rage', 'raid',
+    'rail', 'rain', 'rake', 'rank', 'rare', 'rate', 'read', 'real', 'reap', 'rear', 'rest', 'rich', 'ride',
+    'ring', 'riot', 'rise', 'risk', 'road', 'roam', 'roar', 'robe', 'rock', 'rode', 'role', 'roll', 'roof',
+    'room', 'root', 'rope', 'rose', 'rule', 'rung', 'rush', 'rust', 'safe', 'sage', 'said', 'sail', 'sake',
+    'sale', 'salt', 'same', 'sand', 'save', 'seal', 'seat', 'seed', 'seek', 'seem', 'seen', 'self', 'sell',
+    'send', 'sent', 'ship', 'shop', 'shot', 'show', 'sick', 'side', 'sign', 'silk', 'sing', 'sink', 'site',
+    'size', 'skin', 'slip', 'slow', 'snow', 'soap', 'soar', 'soft', 'soil', 'sold', 'sole', 'some', 'song',
+    'soon', 'sort', 'soul', 'soup', 'sour', 'span', 'spin', 'spot', 'star', 'stay', 'stem', 'step', 'stew',
+    'stop', 'such', 'suit', 'sure', 'surf', 'swap', 'swim', 'tail', 'take', 'tale', 'talk', 'tall', 'tame',
+    'tank', 'tape', 'task', 'team', 'tear', 'tell', 'tend', 'tent', 'term', 'test', 'text', 'than', 'that',
+    'thee', 'them', 'then', 'they', 'thin', 'this', 'thou', 'thus', 'tick', 'tide', 'tied', 'tier', 'ties',
+    'till', 'tilt', 'time', 'tiny', 'tire', 'toad', 'toes', 'told', 'toll', 'tone', 'took', 'tool', 'tops',
+    'torn', 'toss', 'tour', 'town', 'toys', 'trap', 'tray', 'tree', 'trek', 'trim', 'trip', 'true', 'tubs',
+    'tuck', 'tune', 'turn', 'twin', 'type', 'ugly', 'unit', 'upon', 'urge', 'used', 'user', 'uses', 'vain',
+    'vary', 'vast', 'verb', 'very', 'vest', 'vice', 'view', 'vine', 'vote', 'wade', 'wage', 'wait', 'wake',
+    'walk', 'wall', 'want', 'ward', 'ware', 'warm', 'warn', 'wash', 'wasp', 'wave', 'weak', 'wear', 'weed',
+    'week', 'weep', 'well', 'went', 'were', 'west', 'what', 'when', 'where', 'which', 'while', 'whip', 'whom',
+    'wide', 'wife', 'wild', 'will', 'wind', 'wine', 'wing', 'wink', 'wire', 'wise', 'wish', 'with', 'woke',
+    'wolf', 'wood', 'wool', 'word', 'wore', 'work', 'worm', 'worn', 'wrap', 'yard', 'yarn', 'yawn', 'year',
+    'yell', 'your', 'zero', 'zest', 'zone'
 ]);
 
-// English letter frequency (%)
 const EN_FREQ = {
     'E': 11.1607, 'T': 8.4966, 'A': 8.2497, 'O': 7.5106, 'I': 7.0966, 'N': 6.7483,
     'S': 6.3279, 'H': 6.0948, 'R': 6.0027, 'D': 4.2543, 'L': 4.0365, 'C': 2.7797,
@@ -714,24 +433,19 @@ const EN_FREQ = {
 new Vue({
     el: '#app',
     data: {
-        cipherText: 'THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG',
-        decodedText: 'THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG',
+        cipherText: '',
         mapping: {},
-        letterFreq: {},
+        decodedText: '',
         frequencyList: [],
-        bigramList: {},
-        trigramList: {},
+        letterFreq: {},
         recognizedWords: [],
-        unknownWords: [],
         validWords: 0,
-        progress: 0,
         accuracy: 0,
-        dragover: false,
-        activeTab: 'freq',
-        history: [],
-        solutions: [],
-        undoStack: [],
-        redoStack: []
+        progress: 0,
+        cracking: false,
+        consoleLogs: [],
+        bestMapping: {},
+        bestScore: -Infinity
     },
     computed: {
         uniqueLetters() {
@@ -740,57 +454,39 @@ new Vue({
         wordCount() {
             return (this.cipherText.match(/\b\w+\b/g) || []).length;
         },
-        mappingDone() {
-            return Object.values(this.mapping).filter(v => v && v.length > 0).length;
-        },
         sortedLetters() {
             return Object.keys(this.mapping).sort().filter(k => /[A-Z]/.test(k));
+        },
+        mappingDone() {
+            return Object.values(this.mapping).filter(v => v && v.length > 0).length;
         }
     },
     watch: {
         cipherText() {
-            this.updateAnalysis();
+            this.cipherText = this.cipherText.toUpperCase();
+            this.initMapping();
+            this.analyzeFrequency();
         }
     },
     mounted() {
-        this.initializeMapping();
-        this.updateAnalysis();
+        this.log('🚀 Advanced Cipher Analyzer Ready');
     },
     methods: {
-        initializeMapping() {
-            const letters = new Set(this.cipherText.toUpperCase().match(/[A-Z]/g) || []);
+        log(msg) {
+            this.consoleLogs.push(msg);
+            if (this.consoleLogs.length > 30) this.consoleLogs.shift();
+            console.log(msg);
+        },
+        initMapping() {
+            const letters = new Set(this.cipherText.match(/[A-Z]/g) || []);
             const mapping = {};
-            letters.forEach(letter => {
-                mapping[letter] = '';
-            });
+            letters.forEach(l => mapping[l] = '');
             this.mapping = mapping;
         },
-        updateCipher() {
-            this.addToUndoStack();
-            this.initializeMapping();
-            this.updateAnalysis();
-        },
-        updateMapping() {
-            this.applyMapping();
-        },
-        applyMapping() {
-            let result = '';
-            for (let char of this.cipherText) {
-                const upper = char.toUpperCase();
-                if (upper in this.mapping && this.mapping[upper]) {
-                    const mapped = this.mapping[upper];
-                    result += char === char.toUpperCase() ? mapped : mapped.toLowerCase();
-                } else {
-                    result += char;
-                }
-            }
-            this.decodedText = result;
-            this.analyzeResult();
-        },
-        updateAnalysis() {
+        onCipherChange() {
+            this.cipherText = this.cipherText.toUpperCase();
+            this.initMapping();
             this.analyzeFrequency();
-            this.analyzeBigram();
-            this.applyMapping();
         },
         analyzeFrequency() {
             const text = this.cipherText.toUpperCase();
@@ -810,80 +506,45 @@ new Vue({
                 .map(([letter, count]) => ({
                     letter,
                     count,
-                    percent: ((count / total) * 100).toFixed(1)
+                    percent: (count / total * 100).toFixed(1)
                 }));
+            
+            this.log(`📊 Analyzed ${total} characters, ${Object.keys(freq).length} unique letters`);
         },
-        analyzeBigram() {
-            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g, '');
-            const bigrams = {};
-            const trigrams = {};
-
-            for (let i = 0; i < text.length - 1; i++) {
-                const bi = text.substr(i, 2);
-                bigrams[bi] = (bigrams[bi] || 0) + 1;
-            }
-
-            for (let i = 0; i < text.length - 2; i++) {
-                const tri = text.substr(i, 3);
-                trigrams[tri] = (trigrams[tri] || 0) + 1;
-            }
-
-            const sortedBi = Object.entries(bigrams)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 15);
-            const sortedTri = Object.entries(trigrams)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 15);
-
-            this.bigramList = Object.fromEntries(sortedBi);
-            this.trigramList = Object.fromEntries(sortedTri);
+        updateMapping() {
+            this.applyMapping();
         },
-        analyzeResult() {
+        applyMapping() {
+            let result = '';
+            for (let char of this.cipherText) {
+                if (/[A-Z]/.test(char) && this.mapping[char]) {
+                    result += this.mapping[char];
+                } else {
+                    result += char;
+                }
+            }
+            this.decodedText = result;
+            this.evaluateMapping();
+        },
+        evaluateMapping() {
             const words = (this.decodedText.match(/\b[a-z]+\b/gi) || []).map(w => w.toLowerCase());
             const recognized = [];
-            const unknown = [];
 
             words.forEach(word => {
-                if (word.length > 2 && COMMON_WORDS.has(word)) {
-                    if (!recognized.includes(word)) recognized.push(word);
-                } else {
-                    if (!unknown.includes(word)) unknown.push(word);
+                if (word.length > 2 && COMMON_WORDS.has(word) && !recognized.includes(word)) {
+                    recognized.push(word);
                 }
             });
 
-            this.recognizedWords = recognized.sort();
-            this.unknownWords = unknown.sort();
+            this.recognizedWords = [...new Set(recognized)].sort();
             this.validWords = recognized.length;
-            
-            const mappedChars = Object.values(this.mapping).filter(v => v).length;
-            this.progress = (mappedChars / Object.keys(this.mapping).length) * 100;
-            this.accuracy = (this.validWords / Math.max(words.length, 1)) * 100;
-        },
-        findPatterns() {
-            alert('🔍 Pola Kata:\n\nCari kata dengan pola berulang (misal: HELLO = HALLO atau HELLO), ini bisa memberi petunjuk pemetaan.');
+            const totalWords = Math.max(words.length, 1);
+            this.accuracy = (this.validWords / totalWords) * 100;
+            const mappedCount = Object.values(this.mapping).filter(v => v).length;
+            this.progress = (mappedCount / Object.keys(this.mapping).length) * 100;
         },
         frequencyGuess() {
-            const freq = this.frequencyList.slice(0, 6);
-            const commonLetters = ['E', 'T', 'A', 'O', 'I', 'N'];
-            
-            freq.forEach((item, idx) => {
-                this.mapping[item.letter] = commonLetters[idx];
-            });
-            
-            this.applyMapping();
-        },
-        suggestMapping() {
-            const suggestions = [];
-            this.frequencyList.slice(0, 10).forEach((item, idx) => {
-                const commonLetters = ['E', 'T', 'A', 'O', 'I', 'N', 'S', 'H', 'R', 'D'];
-                suggestions.push(`${item.letter} → ${commonLetters[idx]} (${item.percent}%)`);
-            });
-            alert('💡 Saran Mapping Berdasarkan Frekuensi:\n\n' + suggestions.join('\n'));
-        },
-        autoSolve() {
-            this.addToUndoStack();
-            
-            // Auto-crack menggunakan frequency analysis
+            this.log('💡 Applying frequency-based initial guess...');
             const freq = this.frequencyList.slice(0, 15).map(f => f.letter);
             const common = ['E', 'T', 'A', 'O', 'I', 'N', 'S', 'H', 'R', 'D', 'L', 'U', 'C', 'M', 'W'];
             
@@ -894,87 +555,202 @@ new Vue({
             });
             
             this.applyMapping();
+            this.log(`✅ Frequency guess applied: ${this.mappingDone} letters mapped`);
         },
-        resetMapping() {
-            this.addToUndoStack();
-            for (let key in this.mapping) {
-                this.mapping[key] = '';
+        calculateChiSquared(mapping) {
+            let decoded = '';
+            for (let char of this.cipherText) {
+                if (/[A-Z]/.test(char) && mapping[char]) {
+                    decoded += mapping[char];
+                } else {
+                    decoded += char;
+                }
             }
-            this.applyMapping();
+
+            const text = decoded.toUpperCase().replace(/[^A-Z]/g, '');
+            const totalLen = Math.max(text.length, 1);
+            const freq = {};
+
+            for (let char of text) {
+                freq[char] = (freq[char] || 0) + 1;
+            }
+
+            let chiSquared = 0;
+            for (let letter of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') {
+                const observed = freq[letter] || 0;
+                const expected = (EN_FREQ[letter] || 0) * totalLen / 100;
+                if (expected > 0) {
+                    chiSquared += Math.pow(observed - expected, 2) / expected;
+                }
+            }
+
+            return -chiSquared; // Return negative so lower chi-squared = higher score
         },
-        clearAll() {
-            if (confirm('🗑️ Bersihkan semua data? (tidak bisa diurungkan)')) {
-                this.cipherText = '';
-                this.decodedText = '';
-                this.resetMapping();
-                this.undoStack = [];
-                this.redoStack = [];
-                this.solutions = [];
+        validateWithDictionary(mapping) {
+            let decoded = '';
+            for (let char of this.cipherText) {
+                if (/[A-Z]/.test(char) && mapping[char]) {
+                    decoded += mapping[char];
+                } else {
+                    decoded += char;
+                }
+            }
+
+            const words = (decoded.match(/\b[a-z]+\b/gi) || []).map(w => w.toLowerCase());
+            let validCount = 0;
+
+            words.forEach(word => {
+                if (word.length > 2 && COMMON_WORDS.has(word)) validCount++;
+            });
+
+            return validCount;
+        },
+        async advancedCrack() {
+            this.cracking = true;
+            this.consoleLogs = [];
+            this.log('🔥 SMART CRACK INITIATED');
+
+            try {
+                // Phase 1: Frequency analysis
+                this.log('📊 Phase 1: Frequency Analysis...');
+                await this.sleep(100);
+                this.frequencyGuess();
+
+                // Phase 2: Hill climbing optimization
+                this.log('⛰️ Phase 2: Hill Climbing...');
+                await this.sleep(100);
+                for (let iteration = 0; iteration < 50; iteration++) {
+                    const score = this.calculateChiSquared(this.mapping);
+                    const dictScore = this.validateWithDictionary(this.mapping);
+                    
+                    if (dictScore > this.validWords) {
+                        this.bestMapping = JSON.parse(JSON.stringify(this.mapping));
+                        this.bestScore = score + dictScore * 10;
+                    }
+
+                    if (iteration % 10 === 0) {
+                        this.log(`  Iteration ${iteration}: ${dictScore} valid words`);
+                        await this.sleep(50);
+                    }
+
+                    // Try swapping mapped letters
+                    const mappedLetters = Object.entries(this.mapping)
+                        .filter(([k, v]) => v)
+                        .map(([k, v]) => [k, v]);
+
+                    if (mappedLetters.length > 1) {
+                        const idx = Math.floor(Math.random() * mappedLetters.length);
+                        const [cipher1, plain1] = mappedLetters[idx];
+                        const [cipher2, plain2] = mappedLetters[(idx + 1) % mappedLetters.length];
+
+                        const oldMap1 = this.mapping[cipher1];
+                        const oldMap2 = this.mapping[cipher2];
+
+                        this.mapping[cipher1] = oldMap2;
+                        this.mapping[cipher2] = oldMap1;
+
+                        const newScore = this.calculateChiSquared(this.mapping);
+                        if (newScore < this.bestScore) {
+                            this.bestMapping = JSON.parse(JSON.stringify(this.mapping));
+                            this.bestScore = newScore + this.validateWithDictionary(this.mapping) * 10;
+                        } else {
+                            // Revert if not better
+                            this.mapping[cipher1] = oldMap1;
+                            this.mapping[cipher2] = oldMap2;
+                        }
+                    }
+                }
+
+                // Phase 3: Pattern matching
+                this.log('🎯 Phase 3: Pattern Matching...');
+                await this.sleep(100);
+                this.patternMatch();
+
+                // Phase 4: Dictionary refinement
+                this.log('📖 Phase 4: Dictionary Refinement...');
+                await this.sleep(100);
+                this.dictionaryRefinement();
+
+                this.applyMapping();
+                this.log(`✨ CRACK COMPLETE - ${this.validWords} valid words found!`);
+
+            } catch (err) {
+                this.log(`❌ Error: ${err.message}`);
+            } finally {
+                this.cracking = false;
             }
         },
-        exportTxt() {
-            const element = document.createElement('a');
-            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.decodedText));
-            element.setAttribute('download', 'plaintext.txt');
-            element.style.display = 'none';
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
+        patternMatch() {
+            const words = this.cipherText.split(/\s+/);
+            const threeLetterWords = ['THE', 'AND', 'FOR', 'ARE', 'BUT', 'NOT', 'YOU', 'ALL', 'CAN', 'HAD', 'HER', 'WAS', 'ONE', 'OUR', 'OUT', 'HAS'];
+
+            for (let word of words) {
+                const clean = word.replace(/[^A-Z]/g, '');
+                if (clean.length === 3) {
+                    for (let target of threeLetterWords) {
+                        let canMatch = true;
+                        for (let i = 0; i < 3; i++) {
+                            if (this.mapping[clean[i]] && this.mapping[clean[i]] !== target[i]) {
+                                canMatch = false;
+                                break;
+                            }
+                        }
+                        if (canMatch) {
+                            for (let i = 0; i < 3; i++) {
+                                this.mapping[clean[i]] = target[i];
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
         },
-        copyToClipboard() {
+        dictionaryRefinement() {
+            let improved = true;
+            let iterations = 0;
+
+            while (improved && iterations < 20) {
+                improved = false;
+                iterations++;
+
+                const currentScore = this.validateWithDictionary(this.mapping);
+                const unmappedLetters = Object.entries(this.mapping)
+                    .filter(([k, v]) => !v)
+                    .map(([k]) => k);
+
+                for (let cipher of unmappedLetters.slice(0, 5)) {
+                    for (let plain of 'ETAOINSHRDLUCMFYWGPBVKXQJZ') {
+                        this.mapping[cipher] = plain;
+                        const newScore = this.validateWithDictionary(this.mapping);
+                        
+                        if (newScore > currentScore) {
+                            improved = true;
+                            this.log(`  Found mapping: ${cipher} → ${plain}`);
+                            break;
+                        }
+                    }
+                    if (improved) break;
+                }
+            }
+        },
+        resetAll() {
+            this.cipherText = '';
+            this.decodedText = '';
+            this.mapping = {};
+            this.frequencyList = [];
+            this.recognizedWords = [];
+            this.validWords = 0;
+            this.accuracy = 0;
+            this.progress = 0;
+            this.consoleLogs = [];
+            this.log('🔄 Reset completed');
+        },
+        copyResult() {
             navigator.clipboard.writeText(this.decodedText);
-            alert('✅ Teks disalin ke clipboard!');
+            this.log('📋 Result copied to clipboard!');
         },
-        handleFileDrop(e) {
-            this.dragover = false;
-            const file = e.dataTransfer.files[0];
-            if (file && file.type === 'text/plain') {
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    this.cipherText = ev.target.result;
-                };
-                reader.readAsText(file);
-            }
-        },
-        handleFileSelect(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    this.cipherText = ev.target.result;
-                };
-                reader.readAsText(file);
-            }
-        },
-        addToUndoStack() {
-            this.undoStack.push(JSON.stringify({mapping: this.mapping, cipher: this.cipherText}));
-            this.redoStack = [];
-        },
-        undo() {
-            if (this.undoStack.length > 0) {
-                const current = JSON.stringify({mapping: this.mapping, cipher: this.cipherText});
-                this.redoStack.push(current);
-                const prev = JSON.parse(this.undoStack.pop());
-                this.mapping = prev.mapping;
-                this.cipherText = prev.cipher;
-                this.applyMapping();
-            }
-        },
-        redo() {
-            if (this.redoStack.length > 0) {
-                this.undoStack.push(JSON.stringify({mapping: this.mapping, cipher: this.cipherText}));
-                const next = JSON.parse(this.redoStack.pop());
-                this.mapping = next.mapping;
-                this.cipherText = next.cipher;
-                this.applyMapping();
-            }
-        },
-        copToClip(text) {
-            navigator.clipboard.writeText(text);
-        },
-        applySolution(solution) {
-            // Placeholder for applying solution
-            alert('Mapping: ' + solution.cipher + ' → ' + solution.plain);
+        sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
     }
 });
