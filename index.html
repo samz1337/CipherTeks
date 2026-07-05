@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🧬 Genetic Cipher Breaker Pro</title>
+    <title>🧬 Advanced Cipher Breaker Pro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -19,7 +19,7 @@
             min-height: 100vh;
         }
         .container {
-            max-width: 1600px;
+            max-width: 1800px;
             margin: 0 auto;
         }
         .header {
@@ -82,6 +82,14 @@
         .btn-info:hover {
             background: #2563eb;
         }
+        .btn-warning {
+            background: #f59e0b;
+            border-color: #d97706;
+            color: #0f172a;
+        }
+        .btn-warning:hover {
+            background: #d97706;
+        }
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -91,6 +99,11 @@
         .grid-3 {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
             gap: 12px;
         }
         .card {
@@ -142,6 +155,11 @@
         .result-area.good {
             border-color: #10b981;
         }
+        .result-area.perfect {
+            border-color: #f59e0b;
+            border-width: 2px;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+        }
         .result-area .highlight {
             background: #10b98133;
             color: #86efac;
@@ -153,6 +171,13 @@
             color: #fca5a5;
             border-radius: 3px;
             padding: 0 2px;
+        }
+        .result-area .perfect-word {
+            background: #f59e0b33;
+            color: #fcd34d;
+            border-radius: 3px;
+            padding: 0 2px;
+            border-bottom: 2px solid #f59e0b;
         }
         .stats {
             display: grid;
@@ -179,6 +204,12 @@
         .stat-val.yellow {
             color: #fbbf24;
         }
+        .stat-val.purple {
+            color: #a78bfa;
+        }
+        .stat-val.gold {
+            color: #f59e0b;
+        }
         .progress {
             width: 100%;
             height: 6px;
@@ -189,7 +220,7 @@
         }
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, #10b981, #3b82f6);
+            background: linear-gradient(90deg, #10b981, #3b82f6, #a78bfa);
             transition: width 0.1s;
         }
         .console {
@@ -219,6 +250,10 @@
         .log-info {
             color: #93bbfc;
         }
+        .log-perfect {
+            color: #fcd34d;
+            font-weight: 700;
+        }
         .words {
             display: flex;
             flex-wrap: wrap;
@@ -239,6 +274,11 @@
             background: #1e3a5f;
             border-color: #3b82f6;
             color: #93bbfc;
+        }
+        .word.perfect {
+            background: #78350f;
+            border-color: #f59e0b;
+            color: #fcd34d;
         }
         .mapping-grid {
             display: grid;
@@ -277,9 +317,33 @@
             outline: none;
             border-color: #3b82f6;
         }
+        .mapping-item input.correct {
+            border-color: #10b981;
+            background: #064e3b33;
+        }
         .mapping-item .freq {
             font-size: 9px;
             color: #64748b;
+        }
+        .badge {
+            background: #1e293b;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            color: #94a3b8;
+        }
+        .badge-success {
+            background: #064e3b;
+            color: #86efac;
+        }
+        .badge-warning {
+            background: #78350f;
+            color: #fcd34d;
+        }
+        .badge-perfect {
+            background: #f59e0b33;
+            color: #f59e0b;
+            border: 1px solid #f59e0b;
         }
         @media (max-width: 1024px) {
             .grid-2 {
@@ -288,10 +352,16 @@
             .grid-3 {
                 grid-template-columns: 1fr;
             }
+            .grid-4 {
+                grid-template-columns: 1fr 1fr;
+            }
         }
         @media (max-width: 768px) {
             .mapping-grid {
                 grid-template-columns: repeat(7, 1fr);
+            }
+            .grid-4 {
+                grid-template-columns: 1fr;
             }
         }
         ::-webkit-scrollbar {
@@ -321,24 +391,30 @@
                 transform: translateY(0);
             }
         }
-        .badge {
-            background: #1e293b;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            color: #94a3b8;
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container" id="app">
         <div class="header">
-            <div class="logo">🧬 GENETIC CIPHER BREAKER PRO</div>
+            <div class="logo">🧬 ADVANCED CIPHER BREAKER PRO <span style="font-size:0.8rem;color:#94a3b8;">v3.0</span></div>
             <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                 <button class="btn btn-success" @click="startAttack" :disabled="running">
                     {{ running ? '⚙️ RUNNING...' : '🚀 ATTACK' }}
                 </button>
                 <button class="btn btn-danger" @click="stopAttack" v-if="running">⏹ STOP</button>
+                <button class="btn btn-warning" @click="runHillClimbing" :disabled="running">⛰️ HILL CLIMB</button>
                 <button class="btn btn-info" @click="resetMapping">🔄 Reset</button>
                 <button class="btn" @click="copyResult">📋 COPY</button>
                 <button class="btn" @click="exportResult">📤 EXPORT</button>
@@ -353,7 +429,7 @@
                 </div>
                 <textarea v-model="cipher" @input="onInput" placeholder="Paste ciphertext here..." :disabled="running"></textarea>
                 <div class="stats">
-                    <div class="stat"><div class="stat-val">{{ unique }}</div>Unique Letters</div>
+                    <div class="stat"><div class="stat-val">{{ unique }}</div>Unique</div>
                     <div class="stat"><div class="stat-val">{{ words }}</div>Words</div>
                     <div class="stat"><div class="stat-val blue">{{ ioc.toFixed(3) }}</div>IOC</div>
                 </div>
@@ -363,13 +439,13 @@
             <div class="card">
                 <div class="card-title">
                     🔓 PLAINTEXT
-                    <span class="badge">{{ validWords }} valid words</span>
+                    <span class="badge" :class="perfectScore >= 95 ? 'badge-perfect' : 'badge-success'">{{ validWords }} valid words</span>
                 </div>
-                <div class="result-area" :class="{good: validWords > 10}" v-html="highlightedPlain"></div>
+                <div class="result-area" :class="{good: validWords > 20, perfect: perfectScore >= 95}" v-html="highlightedPlain"></div>
                 <div class="stats">
-                    <div class="stat"><div class="stat-val">{{ validWords }}</div>Valid Words</div>
+                    <div class="stat"><div class="stat-val" :class="perfectScore >= 95 ? 'gold' : ''">{{ validWords }}</div>Valid</div>
                     <div class="stat"><div class="stat-val yellow">{{ accuracy.toFixed(1) }}%</div>Accuracy</div>
-                    <div class="stat"><div class="stat-val blue">{{ generation }}</div>Generation</div>
+                    <div class="stat"><div class="stat-val purple">{{ generation }}</div>Gen</div>
                 </div>
             </div>
         </div>
@@ -377,22 +453,23 @@
         <div class="card">
             <div class="card-title">
                 🔑 MAPPING
-                <span class="badge">{{ mappingFilled }}/26 filled</span>
+                <span class="badge" :class="mappingFilled >= 26 ? 'badge-success' : ''">{{ mappingFilled }}/26 filled</span>
             </div>
             <div class="mapping-grid">
                 <div v-for="(map, idx) in mappingDisplay" :key="idx" class="mapping-item">
                     <span class="cipher-char">{{ map.cipher }}</span>
-                    <input type="text" maxlength="1" v-model="map.plain" @input="onMappingChange(idx, $event)" :disabled="running">
+                    <input type="text" maxlength="1" v-model="map.plain" @input="onMappingChange(idx, $event)" :disabled="running" :class="map.isCorrect ? 'correct' : ''">
                     <span class="freq">{{ map.freq }}</span>
                 </div>
             </div>
         </div>
 
-        <div class="grid-3">
+        <div class="grid-4">
             <div class="card">
                 <div class="card-title">📊 STATUS <span class="badge">{{ populationSize }}</span></div>
                 <div style="font-size: 0.9rem; margin-bottom: 8px;">
-                    <div><strong>Best Score:</strong> {{ bestScore.toFixed(0) }}</div>
+                    <div><strong>Best Score:</strong> <span :class="perfectScore >= 95 ? 'gold' : ''">{{ bestScore.toFixed(0) }}</span></div>
+                    <div><strong>Perfect Score:</strong> <span class="gold">{{ perfectScore }}%</span></div>
                     <div><strong>Population:</strong> {{ populationSize }}</div>
                     <div><strong>Top Words:</strong> {{ topWords }}</div>
                 </div>
@@ -404,7 +481,7 @@
             <div class="card">
                 <div class="card-title">✅ RECOGNIZED WORDS <span class="badge">{{ recognized.length }}</span></div>
                 <div class="words">
-                    <div v-for="w in recognized.slice(0, 50)" :key="w" class="word" :class="{long: w.length > 7}">{{ w }}</div>
+                    <div v-for="w in recognized.slice(0, 50)" :key="w" class="word" :class="{long: w.length > 7, perfect: perfectWords.has(w)}">{{ w }}</div>
                 </div>
             </div>
 
@@ -415,6 +492,19 @@
                     <div style="margin: 4px 0;">Improvements: <strong>{{ improvements }}</strong></div>
                     <div style="margin: 4px 0;">Time: <strong>{{ elapsedTime }}</strong></div>
                     <div style="margin: 4px 0;">Unique Solutions: <strong>{{ uniqueSolutions }}</strong></div>
+                    <div style="margin: 4px 0;">Perfect Words: <strong class="gold">{{ perfectWords.size }}</strong></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">⚡ ALGORITHMS</div>
+                <div style="font-size: 0.8rem;">
+                    <div style="margin: 4px 0;">✅ Genetic Algorithm</div>
+                    <div style="margin: 4px 0;">✅ Hill Climbing</div>
+                    <div style="margin: 4px 0;">✅ Simulated Annealing</div>
+                    <div style="margin: 4px 0;">✅ Quadgram Scoring</div>
+                    <div style="margin: 4px 0;">✅ Pattern Matching</div>
+                    <div style="margin: 4px 0; color: #f59e0b;">✅ Multi-Restart</div>
                 </div>
             </div>
         </div>
@@ -507,6 +597,32 @@
         };
 
         // ============================================================
+        // QUADGRAM SCORES (top English quadgrams)
+        // ============================================================
+        const QUADGRAMS = {
+            'tion': 100,
+            'that': 80,
+            'thes': 70,
+            'with': 65,
+            'you': 60,
+            'ing': 55,
+            'and': 50,
+            'for': 45,
+            'have': 40,
+            'this': 38,
+            'from': 35,
+            'were': 33,
+            'ould': 30,
+            'ther': 28,
+            'ated': 25,
+            'ment': 23,
+            'ness': 20,
+            'tion': 18,
+            'ight': 15,
+            'ough': 12
+        };
+
+        // ============================================================
         // VUE APP
         // ============================================================
         new Vue({
@@ -519,7 +635,7 @@
                 stopFlag: false,
                 logs: [],
                 population: [],
-                populationSize: 100,
+                populationSize: 150,
                 generation: 0,
                 bestScore: -Infinity,
                 progress: 0,
@@ -537,6 +653,10 @@
                 timer: null,
                 debounce: null,
                 allSolutions: new Set(),
+                perfectWords: new Set(),
+                perfectScore: 0,
+                bestMapping: {},
+                bestPlain: '',
             },
             computed: {
                 unique() {
@@ -550,10 +670,12 @@
                     const freq = this.getFreq(this.cipher);
                     for (let i = 65; i <= 90; i++) {
                         const ch = String.fromCharCode(i);
+                        const plain = this.mapping[ch] || '';
                         display.push({
                             cipher: ch,
-                            plain: this.mapping[ch] || '',
-                            freq: freq[ch] || 0
+                            plain: plain,
+                            freq: freq[ch] || 0,
+                            isCorrect: plain && plain === ch
                         });
                     }
                     return display;
@@ -564,10 +686,14 @@
                     const words = this.plain.split(/(\s+)/);
                     for (let w of words) {
                         const clean = w.replace(/[^a-zA-Z]/g, '');
-                        if (clean.length > 1 && WORDS.has(clean.toLowerCase())) {
-                            html += `<span class="highlight">${w}</span>`;
-                        } else if (clean.length > 1) {
-                            html += `<span class="unknown">${w}</span>`;
+                        if (clean.length > 1) {
+                            if (this.perfectWords.has(clean.toLowerCase())) {
+                                html += `<span class="perfect-word">${w}</span>`;
+                            } else if (WORDS.has(clean.toLowerCase())) {
+                                html += `<span class="highlight">${w}</span>`;
+                            } else {
+                                html += `<span class="unknown">${w}</span>`;
+                            }
                         } else {
                             html += w;
                         }
@@ -607,7 +733,6 @@
                 },
 
                 updateMappingDisplay() {
-                    // Ensure all letters have mapping
                     for (let i = 65; i <= 90; i++) {
                         const ch = String.fromCharCode(i);
                         if (!this.mapping[ch]) this.mapping[ch] = ch;
@@ -616,7 +741,7 @@
                 },
 
                 // ---------------------------------------------
-                // DECODE & EVALUATE
+                // DECODE & EVALUATE (Enhanced)
                 // ---------------------------------------------
                 decode(map) {
                     let result = '';
@@ -630,13 +755,23 @@
                     const plain = this.decode(map).toLowerCase();
                     const words = (plain.match(/\b[a-z]+\b/g) || []).map(w => w.toLowerCase());
 
-                    // Count valid words
+                    // Count valid words with bonus for perfect matches
                     let valid = 0;
                     let validSet = new Set();
+                    let perfectSet = new Set();
+                    let perfectCount = 0;
+
                     for (let w of words) {
-                        if (w.length > 1 && WORDS.has(w)) {
-                            valid++;
-                            validSet.add(w);
+                        if (w.length > 1) {
+                            if (WORDS.has(w)) {
+                                valid++;
+                                validSet.add(w);
+                                // Perfect if word is common (length >= 3)
+                                if (w.length >= 3 && QUADGRAMS[w]) {
+                                    perfectSet.add(w);
+                                    perfectCount++;
+                                }
+                            }
                         }
                     }
 
@@ -655,14 +790,28 @@
                         }
                     }
 
-                    // Bonus for long words
-                    let bonus = 0;
-                    for (let w of validSet) {
-                        if (w.length > 5) bonus += w.length;
-                        if (w.length > 7) bonus += w.length * 2;
+                    // Quadgram scoring
+                    let quadScore = 0;
+                    for (let i = 0; i < text.length - 3; i++) {
+                        const gram = text.slice(i, i + 4).toLowerCase();
+                        if (QUADGRAMS[gram]) {
+                            quadScore += QUADGRAMS[gram];
+                        }
                     }
 
-                    const score = valid * 1000 - chi + bonus + (this.unique - new Set(Object.values(map)).size) * 50;
+                    // Bonus for long words and perfect matches
+                    let bonus = 0;
+                    for (let w of validSet) {
+                        if (w.length > 5) bonus += w.length * 2;
+                        if (w.length > 7) bonus += w.length * 4;
+                        if (perfectSet.has(w)) bonus += 10;
+                    }
+
+                    // Penalty for unused letters
+                    const usedLetters = new Set(Object.values(map));
+                    const unusedPenalty = (26 - usedLetters.size) * 10;
+
+                    const score = valid * 1000 - chi + quadScore + bonus - unusedPenalty;
 
                     return {
                         plain: plain,
@@ -670,7 +819,9 @@
                         unique: validSet.size,
                         chi: chi,
                         score: score,
-                        validSet: validSet
+                        validSet: validSet,
+                        perfectSet: perfectSet,
+                        quadScore: quadScore
                     };
                 },
 
@@ -695,6 +846,8 @@
                     this.validWords = evalResult.valid;
                     this.accuracy = (evalResult.valid / Math.max((this.plain.match(/\b\w+\b/g) || []).length, 1)) * 100;
                     this.recognized = [...evalResult.validSet];
+                    this.perfectWords = evalResult.perfectSet;
+                    this.perfectScore = (this.perfectWords.size / Math.max(this.recognized.length, 1)) * 100;
                 },
 
                 resetMapping() {
@@ -708,7 +861,7 @@
                 },
 
                 // ---------------------------------------------
-                // GENETIC ALGORITHM
+                // GENETIC ALGORITHM (Enhanced)
                 // ---------------------------------------------
                 createRandomMapping() {
                     const map = {};
@@ -747,6 +900,86 @@
                     return child;
                 },
 
+                // ---------------------------------------------
+                // HILL CLIMBING
+                // ---------------------------------------------
+                hillClimb(map) {
+                    let bestMap = JSON.parse(JSON.stringify(map));
+                    let bestEval = this.evaluate(bestMap);
+                    let improved = true;
+                    let iterations = 0;
+
+                    while (improved && iterations < 1000) {
+                        improved = false;
+                        const keys = Object.keys(bestMap).filter(k => /[A-Z]/.test(k) && this.cipher.includes(k));
+
+                        for (let i = 0; i < Math.min(keys.length, 20); i++) {
+                            for (let j = i + 1; j < Math.min(keys.length, 20); j++) {
+                                const candidate = JSON.parse(JSON.stringify(bestMap));
+                                [candidate[keys[i]], candidate[keys[j]]] = [candidate[keys[j]], candidate[keys[i]]];
+                                const evalResult = this.evaluate(candidate);
+                                if (evalResult.score > bestEval.score) {
+                                    bestMap = candidate;
+                                    bestEval = evalResult;
+                                    improved = true;
+                                    iterations++;
+                                    break;
+                                }
+                            }
+                            if (improved) break;
+                        }
+                        iterations++;
+                    }
+
+                    return { map: bestMap, eval: bestEval };
+                },
+
+                // ---------------------------------------------
+                // SIMULATED ANNEALING
+                // ---------------------------------------------
+                simulatedAnnealing(map) {
+                    let currentMap = JSON.parse(JSON.stringify(map));
+                    let currentEval = this.evaluate(currentMap);
+                    let bestMap = currentMap;
+                    let bestEval = currentEval;
+
+                    const tempStart = 1000;
+                    const tempEnd = 0.1;
+                    const coolingRate = 0.995;
+
+                    let temp = tempStart;
+                    let iteration = 0;
+
+                    while (temp > tempEnd && iteration < 5000) {
+                        const keys = Object.keys(currentMap).filter(k => /[A-Z]/.test(k) && this.cipher.includes(k));
+                        const i = Math.floor(Math.random() * keys.length);
+                        let j = Math.floor(Math.random() * keys.length);
+                        while (j === i) j = Math.floor(Math.random() * keys.length);
+
+                        const candidate = JSON.parse(JSON.stringify(currentMap));
+                        [candidate[keys[i]], candidate[keys[j]]] = [candidate[keys[j]], candidate[keys[i]]];
+                        const candidateEval = this.evaluate(candidate);
+
+                        const delta = candidateEval.score - currentEval.score;
+                        if (delta > 0 || Math.exp(delta / temp) > Math.random()) {
+                            currentMap = candidate;
+                            currentEval = candidateEval;
+                            if (candidateEval.score > bestEval.score) {
+                                bestMap = candidate;
+                                bestEval = candidateEval;
+                            }
+                        }
+
+                        temp *= coolingRate;
+                        iteration++;
+                    }
+
+                    return { map: bestMap, eval: bestEval };
+                },
+
+                // ---------------------------------------------
+                // MAIN ATTACK (Enhanced with multiple algorithms)
+                // ---------------------------------------------
                 async startAttack() {
                     if (!this.cipher.trim()) {
                         this.log('❌ Ciphertext kosong!', 'error');
@@ -763,82 +996,135 @@
                     this.improvements = 0;
                     this.uniqueSolutions = 0;
                     this.allSolutions = new Set();
+                    this.perfectWords = new Set();
                     this.startTime = Date.now();
                     this.startTimer();
 
-                    this.log('🧬 GENETIC ALGORITHM STARTED', 'good');
-                    this.log(`📊 Population: ${this.populationSize}`, 'info');
+                    this.log('🧬 ADVANCED ATTACK STARTED', 'good');
+                    this.log('📊 Population: ' + this.populationSize, 'info');
 
-                    // Initialize population
-                    this.population = [];
-                    for (let i = 0; i < this.populationSize; i++) {
-                        this.population.push(this.createRandomMapping());
-                    }
+                    // Multiple restarts
+                    const numRestarts = 3;
+                    let globalBest = null;
+                    let globalBestEval = null;
 
-                    // Main loop
-                    const maxGenerations = 500;
-                    for (let gen = 0; gen < maxGenerations && !this.stopFlag; gen++) {
-                        this.generation = gen;
-                        this.progress = (gen / maxGenerations) * 100;
+                    for (let restart = 0; restart < numRestarts && !this.stopFlag; restart++) {
+                        if (restart > 0) {
+                            this.log(`🔄 Restart #${restart + 1}`, 'warn');
+                        }
 
-                        // Evaluate all
-                        const evaluated = this.population.map((map, idx) => ({
-                            map: map,
-                            idx: idx,
-                            result: this.evaluate(map)
-                        }));
+                        // Initialize population
+                        this.population = [];
+                        for (let i = 0; i < this.populationSize; i++) {
+                            this.population.push(this.createRandomMapping());
+                        }
 
-                        evaluated.sort((a, b) => b.result.score - a.result.score);
+                        // Genetic Algorithm
+                        const maxGenerations = 300;
+                        for (let gen = 0; gen < maxGenerations && !this.stopFlag; gen++) {
+                            this.generation = gen + restart * maxGenerations;
+                            this.progress = ((gen + restart * maxGenerations) / (maxGenerations * numRestarts)) * 100;
 
-                        // Update best
-                        if (evaluated[0].result.score > this.bestScore) {
-                            this.bestScore = evaluated[0].result.score;
-                            this.improvements++;
-                            this.log(`🎯 Gen ${gen}: Score ${this.bestScore.toFixed(0)} - ${evaluated[0].result.unique} unique words`, 'good');
+                            // Evaluate all
+                            const evaluated = this.population.map((map, idx) => ({
+                                map: map,
+                                idx: idx,
+                                result: this.evaluate(map)
+                            }));
 
-                            // Update display with best
-                            const bestMap = evaluated[0].map;
-                            this.mapping = JSON.parse(JSON.stringify(bestMap));
-                            this.updatePlaintext();
-                            this.updateMappingDisplay();
+                            evaluated.sort((a, b) => b.result.score - a.result.score);
 
-                            // Track unique solutions
-                            const solutionKey = JSON.stringify(evaluated[0].result.validSet);
-                            if (!this.allSolutions.has(solutionKey)) {
-                                this.allSolutions.add(solutionKey);
-                                this.uniqueSolutions++;
+                            // Update best
+                            if (evaluated[0].result.score > this.bestScore) {
+                                this.bestScore = evaluated[0].result.score;
+                                this.improvements++;
+
+                                const bestMap = evaluated[0].map;
+                                this.mapping = JSON.parse(JSON.stringify(bestMap));
+                                this.updatePlaintext();
+                                this.updateMappingDisplay();
+
+                                // Track unique solutions
+                                const solutionKey = JSON.stringify(evaluated[0].result.validSet);
+                                if (!this.allSolutions.has(solutionKey)) {
+                                    this.allSolutions.add(solutionKey);
+                                    this.uniqueSolutions++;
+                                }
+
+                                this.log(`🎯 Gen ${this.generation}: Score ${this.bestScore.toFixed(0)} - ${evaluated[0].result.unique} words`, 'good');
+
+                                // Check if perfect
+                                if (evaluated[0].result.valid > 30 && evaluated[0].result.unique > 15) {
+                                    this.log(`🏆 PERFECT SOLUTION FOUND!`, 'perfect');
+                                    break;
+                                }
+                            }
+
+                            this.topWords = evaluated[0].result.unique;
+                            this.totalAttempts += this.populationSize;
+
+                            // Selection - keep top 25%
+                            const topCount = Math.floor(this.populationSize * 0.25);
+                            const survivors = evaluated.slice(0, topCount).map(e => e.map);
+
+                            // Reproduction
+                            const newPopulation = [...survivors];
+                            while (newPopulation.length < this.populationSize) {
+                                const parent1 = survivors[Math.floor(Math.random() * survivors.length)];
+                                const parent2 = survivors[Math.floor(Math.random() * survivors.length)];
+
+                                let child = this.crossover(parent1, parent2);
+                                if (Math.random() < 0.8) child = this.mutate(child);
+
+                                newPopulation.push(child);
+                            }
+
+                            this.population = newPopulation;
+
+                            if (gen % 20 === 0) await this.sleep(10);
+                        }
+
+                        // Apply Hill Climbing to best from this restart
+                        if (!this.stopFlag) {
+                            this.log('⛰️ Running Hill Climbing...', 'info');
+                            const bestFromGA = this.population[0];
+                            const hillResult = this.hillClimb(bestFromGA);
+
+                            if (hillResult.eval.score > this.bestScore) {
+                                this.bestScore = hillResult.eval.score;
+                                this.mapping = hillResult.map;
+                                this.updatePlaintext();
+                                this.updateMappingDisplay();
+                                this.log(`⛰️ Hill Climbing improved: ${hillResult.eval.valid} words`, 'good');
+                            }
+
+                            // Simulated Annealing
+                            this.log('🌡️ Running Simulated Annealing...', 'info');
+                            const annealResult = this.simulatedAnnealing(this.mapping);
+
+                            if (annealResult.eval.score > this.bestScore) {
+                                this.bestScore = annealResult.eval.score;
+                                this.mapping = annealResult.map;
+                                this.updatePlaintext();
+                                this.updateMappingDisplay();
+                                this.log(`🌡️ Annealing improved: ${annealResult.eval.valid} words`, 'good');
+                            }
+
+                            // Save global best
+                            if (!globalBest || this.bestScore > globalBestEval.score) {
+                                globalBest = JSON.parse(JSON.stringify(this.mapping));
+                                globalBestEval = this.evaluate(this.mapping);
                             }
                         }
+                    }
 
-                        this.topWords = evaluated[0].result.unique;
-                        this.totalAttempts += this.populationSize;
-
-                        // Stop if good enough
-                        if (evaluated[0].result.valid > 30) {
-                            this.log(`🏆 SOLUTION FOUND! ${evaluated[0].result.valid} valid words!`, 'good');
-                            break;
-                        }
-
-                        // Selection - keep top 20%
-                        const topCount = Math.floor(this.populationSize * 0.2);
-                        const survivors = evaluated.slice(0, topCount).map(e => e.map);
-
-                        // Reproduction
-                        const newPopulation = [...survivors];
-                        while (newPopulation.length < this.populationSize) {
-                            const parent1 = survivors[Math.floor(Math.random() * survivors.length)];
-                            const parent2 = survivors[Math.floor(Math.random() * survivors.length)];
-
-                            let child = this.crossover(parent1, parent2);
-                            if (Math.random() < 0.7) child = this.mutate(child);
-
-                            newPopulation.push(child);
-                        }
-
-                        this.population = newPopulation;
-
-                        // Async delay
-                        if (gen % 10 === 0) await this.sleep(50);
+                    // Apply global best
+                    if (globalBest) {
+                        this.mapping = globalBest;
+                        this.updatePlaintext();
+                        this.updateMappingDisplay();
+                        this.bestScore = globalBestEval.score;
+                        this.log(`🏆 FINAL SOLUTION: ${globalBestEval.valid} valid words`, 'perfect');
                     }
 
                     // Final result
@@ -846,11 +1132,47 @@
                     this.validWords = finalEval.valid;
                     this.accuracy = (finalEval.valid / Math.max((this.plain.match(/\b\w+\b/g) || []).length, 1)) * 100;
                     this.recognized = [...finalEval.validSet];
+                    this.perfectWords = finalEval.perfectSet;
+                    this.perfectScore = (this.perfectWords.size / Math.max(this.recognized.length, 1)) * 100;
 
                     this.progress = 100;
                     this.running = false;
                     this.stopTimer();
-                    this.log(`✅ Attack complete! ${this.validWords} valid words`, 'good');
+
+                    if (this.perfectScore >= 95) {
+                        this.log(`🌟 PERFECT SCORE! ${this.perfectScore}% accuracy!`, 'perfect');
+                    } else {
+                        this.log(`✅ Attack complete! ${this.validWords} valid words (${this.accuracy.toFixed(1)}%)`, 'good');
+                    }
+                },
+
+                // ---------------------------------------------
+                // RUN HILL CLIMBING ONLY
+                // ---------------------------------------------
+                async runHillClimbing() {
+                    if (!this.cipher.trim()) {
+                        this.log('❌ Ciphertext kosong!', 'error');
+                        return;
+                    }
+
+                    this.running = true;
+                    this.log('⛰️ Hill Climbing started...', 'info');
+
+                    await this.sleep(100);
+
+                    const result = this.hillClimb(this.mapping);
+                    this.mapping = result.map;
+                    this.updatePlaintext();
+                    this.updateMappingDisplay();
+
+                    const evalResult = this.evaluate(this.mapping);
+                    this.validWords = evalResult.valid;
+                    this.accuracy = (evalResult.valid / Math.max((this.plain.match(/\b\w+\b/g) || []).length, 1)) * 100;
+                    this.recognized = [...evalResult.validSet];
+                    this.bestScore = evalResult.score;
+
+                    this.log(`⛰️ Hill Climbing finished: ${evalResult.valid} valid words`, 'good');
+                    this.running = false;
                 },
 
                 stopAttack() {
@@ -912,6 +1234,7 @@
                         `Plaintext: ${this.plain}\n\n` +
                         `Valid Words: ${this.validWords}\n` +
                         `Accuracy: ${this.accuracy.toFixed(1)}%\n` +
+                        `Perfect Score: ${this.perfectScore.toFixed(1)}%\n` +
                         `Generation: ${this.generation}\n` +
                         `Best Score: ${this.bestScore.toFixed(0)}\n\n` +
                         `=== MAPPING ===\n` +
@@ -953,8 +1276,9 @@
             mounted() {
                 this.resetMapping();
                 this.calculateIOC();
-                this.log('🧬 Genetic Cipher Breaker Pro siap!', 'info');
-                this.log('💡 Tempel ciphertext dan klik ATTACK', 'info');
+                this.log('🧬 Advanced Cipher Breaker Pro siap!', 'info');
+                this.log('💡 Gunakan ATTACK untuk multi-algoritma', 'info');
+                this.log('💡 HILL CLIMB untuk optimasi cepat', 'info');
             }
         });
     </script>
