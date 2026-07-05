@@ -36,23 +36,22 @@
         
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .grid-1 { display: grid; grid-template-columns: 1fr; gap: 16px; }
         
         .card { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-radius: 12px; padding: 16px; border: 1px solid #334155; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
         .card-title { font-weight: 700; font-size: 1rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; color: #3b82f6; }
         .card-title i { font-size: 1.2rem; }
         
-        textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #e2e8f0; font-size: 0.85rem; resize: vertical; min-height: 140px; font-family: 'Courier New', monospace; }
+        textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #e2e8f0; font-size: 0.85rem; resize: vertical; min-height: 120px; font-family: 'Courier New', monospace; }
         textarea:focus { outline: none; border-color: #3b82f6; box-shadow: inset 0 0 0 2px rgba(59, 130, 246, 0.1); }
         
         .stats { display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 8px 0; font-size: 0.75rem; }
         .stats span { background: #0f172a; padding: 4px 12px; border-radius: 16px; border: 1px solid #334155; display: flex; align-items: center; gap: 5px; }
         .stats strong { color: #3b82f6; }
         
-        .mapping-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; max-height: 280px; overflow-y: auto; padding: 8px; background: #0f172a; border-radius: 8px; border: 1px solid #334155; }
-        .mapping-item { background: #1e293b; padding: 8px; border-radius: 6px; border: 1px solid #334155; display: flex; flex-direction: column; gap: 4px; }
+        .mapping-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; max-height: 260px; overflow-y: auto; padding: 8px; background: #0f172a; border-radius: 8px; border: 1px solid #334155; }
+        .mapping-item { background: #1e293b; padding: 8px; border-radius: 6px; border: 1px solid #334155; display: flex; flex-direction: column; gap: 4px; align-items: center; }
         .mapping-item span { font-weight: 700; color: #94a3b8; font-size: 0.7rem; text-align: center; }
-        .mapping-item input { background: transparent; border: none; border-bottom: 2px solid #475569; padding: 2px 4px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; color: #e2e8f0; text-align: center; width: 100%; }
+        .mapping-item input { background: transparent; border: none; border-bottom: 2px solid #475569; padding: 2px 4px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; color: #e2e8f0; text-align: center; width: 100%; max-width: 30px; }
         .mapping-item input:focus { outline: none; border-bottom-color: #3b82f6; }
         .mapping-item .lock { color: #22c55e; font-size: 0.6rem; }
         
@@ -74,15 +73,12 @@
         
         .highlight { background: #eab30833; padding: 0 3px; border-radius: 3px; }
         .word-match { background: #22c55e33; padding: 0 3px; border-radius: 3px; color: #4ade80; }
-        .wrong-word { background: #ef444433; padding: 0 3px; border-radius: 3px; }
         
         .dropzone { border: 2px dashed #334155; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 16px; background: linear-gradient(135deg, #1e293b, #0f172a); cursor: pointer; transition: 0.2s; }
         .dropzone:hover, .dropzone.dragging { border-color: #3b82f6; background: linear-gradient(135deg, #1e3a5f, #0f172a); }
         .dropzone i { font-size: 2rem; color: #3b82f6; margin-bottom: 8px; }
         
-        .control-panel { background: #1e293b; border-radius: 12px; padding: 16px; border: 1px solid #334155; margin-bottom: 16px; }
         .control-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
-        
         .algorithm-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin: 8px 0; }
         .algo-btn { padding: 8px 12px; font-size: 0.75rem; text-align: center; }
         
@@ -90,7 +86,7 @@
         .score-value { font-size: 1.4rem; font-weight: 700; color: #3b82f6; }
         .score-label { font-size: 0.7rem; color: #94a3b8; margin-top: 4px; }
         
-        .footer-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 16px; background: #1e293b; padding: 12px 16px; border-radius: 10px; border: 1px solid #334155; font-size: 0.75rem; }
+        .footer-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-top: 16px; background: #1e293b; padding: 12px 16px; border-radius: 10px; border: 1px solid #334155; font-size: 0.75rem; }
         .stat-item { display: flex; flex-direction: column; gap: 3px; }
         .stat-label { color: #94a3b8; }
         .stat-value { color: #3b82f6; font-weight: 700; font-size: 1rem; }
@@ -105,6 +101,11 @@
         .loading { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; margin: 0 3px; animation: pulse 1.4s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
         
+        .ngram-display { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 6px; }
+        .ngram-item { background: #0f172a; padding: 6px; border-radius: 6px; border: 1px solid #334155; text-align: center; font-size: 0.7rem; font-weight: 600; }
+        .ngram-item .gram { color: #3b82f6; font-size: 0.8rem; }
+        .ngram-item .count { color: #94a3b8; font-size: 0.65rem; }
+        
         @media (max-width: 1200px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
         @media (max-width: 768px) { .grid-3, .grid-2 { grid-template-columns: 1fr; } .mapping-grid { grid-template-columns: repeat(6, 1fr); } .header { flex-direction: column; align-items: flex-start; } .tools { width: 100%; } }
         
@@ -112,11 +113,6 @@
         ::-webkit-scrollbar-track { background: #0f172a; border-radius: 3px; }
         ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
-        
-        .ngram-display { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 6px; }
-        .ngram-item { background: #0f172a; padding: 6px; border-radius: 6px; border: 1px solid #334155; text-align: center; font-size: 0.7rem; font-weight: 600; }
-        .ngram-item .gram { color: #3b82f6; font-size: 0.8rem; }
-        .ngram-item .count { color: #94a3b8; font-size: 0.65rem; }
     </style>
 </head>
 <body>
@@ -128,13 +124,11 @@
             <span style="color: #3b82f6; font-size: 0.8rem; margin-left: 8px; opacity: 0.8;">Advanced v2.0</span>
         </div>
         <div class="tools">
-            <button class="btn" @click="undo" title="Kembalikan aksi sebelumnya"><i class="fas fa-undo-alt"></i> Undo</button>
-            <button class="btn" @click="redo" title="Lanjutkan aksi"><i class="fas fa-redo-alt"></i> Redo</button>
-            <button class="btn btn-success" @click="openAlgorithmSelector" title="Buka pemilih algoritma cracking"><i class="fas fa-brain"></i> Smart Crack</button>
+            <button class="btn" @click="undo"><i class="fas fa-undo-alt"></i> Undo</button>
+            <button class="btn" @click="redo"><i class="fas fa-redo-alt"></i> Redo</button>
+            <button class="btn btn-success" @click="smartCrack"><i class="fas fa-brain"></i> Smart Crack</button>
             <button class="btn btn-primary" @click="exportTXT"><i class="fas fa-file-alt"></i> TXT</button>
-            <button class="btn btn-primary" @click="exportJSON"><i class="fas fa-code"></i> JSON</button>
-            <button class="btn btn-purple" @click="showStats"><i class="fas fa-chart-pie"></i> Statistik</button>
-            <button class="btn" @click="resetAll"><i class="fas fa-sync-alt"></i> Reset</button>
+            <button class="btn btn-purple" @click="showStatsModal = true"><i class="fas fa-chart-pie"></i> Statistik</button>
         </div>
     </header>
 
@@ -144,41 +138,35 @@
         <p style="margin: 8px 0;"><strong>Drag & drop file .txt</strong> atau gunakan tombol di bawah</p>
         <input type="file" accept=".txt,.json" style="display:none" ref="fileInput" @change="loadFile">
         <button class="btn btn-primary btn-sm" @click.stop="$refs.fileInput.click()" style="margin-top: 8px;"><i class="fas fa-folder-open"></i> Pilih File</button>
-        <span class="badge" style="margin-left: 12px;">Max 100KB</span>
     </div>
 
     <!-- TABS -->
     <div class="tabs">
-        <button class="tab-btn" :class="{active: activeTab === 'main'}" @click="activeTab = 'main'"><i class="fas fa-lock-open"></i> Analisis & Crack</button>
-        <button class="tab-btn" :class="{active: activeTab === 'samples'}" @click="activeTab = 'samples'"><i class="fas fa-book"></i> Contoh Cipher</button>
+        <button class="tab-btn" :class="{active: activeTab === 'main'}" @click="activeTab = 'main'"><i class="fas fa-lock-open"></i> Analisis</button>
+        <button class="tab-btn" :class="{active: activeTab === 'samples'}" @click="activeTab = 'samples'"><i class="fas fa-book"></i> Contoh</button>
         <button class="tab-btn" :class="{active: activeTab === 'tools'}" @click="activeTab = 'tools'"><i class="fas fa-toolbox"></i> Tools</button>
-        <button class="tab-btn" :class="{active: activeTab === 'settings'}" @click="activeTab = 'settings'"><i class="fas fa-cog"></i> Pengaturan</button>
     </div>
 
     <!-- TAB: MAIN -->
     <div v-show="activeTab === 'main'">
         <div class="grid-2">
-            <!-- INPUT CIPHER -->
             <div class="card">
                 <div class="card-title"><i class="fas fa-font"></i> Teks Terenkripsi</div>
                 <textarea v-model="cipherText" @input="onCipherChange" placeholder="Masukkan atau paste ciphertext di sini..."></textarea>
                 <div class="stats">
                     <span><i class="fas fa-hashtag"></i> <strong>{{ cipherLength }}</strong> karakter</span>
                     <span><i class="fas fa-cube"></i> <strong>{{ uniqueChars }}</strong> huruf unik</span>
-                    <span><i class="fas fa-language"></i> <strong>{{ detectedLanguage }}</strong></span>
-                    <span><i class="fas fa-percent"></i> <strong>{{ entropyPercent }}</strong>% entropy</span>
+                    <span><i class="fas fa-percent"></i> <strong>{{ progress }}%</strong> mapped</span>
                 </div>
                 <div class="progress-bar"><div class="fill" :style="{width: progress+'%'}"></div></div>
-                
-                <div class="control-row" style="margin-top: 12px;">
-                    <button class="btn" @click="analyzeFrequency"><i class="fas fa-chart-bar"></i> Analisis Frekuensi</button>
-                    <button class="btn btn-warning" @click="smartGuess"><i class="fas fa-magic"></i> Smart Guess</button>
+                <div class="control-row">
+                    <button class="btn btn-warning" @click="autoGuess"><i class="fas fa-magic"></i> Auto Guess</button>
+                    <button class="btn" @click="analyzeFrequency"><i class="fas fa-chart-bar"></i> Frekuensi</button>
                     <button class="btn" @click="analyzeNGrams"><i class="fas fa-layer-group"></i> N-Grams</button>
-                    <button class="btn" @click="analyzePatterns"><i class="fas fa-search"></i> Pola Kata</button>
+                    <button class="btn btn-success" @click="smartCrack"><i class="fas fa-crown"></i> Crack!</button>
                 </div>
             </div>
 
-            <!-- MAPPING DISPLAY -->
             <div class="card">
                 <div class="card-title"><i class="fas fa-exchange-alt"></i> Substitution Mapping</div>
                 <div class="mapping-grid">
@@ -188,11 +176,10 @@
                         <span v-if="isLocked(char)" class="lock"><i class="fas fa-lock"></i></span>
                     </div>
                 </div>
-                <div class="control-row" style="margin-top: 12px;">
-                    <button class="btn btn-danger btn-sm" @click="resetMapping"><i class="fas fa-trash"></i> Reset Map</button>
+                <div class="control-row">
+                    <button class="btn btn-danger btn-sm" @click="resetMapping"><i class="fas fa-trash"></i> Reset</button>
                     <button class="btn btn-primary btn-sm" @click="applyMapping"><i class="fas fa-play"></i> Terapkan</button>
                     <button class="btn btn-purple btn-sm" @click="lockMapped"><i class="fas fa-lock"></i> Kunci</button>
-                    <button class="btn btn-sm" @click="unlockAll"><i class="fas fa-unlock"></i> Buka Semua</button>
                 </div>
             </div>
         </div>
@@ -201,25 +188,9 @@
         <div class="card" style="margin-top: 16px;">
             <div class="card-title"><i class="fas fa-scroll"></i> Hasil Dekripsi</div>
             <div class="result-area" v-html="decodedHTML || '<span style=\"opacity: 0.5;\">Hasil dekripsi akan tampil di sini...</span>'"></div>
-            <div class="control-row" style="margin-top: 12px;">
+            <div class="control-row">
                 <button class="btn btn-primary btn-sm" @click="copyToClipboard"><i class="fas fa-copy"></i> Copy</button>
-                <button class="btn btn-sm" @click="clearResult"><i class="fas fa-eraser"></i> Clear</button>
-            </div>
-        </div>
-
-        <!-- ALGORITHM PANEL -->
-        <div class="card" style="margin-top: 16px;">
-            <div class="card-title"><i class="fas fa-brain"></i> Advanced Cracking Algorithms</div>
-            <div class="algorithm-selector">
-                <button class="btn btn-success algo-btn" @click="() => runAlgorithm('frequency')"><i class="fas fa-chart-bar"></i> Frequency Attack</button>
-                <button class="btn btn-success algo-btn" @click="() => runAlgorithm('hillclimb')"><i class="fas fa-mountain"></i> Hill Climbing</button>
-                <button class="btn btn-success algo-btn" @click="() => runAlgorithm('genetic')"><i class="fas fa-dna"></i> Genetic Algorithm</button>
-                <button class="btn btn-success algo-btn" @click="() => runAlgorithm('simulated')"><i class="fas fa-fire"></i> Simulated Annealing</button>
-                <button class="btn btn-success algo-btn" @click="() => runAlgorithm('dictionary')"><i class="fas fa-book"></i> Dictionary Attack</button>
-                <button class="btn btn-success algo-btn" @click="() => runAlgorithm('hybrid')"><i class="fas fa-infinity"></i> Hybrid</button>
-            </div>
-            <div v-if="isRunning" style="text-align: center; margin-top: 12px;">
-                <span style="font-size: 0.8rem; color: #3b82f6;">Sedang berjalan <span class="loading"></span> <span class="loading"></span> <span class="loading"></span></span>
+                <button class="btn btn-sm" @click="decoded = ''"><i class="fas fa-eraser"></i> Clear</button>
             </div>
         </div>
 
@@ -228,32 +199,27 @@
             <div class="card">
                 <div class="card-title"><i class="fas fa-calculator"></i> Score Metrics</div>
                 <div class="score-box">
-                    <div class="score-value">{{ scoreMetrics.wordMatch }}%</div>
-                    <div class="score-label">Word Match</div>
+                    <div class="score-value">{{ confidencePercent }}%</div>
+                    <div class="score-label">Confidence</div>
                 </div>
                 <div class="score-box">
-                    <div class="score-value">{{ scoreMetrics.chi2 }}</div>
-                    <div class="score-label">Chi-Square</div>
-                </div>
-                <div class="score-box">
-                    <div class="score-value">{{ scoreMetrics.entropy }}</div>
-                    <div class="score-label">Entropy</div>
+                    <div class="score-value">{{ validWords }}/{{ totalWords }}</div>
+                    <div class="score-label">Valid Words</div>
                 </div>
             </div>
             <div class="card">
-                <div class="card-title"><i class="fas fa-info-circle"></i> Metrics Detail</div>
-                <div style="font-size: 0.75rem; line-height: 1.8;">
-                    <div><strong>Mapped Chars:</strong> {{ mappingCount }}/{{ uniqueChars }}</div>
-                    <div><strong>Valid Words:</strong> {{ validWords }}/{{ totalWords }}</div>
-                    <div><strong>Bigrams:</strong> {{ topBigrams }}</div>
-                    <div><strong>Trigrams:</strong> {{ topTrigrams }}</div>
-                    <div><strong>Confidence:</strong> <span class="badge badge-{{ confidenceLevel }}">{{ confidencePercent }}%</span></div>
+                <div class="card-title"><i class="fas fa-info-circle"></i> Detail</div>
+                <div style="font-size: 0.75rem; line-height: 2;">
+                    <div><strong>Mapped:</strong> {{ mappingCount }}/{{ uniqueChars }}</div>
+                    <div><strong>Bigram:</strong> {{ topBigrams }}</div>
+                    <div><strong>Trigram:</strong> {{ topTrigrams }}</div>
+                    <div><strong>Language:</strong> <span class="badge" :class="{'badge-success': confidencePercent > 60, 'badge-warning': confidencePercent > 30}">{{ detectedLanguage }}</span></div>
                 </div>
             </div>
             <div class="card">
                 <div class="card-title"><i class="fas fa-history"></i> Recent Actions</div>
                 <div style="font-size: 0.7rem; line-height: 1.8; max-height: 150px; overflow-y: auto;">
-                    <div v-for="(action, idx) in recentActions.slice(-8)" :key="idx" style="padding: 4px; border-bottom: 1px solid #334155;">
+                    <div v-for="(action, idx) in recentActions.slice(-6)" :key="idx" style="padding: 4px; border-bottom: 1px solid #334155;">
                         {{ action }}
                     </div>
                     <div v-if="recentActions.length === 0" style="opacity: 0.5;">Belum ada aksi...</div>
@@ -264,15 +230,11 @@
 
     <!-- TAB: SAMPLES -->
     <div v-show="activeTab === 'samples'">
-        <div class="grid-2" style="margin-bottom: 16px;">
-            <div v-for="(sample, idx) in cipherSamples" :key="idx" class="card" style="cursor: pointer; transition: 0.2s;" @mouseenter="$event.target.style.borderColor='#3b82f6'" @mouseleave="$event.target.style.borderColor='#334155'" @click="loadSample(idx)">
+        <div class="grid-2">
+            <div v-for="(sample, idx) in cipherSamples" :key="idx" class="card" style="cursor: pointer;" @click="loadSample(idx)">
                 <div class="card-title" style="margin-bottom: 8px;"><i class="fas fa-file-alt"></i> {{ sample.name }}</div>
-                <div style="font-size: 0.75rem; line-height: 1.6; color: #94a3b8; max-height: 80px; overflow: hidden;">{{ sample.ciphertext.substring(0, 150) }}...</div>
-                <div style="margin-top: 8px; font-size: 0.7rem;">
-                    <span class="badge">{{ sample.type }}</span>
-                    <span class="badge">{{ sample.ciphertext.split(' ').length }} words</span>
-                    <button class="btn btn-sm btn-primary" @click.stop="loadSample(idx)" style="margin-top: 8px; width: 100%;"><i class="fas fa-download"></i> Load</button>
-                </div>
+                <div style="font-size: 0.75rem; line-height: 1.6; color: #94a3b8; max-height: 80px; overflow: hidden;">{{ sample.ciphertext.substring(0, 120) }}...</div>
+                <button class="btn btn-primary btn-sm" style="margin-top: 8px; width: 100%;" @click.stop="loadSample(idx)"><i class="fas fa-download"></i> Load</button>
             </div>
         </div>
     </div>
@@ -283,18 +245,18 @@
             <div class="card">
                 <div class="card-title"><i class="fas fa-chart-bar"></i> Frequency Analysis</div>
                 <div class="freq-chart">
-                    <div v-for="(char, idx) in topFreqChars.slice(0, 10)" :key="idx" class="freq-row">
-                        <div class="freq-label">{{ char.char }}</div>
-                        <div class="freq-bar" :style="{width: (char.percentage * 3) + '%'}">
-                            <span v-if="char.percentage > 3">{{ char.percentage }}%</span>
+                    <div v-for="(item, idx) in topFreqChars.slice(0, 10)" :key="idx" class="freq-row">
+                        <div class="freq-label">{{ item.char }}</div>
+                        <div class="freq-bar" :style="{width: (item.percentage * 2) + '%'}">
+                            <span>{{ item.percentage }}%</span>
                         </div>
-                        <div style="width: 40px; text-align: right;">{{ char.count }}x</div>
+                        <div style="width: 40px; text-align: right;">{{ item.count }}x</div>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-title"><i class="fas fa-layer-group"></i> N-Grams Analysis</div>
+                <div class="card-title"><i class="fas fa-layer-group"></i> N-Grams</div>
                 <div style="margin-bottom: 12px;">
                     <strong style="font-size: 0.8rem; color: #e2e8f0;">Top Bigrams:</strong>
                     <div class="ngram-display">
@@ -315,100 +277,18 @@
                 </div>
             </div>
         </div>
-
-        <div class="card" style="margin-top: 16px;">
-            <div class="card-title"><i class="fas fa-search"></i> Pattern & Known Plaintext Attack</div>
-            <div class="control-row">
-                <input v-model="knownPlaintext" type="text" placeholder="Known plaintext (optional)" style="padding: 6px 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #e2e8f0; flex: 1;">
-                <button class="btn btn-warning btn-sm" @click="applyKnownPlaintext"><i class="fas fa-key"></i> Apply KPA</button>
-            </div>
-            <div style="margin-top: 8px; font-size: 0.75rem; color: #94a3b8;">
-                Gunakan untuk meng-constrain mapping ketika Anda tahu bagian plaintext
-            </div>
-        </div>
     </div>
 
-    <!-- TAB: SETTINGS -->
-    <div v-show="activeTab === 'settings'">
-        <div class="grid-2">
-            <div class="card">
-                <div class="card-title"><i class="fas fa-cog"></i> Pengaturan Algoritma</div>
-                <div style="font-size: 0.8rem; line-height: 2;">
-                    <div>
-                        <label>Max Hill Climb Iterations:</label>
-                        <input v-model.number="settings.hillClimbIter" type="range" min="100" max="5000" step="100" style="width: 100%; margin-bottom: 8px;">
-                        <span style="color: #3b82f6;">{{ settings.hillClimbIter }}</span>
-                    </div>
-                    <div style="margin-top: 12px;">
-                        <label>Genetic Population Size:</label>
-                        <input v-model.number="settings.genPopSize" type="range" min="20" max="500" step="20" style="width: 100%; margin-bottom: 8px;">
-                        <span style="color: #3b82f6;">{{ settings.genPopSize }}</span>
-                    </div>
-                    <div style="margin-top: 12px;">
-                        <label>Genetic Generations:</label>
-                        <input v-model.number="settings.genGenerations" type="range" min="10" max="500" step="10" style="width: 100%; margin-bottom: 8px;">
-                        <span style="color: #3b82f6;">{{ settings.genGenerations }}</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title"><i class="fas fa-book"></i> Dictionary Management</div>
-                <button class="btn btn-primary btn-sm" @click="loadDefaultDictionary" style="width: 100%; margin-bottom: 8px;"><i class="fas fa-download"></i> Load Default Dictionary</button>
-                <button class="btn btn-sm" @click="importDictionary" style="width: 100%; margin-bottom: 8px;"><i class="fas fa-upload"></i> Import Custom Dictionary</button>
-                <input type="file" accept=".txt" style="display: none;" ref="dictInput" @change="processDictImport">
-                <div style="margin-top: 8px; font-size: 0.75rem; color: #94a3b8;">
-                    <strong>Loaded Words:</strong> {{ dictionary.length }}
-                </div>
-            </div>
-        </div>
-
-        <div class="card" style="margin-top: 16px;">
-            <div class="card-title"><i class="fas fa-info-circle"></i> Tentang CryptPro Advanced v2.0</div>
-            <div style="font-size: 0.8rem; line-height: 1.8; color: #94a3b8;">
-                <p>🔐 Aplikasi analisis substitution cipher dengan algoritma-algoritma canggih:</p>
-                <ul style="margin-left: 16px; margin-top: 8px;">
-                    <li><strong>Frequency Analysis:</strong> Analisis frekuensi karakter berdasarkan statistik Inggris</li>
-                    <li><strong>Hill Climbing:</strong> Optimisasi lokal dengan pencarian iteratif</li>
-                    <li><strong>Genetic Algorithm:</strong> Evolusi populasi solusi</li>
-                    <li><strong>Simulated Annealing:</strong> Escape dari local minima dengan simulasi pendinginan</li>
-                    <li><strong>Dictionary Attack:</strong> Cocokkan kata-kata dengan kamus</li>
-                    <li><strong>N-Gram Analysis:</strong> Analisis bigram dan trigram untuk pattern matching</li>
-                </ul>
-                <p style="margin-top: 12px;">💡 Dikembangkan untuk educational purposes</p>
-            </div>
-        </div>
+    <!-- FOOTER -->
+    <div class="footer-stats">
+        <div class="stat-item"><div class="stat-label">Progress</div><div class="stat-value">{{ progress }}%</div></div>
+        <div class="stat-item"><div class="stat-label">Mapping</div><div class="stat-value">{{ mappingCount }}/{{ uniqueChars }}</div></div>
+        <div class="stat-item"><div class="stat-label">Valid Words</div><div class="stat-value">{{ validWords }}/{{ totalWords }}</div></div>
+        <div class="stat-item"><div class="stat-label">Confidence</div><div class="stat-value">{{ confidencePercent }}%</div></div>
+        <div class="stat-item"><div class="stat-label">Language</div><div class="stat-value">{{ detectedLanguage }}</div></div>
     </div>
 
-    <!-- FOOTER STATS -->
-    <div class="footer-stats" style="margin-top: 16px;">
-        <div class="stat-item">
-            <div class="stat-label">Progress</div>
-            <div class="stat-value">{{ Math.round(progress) }}%</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-label">Mapping Status</div>
-            <div class="stat-value">{{ mappingCount }}/{{ uniqueChars }}</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-label">Cipher Length</div>
-            <div class="stat-value">{{ cipherLength }}</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-label">Unique Characters</div>
-            <div class="stat-value">{{ uniqueChars }}</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-label">Valid Words</div>
-            <div class="stat-value">{{ validWords }}/{{ totalWords }}</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-label">Language</div>
-            <div class="stat-value">{{ detectedLanguage }}</div>
-        </div>
-    </div>
-
-    <!-- MODAL: STATS -->
+    <!-- MODAL STATS -->
     <div class="modal" :class="{show: showStatsModal}" @click="showStatsModal = false">
         <div class="modal-content" @click.stop>
             <button class="modal-close" @click="showStatsModal = false">&times;</button>
@@ -416,24 +296,27 @@
             <div style="font-size: 0.8rem; line-height: 2;">
                 <div><strong>Total Characters:</strong> {{ cipherLength }}</div>
                 <div><strong>Unique Characters:</strong> {{ uniqueChars }}</div>
-                <div><strong>Entropy:</strong> {{ entropyPercent }}%</div>
+                <div><strong>Mapped Characters:</strong> {{ mappingCount }}</div>
+                <div><strong>Confidence:</strong> {{ confidencePercent }}%</div>
+                <div><strong>Valid Words:</strong> {{ validWords }} / {{ totalWords }}</div>
                 <div style="margin-top: 12px;"><strong>Frequency Distribution:</strong></div>
                 <div style="background: #0f172a; padding: 8px; border-radius: 6px; margin-top: 8px; max-height: 300px; overflow-y: auto;">
-                    <div v-for="char in allCharsFreq" :key="char.char" style="display: flex; justify-content: space-between; padding: 2px 0; border-bottom: 1px solid #334155;">
-                        <span><strong>{{ char.char }}:</strong></span>
-                        <span>{{ char.count }}x ({{ char.percentage }}%)</span>
+                    <div v-for="item in allCharsFreq" :key="item.char" style="display: flex; justify-content: space-between; padding: 2px 0; border-bottom: 1px solid #334155;">
+                        <span><strong>{{ item.char }}:</strong></span>
+                        <span>{{ item.count }}x ({{ item.percentage }}%)</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
 <script>
-const englishFreq = {
+// ============================================
+// ENGLISH FREQUENCY DATA
+// ============================================
+const ENGLISH_FREQ = {
     'E': 11.1607, 'A': 8.4966, 'R': 7.5809, 'I': 7.2448, 'O': 7.1635,
     'T': 6.9147, 'N': 6.7482, 'S': 6.3327, 'H': 6.0094, 'D': 4.2543,
     'L': 4.0365, 'C': 2.7779, 'U': 2.7601, 'M': 2.4152, 'W': 2.3612,
@@ -441,7 +324,7 @@ const englishFreq = {
     'V': 0.9769, 'K': 0.5731, 'J': 0.1965, 'X': 0.1508, 'Q': 0.0817, 'Z': 0.0722
 };
 
-const commonEnglishWords = [
+const COMMON_WORDS = [
     'the','be','to','of','and','a','in','that','have','i','it','for','not','on','with',
     'he','as','you','do','at','this','but','his','by','from','they','we','say','her','she',
     'or','an','will','my','one','all','would','there','their','what','so','up','out','if',
@@ -450,9 +333,16 @@ const commonEnglishWords = [
     'other','than','then','now','look','only','come','its','over','think','also','back',
     'after','use','two','how','our','work','first','well','way','even','new','want','because',
     'any','these','give','day','most','us','is','was','are','been','being','has','had',
-    'does','did','do','will','would','could','should','may','might','must','can','shall'
+    'does','did','do','will','would','could','should','may','might','must','can','shall',
+    'there','their','they','which','would','could','should','people','about','other',
+    'world','house','water','light','thing','right','think','place','work','great',
+    'where','after','every','still','state','hand','life','part','long','time','day',
+    'way','man','good','new','said','some','them','then','than','when','more','very'
 ];
 
+// ============================================
+// VUE APP
+// ============================================
 new Vue({
     el: '#app',
     data: {
@@ -462,108 +352,72 @@ new Vue({
         progress: 0,
         history: [],
         historyIndex: -1,
-        maxHistory: 100,
+        maxHistory: 50,
         activeTab: 'main',
         dragState: '',
-        isRunning: false,
         showStatsModal: false,
-        knownPlaintext: '',
         lockedKeys: [],
         recentActions: [],
         
-        settings: {
-            hillClimbIter: 2000,
-            genPopSize: 100,
-            genGenerations: 150
-        },
-        
-        dictionary: [],
-        commonWords: commonEnglishWords,
-        englishFreq: englishFreq,
-        
         cipherSamples: [
-            {
-                name: 'Classic ROT13 Style',
-                type: 'Shift Cipher',
-                ciphertext: `uryyb jbeyq guvf vf n grfg zrffntr sbe gur pzd pzqp pzqp pzqp pzqp pzqp pzqp pzqp pzqp pzqp`,
-                solution: {}
-            },
-            {
-                name: 'Random Substitution 1',
-                type: 'Monoalphabetic',
-                ciphertext: `vjku ku d ykfqiup eohkgjyzgyd eyjvkh oxkkqnk sih cqofofn qdffaon wqffaon`,
-                solution: {}
-            },
-            {
-                name: 'Random Substitution 2',
-                type: 'Monoalphabetic',
-                ciphertext: `jxs hijfs nzow hsla znud jxs opbk ozn ajd jsqd oxnd sjqm jxsq jxsd qzhds`,
-                solution: {}
-            },
-            {
-                name: 'Pangram (Easy)',
-                type: 'Quick Test',
-                ciphertext: `jvs fzrxp nyzob hyq ozlmd yfsh jvs morb ayp`,
-                solution: {}
-            }
+            { name: '📁 Cipher 01 - Contoh', ciphertext: `mxgwx puvrm boteo tvr modovunk uv vobtw vobtw um t ptdtctk eaxvndk puwwor cunl ftzuetw tvr doftdgthwo ahqoenm pad htwuvomo tdnumn ctktv mxqtvt.` },
+            { name: '📁 Cipher 02', ciphertext: `tve lescejtwnk ns tve brkbvwke nk tve bknaz vwygcgzgk pegib agb, snl bricr, cwie g ocwttelwko xwgynkx` },
+            { name: '📁 Cipher 03', ciphertext: `zw qwjc czwkw fbcwk fccwjynjp czw onwjjfvw in fkc wuwjc nj ofjpvfywlz` },
+            { name: '📁 Cipher 04', ciphertext: `jyeezyswtw au bzysrngsj dnvvtw fgrh trtesnp jszfj, stvnp etbngsj n "htnlts"` },
+            { name: '📁 Cipher 05', ciphertext: `hw kwsc hpllo pjy cbpjxmzs vhwj rzuzczji chwuw lspfwu nk vnbuhzl` },
+            { name: '📁 Cipher 06', ciphertext: `xbnvn dnvn gp mwfa hznwg tphft xbvpctb ma bnwz dbnf h dwfxnz xp yvnwxn` },
+            { name: '📁 Cipher 07', ciphertext: `icp gsuudqn vzuep udmudpdqn nid nuoqpyzufonczq zy icp cqqdu jdcql` },
+            { name: '📁 Cipher 08', ciphertext: `yshhvomba xiyb bamzs qsjossz jas jov xiwmzsb ib mf kxvtmbmzp avks` },
+            { name: '📁 Cipher 09', ciphertext: `vaf vyvof yg ilcth. yv yg geqqcgfm vc uf popdptmp tcv pdptmp` },
+            { name: '📁 Cipher 10', ciphertext: `dan vgqu nxhun vwhesajellu gf hf gpwf-hai nshyw hn ihun gj nef naldgewssw dao` }
         ],
         
         topFreqChars: [],
         topBigramsDetail: [],
-        topTrigramsDetail: [],
-        
-        scoreMetrics: {
-            wordMatch: 0,
-            chi2: 0,
-            entropy: 0
-        }
+        topTrigramsDetail: []
     },
     
     computed: {
-        cipherLength() { return this.cipherText.length; },
-        uniqueChars() { return new Set(this.cipherText.toUpperCase().replace(/[^A-Z]/g,'')).size; },
-        sortedChars() { return Array.from(new Set(this.cipherText.toUpperCase().replace(/[^A-Z]/g,''))).sort(); },
-        mappingCount() { return Object.values(this.mapping).filter(v => v && v.length > 0).length; },
+        cipherLength() { 
+            return this.cipherText ? this.cipherText.length : 0; 
+        },
+        
+        uniqueChars() {
+            if (!this.cipherText) return 0;
+            return new Set(this.cipherText.toUpperCase().replace(/[^A-Z]/g,'')).size;
+        },
+        
+        sortedChars() {
+            if (!this.cipherText) return [];
+            return Array.from(new Set(this.cipherText.toUpperCase().replace(/[^A-Z]/g,''))).sort();
+        },
+        
+        mappingCount() {
+            return Object.values(this.mapping).filter(v => v && v.length > 0).length;
+        },
         
         validWords() {
             if (!this.decoded) return 0;
             const words = this.decoded.split(/[\s,.;!?():\-"']+/).filter(w => w.length > 2);
-            return words.filter(w => this.commonWords.includes(w.toLowerCase())).length;
+            return words.filter(w => COMMON_WORDS.includes(w.toLowerCase())).length;
         },
+        
         totalWords() {
             if (!this.decoded) return 0;
             return this.decoded.split(/[\s,.;!?():\-"']+/).filter(w => w.length > 2).length;
         },
         
-        confidenceLevel() {
-            const conf = this.confidencePercent;
-            if (conf >= 80) return 'success';
-            if (conf >= 50) return 'warning';
-            return 'danger';
-        },
         confidencePercent() {
             if (this.totalWords === 0) return 0;
             return Math.min(100, Math.round((this.validWords / this.totalWords) * 100));
         },
         
-        entropyPercent() {
-            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
-            if (text.length === 0) return 0;
-            const freq = {};
-            for (let c of text) freq[c] = (freq[c] || 0) + 1;
-            let entropy = 0;
-            for (let c in freq) {
-                const p = freq[c] / text.length;
-                entropy -= p * Math.log2(p);
-            }
-            return Math.round((entropy / 4.7) * 100);
-        },
-        
         detectedLanguage() {
-            if (this.validWords > this.totalWords * 0.6) return '🇬🇧 English (High Confidence)';
-            if (this.validWords > this.totalWords * 0.3) return '🇬🇧 English (Medium)';
-            if (this.validWords > this.totalWords * 0.1) return '🇬🇧 English (Low)';
-            return '❓ Undetected';
+            const conf = this.confidencePercent;
+            if (conf >= 60) return '🇬🇧 English';
+            if (conf >= 30) return '🇬🇧 English (?)';
+            if (this.validWords > 0) return '📖 Unknown';
+            return '❓ Empty';
         },
         
         decodedHTML() {
@@ -572,10 +426,8 @@ new Vue({
             const words = html.split(/(\s+)/);
             html = words.map(w => {
                 const clean = w.replace(/[^a-zA-Z]/g,'');
-                if (clean.length > 2) {
-                    if (this.commonWords.includes(clean.toLowerCase())) {
-                        return `<span class="word-match">${w}</span>`;
-                    }
+                if (clean.length > 2 && COMMON_WORDS.includes(clean.toLowerCase())) {
+                    return `<span class="word-match">${w}</span>`;
                 }
                 return w;
             }).join('');
@@ -583,6 +435,7 @@ new Vue({
         },
         
         allCharsFreq() {
+            if (!this.cipherText) return [];
             const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
             const freq = {};
             for (let c of text) freq[c] = (freq[c] || 0) + 1;
@@ -615,22 +468,31 @@ new Vue({
     },
     
     mounted() {
-        this.loadDefaultDictionary();
-        this.cipherText = this.cipherSamples[0].ciphertext;
+        // Load sample pertama
+        this.loadSample(0);
+        // Restore saved mapping
+        const saved = localStorage.getItem('cipherMapping');
+        if (saved) {
+            try {
+                this.mapping = JSON.parse(saved);
+                this.applyMapping();
+            } catch(e) {}
+        }
+        this.addAction('Aplikasi siap');
     },
     
     methods: {
+        loadSample(idx) {
+            this.cipherText = this.cipherSamples[idx].ciphertext;
+            this.activeTab = 'main';
+            this.addAction(`Loaded: ${this.cipherSamples[idx].name}`);
+        },
+        
         onCipherChange() {
             this.autoGenerateMapping();
             this.applyMapping();
             this.updateFrequencyAnalysis();
             this.saveState();
-        },
-        
-        loadSample(idx) {
-            this.cipherText = this.cipherSamples[idx].ciphertext;
-            this.activeTab = 'main';
-            this.addAction(`Loaded sample: ${this.cipherSamples[idx].name}`);
         },
         
         autoGenerateMapping() {
@@ -645,6 +507,12 @@ new Vue({
         },
         
         applyMapping() {
+            if (!this.cipherText) {
+                this.decoded = '';
+                this.progress = 0;
+                return;
+            }
+            
             let result = '';
             for (let ch of this.cipherText) {
                 const upper = ch.toUpperCase();
@@ -659,21 +527,20 @@ new Vue({
             
             const total = this.cipherText.replace(/[^a-zA-Z]/g,'').length || 1;
             const mappedCount = result.replace(/[^a-zA-Z]/g,'').length;
-            this.progress = Math.min(100, (mappedCount / total) * 100);
+            this.progress = Math.min(100, Math.round((mappedCount / total) * 100));
             
-            this.updateScores();
-            this.updateFrequencyAnalysis();
             localStorage.setItem('cipherMapping', JSON.stringify(this.mapping));
+            this.updateFrequencyAnalysis();
         },
         
         updateFrequencyAnalysis() {
             const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
             if (text.length === 0) return;
             
+            // Frequency
             const freq = {};
             for (let c of text) freq[c] = (freq[c] || 0) + 1;
             const total = text.length;
-            
             this.topFreqChars = Object.entries(freq)
                 .map(([char, count]) => ({
                     char,
@@ -705,37 +572,6 @@ new Vue({
                 .slice(0, 15);
         },
         
-        updateScores() {
-            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
-            if (text.length === 0) return;
-            
-            // Word Match Score
-            this.scoreMetrics.wordMatch = this.confidencePercent;
-            
-            // Chi-Square
-            const freq = {};
-            for (let c of text) freq[c] = (freq[c] || 0) + 1;
-            const total = text.length;
-            let chi2 = 0;
-            for (let c = 65; c <= 90; c++) {
-                const char = String.fromCharCode(c);
-                const observed = freq[char] || 0;
-                const expected = (this.englishFreq[char] || 0.5) * total / 100;
-                if (expected > 0) {
-                    chi2 += Math.pow(observed - expected, 2) / expected;
-                }
-            }
-            this.scoreMetrics.chi2 = chi2.toFixed(2);
-            
-            // Entropy
-            let entropy = 0;
-            for (let c in freq) {
-                const p = freq[c] / total;
-                entropy -= p * Math.log2(p);
-            }
-            this.scoreMetrics.entropy = entropy.toFixed(2);
-        },
-        
         resetMapping() {
             for (let k in this.mapping) this.mapping[k] = '';
             this.lockedKeys = [];
@@ -753,12 +589,55 @@ new Vue({
                     this.lockedKeys.push(k);
                 }
             }
-            this.addAction('Locked all mapped characters');
+            this.addAction('Locked mapped chars');
         },
         
-        unlockAll() {
-            this.lockedKeys = [];
-            this.addAction('Unlocked all characters');
+        autoGuess() {
+            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
+            const freq = {};
+            for (let c of text) freq[c] = (freq[c] || 0) + 1;
+            const sorted = Object.keys(freq).sort((a,b) => freq[b]-freq[a]);
+            const englishOrder = Object.keys(ENGLISH_FREQ).sort((a,b) => ENGLISH_FREQ[b] - ENGLISH_FREQ[a]);
+            
+            for (let i = 0; i < Math.min(sorted.length, englishOrder.length); i++) {
+                if (!this.isLocked(sorted[i])) {
+                    this.mapping[sorted[i]] = englishOrder[i];
+                }
+            }
+            this.applyMapping();
+            this.addAction('Auto guess based on frequency');
+        },
+        
+        smartCrack() {
+            this.autoGuess();
+            
+            // Try to detect common words
+            const words = this.cipherText.split(/\s+/);
+            const threeWords = [...new Set(words.filter(w => w.length === 3 && /^[a-z]+$/.test(w)))];
+            
+            for (let target of ['THE','AND','YOU','WAS','FOR','ARE','BUT','NOT','HAD','ALL','CAN','HER','ONE','OUR','OUT']) {
+                for (let w of threeWords) {
+                    let possible = true;
+                    const testMap = {};
+                    for (let i = 0; i < 3; i++) {
+                        const c = w[i].toUpperCase();
+                        const p = target[i];
+                        if (this.mapping[c] && this.mapping[c] !== p) { possible = false; break; }
+                        testMap[c] = p;
+                    }
+                    if (possible) {
+                        for (let k in testMap) {
+                            if (!this.isLocked(k)) {
+                                this.mapping[k] = testMap[k];
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            this.applyMapping();
+            this.addAction('Smart crack completed - ' + this.confidencePercent + '% confidence');
         },
         
         analyzeFrequency() {
@@ -771,306 +650,19 @@ new Vue({
             let msg = '📊 FREQUENCY ANALYSIS\n' + '='.repeat(50) + '\n\n';
             msg += sorted.map(([k,v], i) => {
                 const pct = ((v/total)*100).toFixed(1);
-                const suggestions = Object.entries(this.englishFreq)
-                    .sort((a,b) => b[1]-a[1])
+                const suggestions = Object.keys(ENGLISH_FREQ)
+                    .sort((a,b) => ENGLISH_FREQ[b] - ENGLISH_FREQ[a])
                     .slice(i, i+3)
-                    .map(([c]) => c)
                     .join(', ');
                 return `${i+1}. ${k}: ${v} (${pct}%) → Try: ${suggestions}`;
             }).join('\n');
-            
-            msg += '\n\n' + '='.repeat(50);
-            msg += '\n💡 Gunakan saran di atas untuk manual mapping';
             alert(msg);
-        },
-        
-        smartGuess() {
-            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
-            const freq = {};
-            for (let c of text) freq[c] = (freq[c] || 0) + 1;
-            const sorted = Object.keys(freq).sort((a,b) => freq[b]-freq[a]);
-            const englishOrder = Object.keys(this.englishFreq).sort((a,b) => this.englishFreq[b] - this.englishFreq[a]);
-            
-            for (let i = 0; i < Math.min(sorted.length, englishOrder.length); i++) {
-                if (!this.isLocked(sorted[i])) {
-                    this.mapping[sorted[i]] = englishOrder[i];
-                }
-            }
-            this.applyMapping();
-            this.addAction('Applied smart guess based on frequency');
         },
         
         analyzeNGrams() {
             const bigramMsg = this.topBigramsDetail.map((b, i) => `${i+1}. ${b.gram}: ${b.count}x`).join('\n');
             const trigramMsg = this.topTrigramsDetail.map((t, i) => `${i+1}. ${t.gram}: ${t.count}x`).join('\n');
-            alert(`📊 N-GRAM ANALYSIS\n\n📌 TOP BIGRAMS:\n${bigramMsg}\n\n📌 TOP TRIGRAMS:\n${trigramMsg}`);
-        },
-        
-        analyzePatterns() {
-            const words = this.cipherText.toUpperCase().split(/\s+/);
-            const patterns = {};
-            
-            for (let w of words) {
-                if (/^[A-Z]+$/.test(w) && w.length > 1) {
-                    const pattern = this.getPattern(w);
-                    patterns[pattern] = patterns[pattern] || [];
-                    patterns[pattern].push(w);
-                }
-            }
-            
-            const sorted = Object.entries(patterns)
-                .sort((a,b) => b[1].length - a[1].length)
-                .slice(0, 20);
-            
-            let msg = '🔍 WORD PATTERNS\n' + '='.repeat(50) + '\n\n';
-            msg += sorted.map(([p, words]) => {
-                return `Pattern ${p}: ${words.join(', ')} (${words.length}x)`;
-            }).join('\n');
-            
-            alert(msg);
-        },
-        
-        getPattern(word) {
-            const map = {};
-            let pattern = '';
-            for (let ch of word) {
-                if (!(ch in map)) map[ch] = String.fromCharCode(65 + Object.keys(map).length);
-                pattern += map[ch];
-            }
-            return pattern;
-        },
-        
-        openAlgorithmSelector() {
-            alert('Select algorithm:\n\n1. Frequency - Fast, basic\n2. Hill Climbing - Better optimization\n3. Genetic - Population-based\n4. Simulated Annealing - Escape local minima\n5. Dictionary - Word matching\n6. Hybrid - Combine all methods');
-        },
-        
-        runAlgorithm(algo) {
-            this.isRunning = true;
-            
-            setTimeout(() => {
-                if (algo === 'frequency') this.frequencyAttack();
-                else if (algo === 'hillclimb') this.hillClimbAttack();
-                else if (algo === 'genetic') this.geneticAttack();
-                else if (algo === 'simulated') this.simulatedAnnealingAttack();
-                else if (algo === 'dictionary') this.dictionaryAttack();
-                else if (algo === 'hybrid') this.hybridAttack();
-                
-                this.isRunning = false;
-            }, 100);
-        },
-        
-        frequencyAttack() {
-            this.smartGuess();
-            this.addAction('Ran frequency attack algorithm');
-        },
-        
-        hillClimbAttack() {
-            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
-            let bestMapping = {...this.mapping};
-            let bestScore = this.calculateFitnessScore(text, bestMapping);
-            
-            for (let iter = 0; iter < this.settings.hillClimbIter; iter++) {
-                const newMapping = {...bestMapping};
-                const chars = Object.keys(newMapping);
-                
-                // Swap two random mappings
-                const i = Math.floor(Math.random() * chars.length);
-                const j = Math.floor(Math.random() * chars.length);
-                if (i !== j) {
-                    [newMapping[chars[i]], newMapping[chars[j]]] = [newMapping[chars[j]], newMapping[chars[i]]];
-                }
-                
-                const newScore = this.calculateFitnessScore(text, newMapping);
-                if (newScore > bestScore) {
-                    bestScore = newScore;
-                    bestMapping = newMapping;
-                }
-            }
-            
-            this.mapping = bestMapping;
-            this.applyMapping();
-            this.addAction('Ran hill climbing algorithm - ' + this.scoreMetrics.wordMatch + '% confidence');
-        },
-        
-        geneticAttack() {
-            const popSize = this.settings.genPopSize;
-            const generations = this.settings.genGenerations;
-            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
-            
-            let population = [];
-            for (let i = 0; i < popSize; i++) {
-                population.push(this.randomizeMapping());
-            }
-            
-            for (let gen = 0; gen < generations; gen++) {
-                population.sort((a, b) => 
-                    this.calculateFitnessScore(text, b) - this.calculateFitnessScore(text, a)
-                );
-                
-                const newPop = population.slice(0, Math.floor(popSize * 0.2));
-                
-                while (newPop.length < popSize) {
-                    const p1 = population[Math.floor(Math.random() * Math.floor(popSize * 0.5))];
-                    const p2 = population[Math.floor(Math.random() * Math.floor(popSize * 0.5))];
-                    const child = this.crossover(p1, p2);
-                    newPop.push(this.mutate(child, 0.1));
-                }
-                
-                population = newPop;
-            }
-            
-            this.mapping = population[0];
-            this.applyMapping();
-            this.addAction('Ran genetic algorithm - ' + this.scoreMetrics.wordMatch + '% confidence');
-        },
-        
-        simulatedAnnealingAttack() {
-            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
-            let currentMapping = {...this.mapping};
-            let currentScore = this.calculateFitnessScore(text, currentMapping);
-            let bestMapping = {...currentMapping};
-            let bestScore = currentScore;
-            
-            let temperature = 1.0;
-            const coolingRate = 0.995;
-            
-            for (let iter = 0; iter < this.settings.hillClimbIter; iter++) {
-                const newMapping = {...currentMapping};
-                const chars = Object.keys(newMapping);
-                const i = Math.floor(Math.random() * chars.length);
-                const j = Math.floor(Math.random() * chars.length);
-                
-                if (i !== j) {
-                    [newMapping[chars[i]], newMapping[chars[j]]] = [newMapping[chars[j]], newMapping[chars[i]]];
-                }
-                
-                const newScore = this.calculateFitnessScore(text, newMapping);
-                const delta = newScore - currentScore;
-                
-                if (delta > 0 || Math.random() < Math.exp(delta / temperature)) {
-                    currentMapping = newMapping;
-                    currentScore = newScore;
-                    
-                    if (currentScore > bestScore) {
-                        bestScore = currentScore;
-                        bestMapping = {...currentMapping};
-                    }
-                }
-                
-                temperature *= coolingRate;
-            }
-            
-            this.mapping = bestMapping;
-            this.applyMapping();
-            this.addAction('Ran simulated annealing - ' + this.scoreMetrics.wordMatch + '% confidence');
-        },
-        
-        dictionaryAttack() {
-            const decodedWords = this.decoded.split(/[\s,.;!?():\-"']+/)
-                .map(w => w.toLowerCase())
-                .filter(w => w.length > 2);
-            
-            const unknownWords = [...new Set(decodedWords.filter(w => !this.dictionary.includes(w)))];
-            alert(`📚 Dictionary Attack Results:\n\nValid words found: ${decodedWords.length - unknownWords.length}\nPotentially wrong: ${unknownWords.length}\n\nFirst 10 unmatched:\n${unknownWords.slice(0, 10).join(', ')}`);
-            this.addAction('Ran dictionary attack');
-        },
-        
-        hybridAttack() {
-            this.frequencyAttack();
-            this.hillClimbAttack();
-            this.geneticAttack();
-            this.addAction('Ran hybrid attack (combined all methods)');
-        },
-        
-        calculateFitnessScore(text, mapping) {
-            let score = 0;
-            
-            // Word score
-            let decoded = '';
-            for (let ch of text) {
-                decoded += mapping[ch] || '?';
-            }
-            
-            const words = decoded.split(/\W+/);
-            for (let w of words) {
-                if (w.length > 2 && this.commonWords.includes(w.toLowerCase())) {
-                    score += w.length * w.length;
-                }
-            }
-            
-            // Bigram frequency score
-            const commonBigrams = ['TH','HE','IN','ER','AN','ED','ND','OR','EN','ES','AR','IT','HA','TO','AS'];
-            for (let i = 0; i < text.length - 1; i++) {
-                const bg = text.substr(i, 2);
-                const decodedBg = (mapping[bg[0]] || '?') + (mapping[bg[1]] || '?');
-                if (commonBigrams.includes(decodedBg)) score += 10;
-            }
-            
-            // Trigram frequency score
-            const commonTrigrams = ['THE','AND','FOR','ARE','YOU','ALL','NOT','BUT','CAN','HAD','HER','WAS','ONE','OUR','OUT'];
-            for (let i = 0; i < text.length - 2; i++) {
-                const tg = text.substr(i, 3);
-                const decodedTg = (mapping[tg[0]] || '?') + (mapping[tg[1]] || '?') + (mapping[tg[2]] || '?');
-                if (commonTrigrams.includes(decodedTg)) score += 20;
-            }
-            
-            return score;
-        },
-        
-        randomizeMapping() {
-            const chars = Object.keys(this.mapping);
-            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-            const shuffled = alphabet.sort(() => Math.random() - 0.5);
-            
-            const newMapping = {};
-            for (let i = 0; i < chars.length; i++) {
-                newMapping[chars[i]] = shuffled[i] || '';
-            }
-            return newMapping;
-        },
-        
-        crossover(p1, p2) {
-            const child = {};
-            const chars = Object.keys(p1);
-            for (let c of chars) {
-                child[c] = Math.random() < 0.5 ? p1[c] : p2[c];
-            }
-            return child;
-        },
-        
-        mutate(mapping, rate) {
-            const newMapping = {...mapping};
-            const chars = Object.keys(newMapping);
-            
-            for (let c of chars) {
-                if (Math.random() < rate && !this.isLocked(c)) {
-                    const randomChar = String.fromCharCode(65 + Math.floor(Math.random() * 26));
-                    newMapping[c] = randomChar;
-                }
-            }
-            return newMapping;
-        },
-        
-        applyKnownPlaintext() {
-            if (this.knownPlaintext.length < 2) {
-                alert('Please enter at least 2 characters');
-                return;
-            }
-            
-            const cipherIndex = this.cipherText.toUpperCase().indexOf(this.knownPlaintext[0]);
-            if (cipherIndex === -1) {
-                alert('Known plaintext not found in cipher');
-                return;
-            }
-            
-            for (let i = 0; i < this.knownPlaintext.length; i++) {
-                const cipherChar = this.cipherText[cipherIndex + i].toUpperCase();
-                const plainChar = this.knownPlaintext[i].toUpperCase();
-                this.mapping[cipherChar] = plainChar;
-            }
-            
-            this.applyMapping();
-            this.addAction(`Applied known plaintext: ${this.knownPlaintext}`);
+            alert(`📊 N-GRAM ANALYSIS\n\n📌 TOP BIGRAMS:\n${bigramMsg || 'Tidak ada'}\n\n📌 TOP TRIGRAMS:\n${trigramMsg || 'Tidak ada'}`);
         },
         
         copyToClipboard() {
@@ -1078,36 +670,12 @@ new Vue({
             alert('✅ Copied to clipboard!');
         },
         
-        clearResult() {
-            this.decoded = '';
-        },
-        
         exportTXT() {
+            if (!this.decoded) { alert('Tidak ada hasil untuk diexport!'); return; }
             const blob = new Blob([this.decoded], {type:'text/plain'});
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = 'decrypted.txt';
-            a.click();
-        },
-        
-        exportJSON() {
-            const data = {
-                ciphertext: this.cipherText,
-                plaintext: this.decoded,
-                mapping: this.mapping,
-                timestamp: new Date().toISOString(),
-                stats: {
-                    confidence: this.confidencePercent,
-                    wordMatch: this.validWords,
-                    totalWords: this.totalWords,
-                    entropy: this.entropyPercent
-                }
-            };
-            
-            const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'cryptanalysis.json';
             a.click();
         },
         
@@ -1118,6 +686,7 @@ new Vue({
                 const reader = new FileReader();
                 reader.onload = (ev) => { this.cipherText = ev.target.result; };
                 reader.readAsText(file);
+                this.addAction('Loaded file: ' + file.name);
             }
         },
         
@@ -1127,44 +696,15 @@ new Vue({
                 const reader = new FileReader();
                 reader.onload = (ev) => { this.cipherText = ev.target.result; };
                 reader.readAsText(file);
+                this.addAction('Loaded file: ' + file.name);
             }
-        },
-        
-        importDictionary() {
-            this.$refs.dictInput.click();
-        },
-        
-        processDictImport(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    const words = ev.target.result.split('\n')
-                        .map(w => w.toLowerCase().trim())
-                        .filter(w => w && /^[a-z]+$/.test(w));
-                    this.dictionary = [...new Set(words)];
-                    alert(`✅ Imported ${this.dictionary.length} words`);
-                };
-                reader.readAsText(file);
-            }
-        },
-        
-        loadDefaultDictionary() {
-            this.dictionary = this.commonWords;
-            this.addAction('Loaded default dictionary');
-        },
-        
-        showStats() {
-            this.showStatsModal = true;
         },
         
         saveState() {
             const state = JSON.stringify({ cipherText: this.cipherText, mapping: this.mapping });
-            
             if (this.historyIndex < this.history.length - 1) {
                 this.history = this.history.slice(0, this.historyIndex + 1);
             }
-            
             if (this.history.length === 0 || this.history[this.history.length - 1] !== state) {
                 this.history.push(state);
                 if (this.history.length > this.maxHistory) this.history.shift();
@@ -1193,19 +733,6 @@ new Vue({
             this.cipherText = parsed.cipherText;
             this.mapping = parsed.mapping;
             this.applyMapping();
-        },
-        
-        resetAll() {
-            if (confirm('Reset semua? Tidak bisa dibatalkan!')) {
-                this.cipherText = '';
-                this.mapping = {};
-                this.decoded = '';
-                this.history = [];
-                this.historyIndex = -1;
-                this.lockedKeys = [];
-                this.recentActions = [];
-                this.progress = 0;
-            }
         },
         
         addAction(action) {
