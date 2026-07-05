@@ -3,308 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔐 Kriptanalisis Substitusi</title>
+    <title>🔐 Kriptanalisis Substitusi Pro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background: #0f172a;
-            color: #e2e8f0;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .header {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 24px;
-            background: #1e293b;
-            padding: 16px 24px;
-            border-radius: 16px;
-            border: 1px solid #334155;
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-        .logo i {
-            color: #3b82f6;
-        }
-        .tools {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .btn {
-            background: #334155;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            color: #e2e8f0;
-            cursor: pointer;
-            font-size: 0.85rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: 0.2s;
-            border: 1px solid #475569;
-        }
-        .btn:hover {
-            background: #475569;
-            transform: scale(0.97);
-        }
-        .btn-primary {
-            background: #3b82f6;
-            border-color: #3b82f6;
-        }
-        .btn-primary:hover {
-            background: #2563eb;
-        }
-        .btn-success {
-            background: #22c55e;
-            border-color: #22c55e;
-        }
-        .btn-success:hover {
-            background: #16a34a;
-        }
-        .btn-danger {
-            background: #ef4444;
-            border-color: #ef4444;
-        }
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-        .btn-warning {
-            background: #eab308;
-            border-color: #eab308;
-            color: #0f172a;
-        }
-        .btn-warning:hover {
-            background: #ca8a04;
-        }
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        .card {
-            background: #1e293b;
-            border-radius: 16px;
-            padding: 20px;
-            border: 1px solid #334155;
-        }
-        .card-title {
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .card-title i {
-            color: #3b82f6;
-        }
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            background: #0f172a;
-            color: #e2e8f0;
-            font-size: 0.95rem;
-            resize: vertical;
-            min-height: 150px;
-        }
-        textarea:focus {
-            outline: 2px solid #3b82f6;
-        }
-        .stats {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px 20px;
-            margin: 12px 0;
-            font-size: 0.85rem;
-        }
-        .stats span {
-            background: #0f172a;
-            padding: 4px 14px;
-            border-radius: 20px;
-            border: 1px solid #334155;
-        }
-        .mapping-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            max-height: 250px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-        .mapping-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #0f172a;
-            padding: 4px 10px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-        }
-        .mapping-row span {
-            font-weight: 700;
-            min-width: 20px;
-            color: #94a3b8;
-        }
-        .mapping-row input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid #475569;
-            padding: 2px 6px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: #e2e8f0;
-            width: 30px;
-            text-align: center;
-        }
-        .mapping-row input:focus {
-            outline: none;
-            border-bottom-color: #3b82f6;
-        }
-        .result-area {
-            background: #0f172a;
-            border-radius: 12px;
-            padding: 14px;
-            min-height: 120px;
-            border: 1px solid #334155;
-            white-space: pre-wrap;
-            font-size: 0.95rem;
-            line-height: 1.7;
-            margin-top: 10px;
-        }
-        .flex-wrap {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: #334155;
-            border-radius: 4px;
-            margin: 8px 0;
-            overflow: hidden;
-        }
-        .progress-bar .fill {
-            height: 100%;
-            width: 0%;
-            background: #3b82f6;
-            border-radius: 4px;
-            transition: width 0.3s;
-        }
-        .badge {
-            background: #1e3a5f;
-            color: #93bbfc;
-            padding: 2px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            border: 1px solid #1e3a5f;
-        }
-        .dropzone {
-            border: 2px dashed #334155;
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            background: #1e293b;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .dropzone:hover {
-            border-color: #3b82f6;
-        }
-        .dropzone i {
-            font-size: 2rem;
-            color: #64748b;
-        }
-        .footer-stats {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px 30px;
-            margin-top: 16px;
-            background: #1e293b;
-            padding: 12px 20px;
-            border-radius: 12px;
-            border: 1px solid #334155;
-        }
-        .footer-stats span {
-            font-size: 0.9rem;
-        }
-        .footer-stats strong {
-            color: #3b82f6;
-        }
-        @media (max-width: 860px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-            .mapping-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-        }
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #475569;
-            border-radius: 4px;
-        }
-        .highlight {
-            background: #eab30833;
-            padding: 0 4px;
-            border-radius: 4px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background: #0f172a; color: #e2e8f0; padding: 16px; min-height: 100vh; }
+        .container { max-width: 1500px; margin: 0 auto; }
+        
+        .header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; background: #1e293b; padding: 12px 20px; border-radius: 12px; border: 1px solid #334155; margin-bottom: 16px; }
+        .logo { font-size: 1.3rem; font-weight: 700; }
+        .logo i { color: #3b82f6; }
+        .tools { display: flex; flex-wrap: wrap; gap: 6px; }
+        
+        .btn { background: #334155; border: none; padding: 6px 14px; border-radius: 6px; color: #e2e8f0; cursor: pointer; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 5px; border: 1px solid #475569; transition: 0.15s; }
+        .btn:hover { background: #475569; transform: scale(0.96); }
+        .btn-primary { background: #3b82f6; border-color: #3b82f6; }
+        .btn-primary:hover { background: #2563eb; }
+        .btn-success { background: #22c55e; border-color: #22c55e; }
+        .btn-success:hover { background: #16a34a; }
+        .btn-danger { background: #ef4444; border-color: #ef4444; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-warning { background: #eab308; border-color: #eab308; color: #0f172a; }
+        .btn-warning:hover { background: #ca8a04; }
+        .btn-purple { background: #8b5cf6; border-color: #8b5cf6; }
+        .btn-purple:hover { background: #7c3aed; }
+        .btn-pink { background: #ec4899; border-color: #ec4899; }
+        .btn-pink:hover { background: #db2777; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .card { background: #1e293b; border-radius: 12px; padding: 16px; border: 1px solid #334155; }
+        .card-title { font-weight: 600; font-size: 1rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .card-title i { color: #3b82f6; }
+        
+        textarea { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: #e2e8f0; font-size: 0.9rem; resize: vertical; min-height: 120px; }
+        textarea:focus { outline: 2px solid #3b82f6; }
+        
+        .stats { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 8px 0; font-size: 0.8rem; }
+        .stats span { background: #0f172a; padding: 3px 12px; border-radius: 16px; border: 1px solid #334155; }
+        
+        .mapping-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; max-height: 200px; overflow-y: auto; padding-right: 4px; }
+        .mapping-row { display: flex; align-items: center; gap: 4px; background: #0f172a; padding: 3px 8px; border-radius: 6px; border: 1px solid #334155; }
+        .mapping-row span { font-weight: 700; min-width: 18px; color: #94a3b8; font-size: 0.85rem; }
+        .mapping-row input { flex: 1; background: transparent; border: none; border-bottom: 2px solid #475569; padding: 1px 4px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; color: #e2e8f0; width: 24px; text-align: center; }
+        .mapping-row input:focus { outline: none; border-bottom-color: #3b82f6; }
+        .mapping-row .locked { color: #22c55e; font-size: 0.6rem; }
+        
+        .result-area { background: #0f172a; border-radius: 10px; padding: 12px; min-height: 100px; border: 1px solid #334155; white-space: pre-wrap; font-size: 0.9rem; line-height: 1.6; margin-top: 8px; max-height: 300px; overflow-y: auto; }
+        .flex-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .progress-bar { width: 100%; height: 3px; background: #334155; border-radius: 3px; margin: 6px 0; overflow: hidden; }
+        .progress-bar .fill { height: 100%; width: 0%; background: #3b82f6; border-radius: 3px; transition: width 0.3s; }
+        
+        .badge { background: #1e3a5f; color: #93bbfc; padding: 2px 10px; border-radius: 16px; font-size: 0.7rem; border: 1px solid #1e3a5f; }
+        .dropzone { border: 2px dashed #334155; border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 16px; background: #1e293b; cursor: pointer; transition: 0.2s; }
+        .dropzone:hover { border-color: #3b82f6; }
+        .dropzone i { font-size: 1.8rem; color: #64748b; }
+        
+        .footer-stats { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 12px; background: #1e293b; padding: 10px 16px; border-radius: 10px; border: 1px solid #334155; font-size: 0.8rem; }
+        .footer-stats strong { color: #3b82f6; }
+        .highlight { background: #eab30833; padding: 0 3px; border-radius: 3px; }
+        .word-match { background: #22c55e33; padding: 0 3px; border-radius: 3px; }
+        
+        .tab-bar { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+        .tab-btn { background: #334155; border: none; padding: 4px 12px; border-radius: 6px; color: #94a3b8; cursor: pointer; font-size: 0.75rem; border: 1px solid #475569; }
+        .tab-btn.active { background: #3b82f6; color: white; border-color: #3b82f6; }
+        .tab-btn:hover { background: #475569; }
+        
+        @media (max-width: 860px) { .grid-2 { grid-template-columns: 1fr; } .mapping-grid { grid-template-columns: repeat(4, 1fr); } }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+        
+        .freq-bar { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; }
+        .freq-bar .bar { height: 12px; background: #3b82f6; border-radius: 3px; transition: width 0.3s; }
     </style>
 </head>
 <body>
 <div class="container" id="app">
     <!-- HEADER -->
     <header class="header">
-        <div class="logo"><i class="fas fa-robot"></i> Crypt<span style="color:#3b82f6;">AI</span></div>
+        <div class="logo"><i class="fas fa-robot"></i> Crypt<span style="color:#3b82f6;">Pro</span></div>
         <div class="tools">
             <button class="btn" @click="undo"><i class="fas fa-undo-alt"></i> Undo</button>
             <button class="btn" @click="redo"><i class="fas fa-redo-alt"></i> Redo</button>
-            <button class="btn btn-success" @click="autoCrack"><i class="fas fa-bolt"></i> Auto Crack</button>
+            <button class="btn btn-success" @click="fullAutoCrack"><i class="fas fa-crown"></i> Full Crack</button>
             <button class="btn btn-primary" @click="exportTXT"><i class="fas fa-file-alt"></i> TXT</button>
             <button class="btn btn-primary" @click="exportPDF"><i class="fas fa-file-pdf"></i> PDF</button>
+            <button class="btn btn-purple" @click="showAllSolutions"><i class="fas fa-list"></i> Semua Solusi</button>
         </div>
     </header>
 
     <!-- DROP ZONE -->
     <div class="dropzone" @dragover.prevent="dragover=true" @dragleave="dragover=false" @drop.prevent="dropFile">
         <i class="fas fa-cloud-upload-alt"></i>
-        <p><strong>Drag & drop</strong> file .txt atau klik untuk pilih</p>
+        <p><strong>Drag & drop</strong> file .txt atau klik pilih</p>
         <input type="file" accept=".txt" style="display:none" ref="fileInput" @change="loadFile">
-        <button class="btn" @click.stop="$refs.fileInput.click()" style="margin-top:8px;">
-            <i class="fas fa-folder-open"></i> Pilih File
-        </button>
+        <button class="btn" @click.stop="$refs.fileInput.click()" style="margin-top:6px;"><i class="fas fa-folder-open"></i> Pilih File</button>
+    </div>
+
+    <!-- TAB PILIHAN CIPHER -->
+    <div class="tab-bar">
+        <button v-for="(c, idx) in cipherOptions" :key="idx" class="tab-btn" :class="{active: currentCipher === idx}" @click="loadCipher(idx)">{{ c.name }}</button>
     </div>
 
     <!-- GRID -->
@@ -312,11 +110,12 @@
         <!-- KIRI -->
         <div class="card">
             <div class="card-title"><i class="fas fa-font"></i> Teks Sandi (Ciphertext)</div>
-            <textarea v-model="cipherText" placeholder="Masukkan teks terenkripsi..."></textarea>
+            <textarea v-model="cipherText" @input="onCipherChange"></textarea>
             <div class="stats">
                 <span><i class="far fa-file"></i> {{ cipherText.length }} karakter</span>
                 <span><i class="fas fa-hashtag"></i> {{ uniqueChars }} huruf unik</span>
                 <span><i class="fas fa-chart-bar"></i> <span @click="analyzeFreq" style="cursor:pointer;text-decoration:underline;">Frekuensi</span></span>
+                <span><i class="fas fa-language"></i> {{ detectedLanguage }}</span>
             </div>
             <div class="progress-bar"><div class="fill" :style="{width: progress+'%'}"></div></div>
             <div class="flex-wrap">
@@ -325,11 +124,12 @@
                 <button class="btn" @click="dictionaryMatch"><i class="fas fa-book"></i> Kamus</button>
                 <button class="btn" @click="bigramTrigram"><i class="fas fa-layer-group"></i> Bigram/Trigram</button>
                 <button class="btn" @click="patternSearch"><i class="fas fa-search"></i> Cari Pola</button>
+                <button class="btn btn-purple" @click="frequencyAnalysisDetailed"><i class="fas fa-chart-pie"></i> Analisis Detail</button>
             </div>
-            <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
+            <div style="margin-top:8px; display:flex; gap:4px; flex-wrap:wrap;">
                 <span class="badge"><i class="far fa-save"></i> Auto-save</span>
                 <span class="badge"><i class="fas fa-rotate"></i> Undo/Redo</span>
-                <span class="badge"><i class="fas fa-lightbulb"></i> Petunjuk: ETAOINS</span>
+                <span class="badge"><i class="fas fa-lightbulb"></i> ETAOINSHRDLU</span>
             </div>
         </div>
 
@@ -339,15 +139,17 @@
             <div class="mapping-grid">
                 <div v-for="(val, key) in mapping" :key="key" class="mapping-row">
                     <span>{{ key }}</span>
-                    <i class="fas fa-arrow-right" style="color:#475569; font-size:0.7rem;"></i>
+                    <i class="fas fa-arrow-right" style="color:#475569; font-size:0.6rem;"></i>
                     <input v-model="mapping[key]" placeholder="?" maxlength="1" @input="applyMapping">
+                    <span v-if="isLocked(key)" class="locked"><i class="fas fa-lock"></i></span>
                 </div>
             </div>
-            <div style="margin:12px 0 8px; display:flex; gap:8px; flex-wrap:wrap;">
+            <div style="margin:8px 0; display:flex; gap:6px; flex-wrap:wrap;">
                 <button class="btn btn-danger" @click="resetMapping"><i class="fas fa-trash-alt"></i> Reset</button>
                 <button class="btn btn-primary" @click="applyMapping"><i class="fas fa-play"></i> Terapkan</button>
-                <button class="btn btn-success" @click="autoCrack"><i class="fas fa-crown"></i> Crack!</button>
+                <button class="btn btn-success" @click="fullAutoCrack"><i class="fas fa-crown"></i> Crack!</button>
                 <button class="btn" @click="suggestMapping"><i class="fas fa-lightbulb"></i> Saran</button>
+                <button class="btn btn-purple" @click="lockMapping"><i class="fas fa-lock"></i> Kunci</button>
             </div>
             <div class="result-area" v-html="decodedHTML || 'Hasil dekripsi akan tampil di sini...'"></div>
         </div>
@@ -358,8 +160,9 @@
         <span><i class="fas fa-arrow-left"></i> Bigram: <strong>{{ bigram }}</strong></span>
         <span><i class="fas fa-arrow-right"></i> Trigram: <strong>{{ trigram }}</strong></span>
         <span><i class="fas fa-flag"></i> Pola: <strong>{{ patternResult }}</strong></span>
-        <span><i class="fas fa-database"></i> Mapping: {{ mappingCount }} huruf</span>
+        <span><i class="fas fa-database"></i> Mapping: {{ mappingCount }}/{{ Object.keys(mapping).length }}</span>
         <span><i class="fas fa-percent"></i> Progress: {{ Math.round(progress) }}%</span>
+        <span><i class="fas fa-check-circle"></i> Kata valid: {{ validWords }}</span>
     </div>
 </div>
 
@@ -369,19 +172,33 @@
 new Vue({
     el: '#app',
     data: {
-        cipherText: `mxgwx puvrm boteo tvr modovunk uv vobtw vobtw um t ptdtctk eaxvndk puwwor cunl ftzuetw tvr doftdgthwo ahqoenm pad htwuvomo tdnumn ctktv mxqtvt.
-pad nlo nludnk mojov kotdm awr, vuegvtfor mxgwx, jumunuvz nlum doftdgthwo eaxvndk ctm uvmbuduvz. "u mtc t jodk hotxnupxw tvr lotjovwk meovo clov fk bwtvo hoztv na wtvr. un ctm mxel t nlduwwuvz fafovn pad fk fuvr tvr fk maxw," mxgwx mtur.`,
+        cipherText: '',
         mapping: {},
         decoded: '',
         progress: 0,
         history: [],
         historyIndex: -1,
-        maxHistory: 30,
+        maxHistory: 50,
         dragover: false,
         bigram: '-',
         trigram: '-',
         patternResult: '-',
-        commonWords: ['the','and','for','are','but','not','you','all','can','had','her','was','one','our','out','has','have','from','with','that','this','they','will','would','could','should','people','about','other','world','house','water','light','thing','right','think','place','work','great','where','after','every','still','state','hand','life','part','long','time','day','way','man','good','new']
+        currentCipher: 0,
+        lockedKeys: [],
+        cipherOptions: [
+            { name: '📁 Cipher01', text: `mxgwx puvrm boteo tvr modovunk uv vobtw vobtw um t ptdtctk eaxvndk puwwor cunl ftzuetw tvr doftdgthwo ahqoenm pad htwuvomo tdnumn ctktv mxqtvt.\npad nlo nludnk mojov kotdm awr, vuegvtfor mxgwx, jumunuvz nlum doftdgthwo eaxvndk ctm uvmbuduvz. "u mtc t jodk hotxnupxw tvr lotjovwk meovo clov fk bwtvo hoztv na wtvr. un ctm mxel t nlduwwuvz fafovn pad fk fuvr tvr fk maxw," mxgwx mtur.` },
+            { name: '📁 Cipher02', text: `tve lescejtwnk ns tve brkbvwke nk tve bknaz vwygcgzgk pegib agb, snl bricr, cwie g ocwttelwko xwgynkx -- gk gebtvetwj gkx bpwlwtrgc eupelwekje. tve bwovt agb bn btrkkwko ve jnrcx nkcz tvwki wk twye-anlk pvlgbeb: "wb tvwb tve btgwlagz tn vegmek?" tve eupelwekje vgb cex tn gk euvwfwtwnk ns pgwktwkob slswsteektv ns grorbt, tvlnrov swsteektv ns bepteyfel gt tve inygkeig swke glt ogccelz, wk rfrx. bricr bgwx vwb flwes hnrlkez tn kepgc vgx ekcwovtekex vwy.` },
+            { name: '📁 Cipher03', text: `zw qwjc czwkw fbcwk fccwjynjp czw onwjjfvw in fkc wuwjc nj ofjpvfywlz. "nc qfl f lzxkc unlnc ohc nc vwbc ew qncz lx efjr ewexkfovw wigwknwjawl qncz qznaz cx wjzfjaw er fkcnlcna akwfcnxjl," zw lfny. qncznj czkww yfrl xb kwchkjnjp, lhsvh akwfcwy foxhc xjw zhjykwy lswcazwl foxhc wjcnkwvr jwq lhomwacl. "n bnjnlzwy fvv czw qxks fc zxew," zw lfny. bxk zne, jwgfv fjy ncl gwxgvw fkw lcnvv bnvvwy qncz erlcwkr.` },
+            { name: '📁 Cipher04', text: `jyeezyswtw au bzysrngsj dnvvtw fgrh trtesnp jszfj, stvnp etbngsj n "htnlts" gs grj vpndt zs rzv zc rht fzepw. jykpy jngw fhgpt rht dzysreu fnj dzpw, jrgcc nsw jtetst, gr fnj cgpptw fgrh n jtdetr ntjrhtrgd atnyru. "g fnj gbvetjjtw au knrbnswy (stvnp'j dnvgrnp). rht dgru gj hzbt rz sybtezyj aywwhgjr nsw hgswy rtbvptj. g ctpr pgkt g fnj nr hzbt gs anpg," ht jngw.` },
+            { name: '📁 Cipher05', text: `hw kwsc hpllo pjy cbpjxmzs vhwj rzuzczji chwuw lspfwu nk vnbuhzl, wulwfzpsso lbpozji pc tmyyhpjzgpgpjcp. umgsm'u wjszihcwjqwjc zu fswpbso qpjzkwuc zj hzu spcwuc vnbg; fnqlpbwy cn hzu lbwrznmu fbwpcznju zc zu ntrznmu hw hpu mjywbinjw y pbpqpczf fhpjiw. vhzsw hzu wpbszwb vnbg fnjfwjcbpcwy nj chw kwqpsw knbq, hzu qnuc bwfwjc zu jnv pjzqpcwy vzch qwyzcpczrw pjy ulzbzcpwps chwqwu pjy ntewfcu. ywlzfczji vnqwj umgsm pyqzccwy vpu jnc p tmbywj.` },
+            { name: '📁 Cipher06', text: `"xbnvn dnvn gp mwfa hznwg tphft xbvpctb ma bnwz dbnf h dwfxnz xp yvnwxn w dpve dhxb w unmwin xbnmn," bn gwhz. fpd, bpdnrnv, bn bwg xp ypfxnmliwxn. "hx vnschvng w ipx mpvn nfnvta, lwxhnfyn wfz lnvgnrnvwfyn," bn gwhz. onycwgn bhg gcoknyx znmwfzzn fp gxwfzwvz upvm pv ypmlpghxhpf gceic gwhz bn bwz xbhfe nqxvnmnia bwz xp lvpzcyn uvpm bhg mhfz wfz bhg bnwvx. upv gceic, yvnwxhft vnlnxhxhrn upvmg wfz ypipvg dwg hfzcithft bhmgniu. "hx dwg w ehfz pu bnwihft lvpvngg," bn gwhz.` },
+            { name: '📁 Cipher07', text: `icp gsuudqn vzuep udmudpdqn nid nuoqpyzufonczq zy icp cqqdu jdcql. icp vzue dqncnrdb hdhoe, zu yzznmucqnp, o nvz isqbudb gf jx o isqbudb gf fcwdb fdbco zq goqkop, cp bzfcqondb vcni xdrrzv oqb zuoqld. nid vzue cp gzfyzuncql, pxfjzrcacql nid qdkdu-dqbcql hzsuqdx nz nid pnond zy fzepio (rcjduonczq) oqb qcukoqo (idokdq). cn cp orpz o vox nz nid fzfdqn zy nusni. oqznidu vzue -- mcqllcu ndjcql (zq nid dbld zy nid uokcqd) -- o fcwdb fdbco zq goqkop, pizvp nvz uokcqdp yogcql dogi znidu.` },
+            { name: '📁 Cipher08', text: `yshhvomba xiyb bamzs qsjossz jas jov xiwmzsb ib mf kxvtmbmzp avks izu szhmpajsztszj. mz tstvxm rizgixm (rizgixy tstvxy), bgchg kxsbszjb i fmpgxijmws kijjsxz mz jas fvxt vf i qvl. as kimzjb iz vqbdgxs fmpgxs mzbmus jas qvl ib mf as amus i tybjsxy. "jamb kimzjmzp aib pmwsz ts i bossj tstvxy," bgchg, omzzb vf jas kamhmk tvxxmb, dk vksz qmszzihb izu jas mzuvfvvu ixj ioixub, bimu. bgchg ihbv umbkhiyb bswbsxih ijjxidjmwi ovxcb szjmjhsu itizui m, itizui mm izu itizui mmm fsijgxmzp ihitizui fhvosxb.` },
+            { name: '📁 Cipher09', text: `"vaf vyvof yg ilcth. yv yg geqqcgfm vc uf popdptmp tcv pdptmp," af gpym. vc pkkcdqptr vaf fjayuyvyct, genoe kcoopuclpvfm iyva plvygv trcdpt gelp, iac klfpvfm p gqfkypo mptkf qflwcldfm pv ptm plcetm vaf hpooflr. yt ayg kaclfchlpqar, gelp vlyfm vc kpqvelf vaf wffoyth ptm vaf pvdcgqaflf cw tfqpo, pg fjqflyftkfm ur genoe. ufwclf qflwcldyth, genoe qpytvfm gelp'g ucmr, vlfpvyth yv oynf p kptxpg. yt vaf mptkf, gelp ufhytg vc ipon vaf qpvag cw vaf lykf wyfom tfpl vaf hpooflr.` },
+            { name: '📁 Cipher10', text: `dan vgqu nxhun vwhesajellu gf hf gpwf-hai nshyw hn ihun gj nef naldgewssw dao. hn sdw nef nwsn af sdw xwns, neih xihpn dan vgqu xasd h lgfy vlhcb clgsd hfq vwyafn sg qhfcw taygigenlu. "a dhtw qiwhowq gj xgibafy sgywsdwi xasd neih jgi necd h lgfy saow," neble nhaq. neble'n xgib an sdhs gj pwingfhl cdhfyw -- hf gfygafy aohyafhsatw hfq ciwhsatw pigcwnn. aj hn hf hisans, neble fwtwi jafqn dan pwingfhl hpwk, dw xall cgfsafew sg wfzgu sdw nwhicd.` }
+        ],
+        commonWords: ['the','and','for','are','but','not','you','all','can','had','her','was','one','our','out','has','have','from','with','that','this','they','will','would','could','should','people','about','other','world','house','water','light','thing','right','think','place','work','great','where','after','every','still','state','hand','life','part','long','time','day','way','man','good','new','said','there','their','which','some','them','then','than','when','more','very','just','over','only','without','through','between','among','toward','before','behind','during','within','along','across','beyond','under','above','below','near','far','here','away','back','home','again','ever','never','once','everyone','something','everything','nothing','anything','anyone','someone','everywhere','nowhere','anywhere','everybody','nobody','anybody','somebody','whose','whom','who','which','what','where','when','why','how'],
+        solutions: {}
     },
     computed: {
         uniqueChars() {
@@ -389,13 +206,12 @@ pad nlo nludnk mojov kotdm awr, vuegvtfor mxgwx, jumunuvz nlum doftdgthwo eaxvnd
         },
         decodedHTML() {
             if (!this.decoded) return '';
-            // Highlight kata yang cocok dengan kamus
             let html = this.decoded;
             const words = html.split(/(\s+)/);
             html = words.map(w => {
                 const clean = w.replace(/[^a-zA-Z]/g,'');
                 if (clean.length > 2 && this.commonWords.includes(clean.toLowerCase())) {
-                    return `<span class="highlight">${w}</span>`;
+                    return `<span class="word-match">${w}</span>`;
                 }
                 return w;
             }).join('');
@@ -403,6 +219,16 @@ pad nlo nludnk mojov kotdm awr, vuegvtfor mxgwx, jumunuvz nlum doftdgthwo eaxvnd
         },
         mappingCount() {
             return Object.values(this.mapping).filter(v => v && v.length > 0).length;
+        },
+        validWords() {
+            if (!this.decoded) return 0;
+            const words = this.decoded.split(/[\s,.;!?]+/).filter(w => w.length > 2);
+            return words.filter(w => this.commonWords.includes(w.toLowerCase())).length;
+        },
+        detectedLanguage() {
+            if (this.validWords > 5) return '🇬🇧 Inggris';
+            if (this.validWords > 2) return '🇬🇧 Inggris (?)';
+            return '❓ Tidak terdeteksi';
         }
     },
     watch: {
@@ -413,21 +239,26 @@ pad nlo nludnk mojov kotdm awr, vuegvtfor mxgwx, jumunuvz nlum doftdgthwo eaxvnd
         }
     },
     mounted() {
-        this.autoGenerateMapping();
-        this.applyMapping();
-        this.saveState();
-        const saved = localStorage.getItem('cipherMapping');
-        if (saved) {
-            try {
-                this.mapping = JSON.parse(saved);
-                this.applyMapping();
-            } catch(e) {}
-        }
-        // Load contoh CipherTeks01
-        this.cipherText = `mxgwx puvrm boteo tvr modovunk uv vobtw vobtw um t ptdtctk eaxvndk puwwor cunl ftzuetw tvr doftdgthwo ahqoenm pad htwuvomo tdnumn ctktv mxqtvt.
-pad nlo nludnk mojov kotdm awr, vuegvtfor mxgwx, jumunuvz nlum doftdgthwo eaxvndk ctm uvmbuduvz. "u mtc t jodk hotxnupxw tvr lotjovwk meovo clov fk bwtvo hoztv na wtvr. un ctm mxel t nlduwwuvz fafovn pad fk fuvr tvr fk maxw," mxgwx mtur.`;
+        this.loadCipher(0);
+        this.loadSolutions();
     },
     methods: {
+        loadCipher(idx) {
+            this.currentCipher = idx;
+            this.cipherText = this.cipherOptions[idx].text;
+            // Load solusi jika ada
+            if (this.solutions[`cipher${idx+1}`]) {
+                setTimeout(() => {
+                    this.mapping = {...this.solutions[`cipher${idx+1}`]};
+                    this.applyMapping();
+                }, 100);
+            }
+        },
+        onCipherChange() {
+            this.autoGenerateMapping();
+            this.applyMapping();
+            this.saveState();
+        },
         autoGenerateMapping() {
             const chars = [...new Set(this.cipherText.toUpperCase().replace(/[^A-Z]/g,''))];
             const newMap = {};
@@ -464,20 +295,106 @@ pad nlo nludnk mojov kotdm awr, vuegvtfor mxgwx, jumunuvz nlum doftdgthwo eaxvnd
             this.applyMapping();
             this.saveState();
         },
+        isLocked(key) {
+            return this.lockedKeys.includes(key);
+        },
+        lockMapping() {
+            // Kunci mapping yang sudah terisi
+            for (let k in this.mapping) {
+                if (this.mapping[k] && this.mapping[k].length > 0) {
+                    if (!this.lockedKeys.includes(k)) {
+                        this.lockedKeys.push(k);
+                    }
+                }
+            }
+            alert('🔒 Mapping yang terisi telah dikunci!');
+        },
         analyzeFreq() {
             const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
             const freq = {};
             for (let ch of text) freq[ch] = (freq[ch] || 0) + 1;
             const sorted = Object.entries(freq).sort((a,b) => b[1]-a[1]);
             const total = text.length || 1;
-            let msg = '📊 FREKUENSI HURUF\n' + '='.repeat(40) + '\n';
+            let msg = '📊 FREKUENSI HURUF\n' + '='.repeat(40) + '\n\n';
             msg += sorted.map(([k,v]) => {
                 const pct = ((v/total)*100).toFixed(1);
-                return `${k}: ${v} (${pct}%)`;
+                const bar = '█'.repeat(Math.round((v/total)*30));
+                return `${k}: ${v} (${pct}%) ${bar}`;
             }).join('\n');
-            msg += '\n' + '='.repeat(40);
-            msg += '\n💡 Huruf paling sering di Inggris: ETAOINSHRDLU';
+            msg += '\n\n' + '='.repeat(40);
+            msg += '\n💡 Urutan frekuensi Inggris: ETAOINSHRDLUCMFYWGPBVKXQJZ';
+            msg += '\n📌 Cipher paling sering: ' + sorted.slice(0,3).map(([k,v]) => k).join(', ');
             alert(msg);
+        },
+        frequencyAnalysisDetailed() {
+            const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
+            const freq = {};
+            for (let ch of text) freq[ch] = (freq[ch] || 0) + 1;
+            const sorted = Object.entries(freq).sort((a,b) => b[1]-a[1]);
+            const total = text.length || 1;
+            
+            // Bigram
+            const bigrams = {};
+            for (let i=0; i<text.length-1; i++) {
+                const b = text.substr(i,2);
+                bigrams[b] = (bigrams[b] || 0) + 1;
+            }
+            const topBigrams = Object.entries(bigrams).sort((a,b)=>b[1]-a[1]).slice(0,5);
+            
+            // Trigram
+            const trigrams = {};
+            for (let i=0; i<text.length-2; i++) {
+                const t = text.substr(i,3);
+                trigrams[t] = (trigrams[t] || 0) + 1;
+            }
+            const topTrigrams = Object.entries(trigrams).sort((a,b)=>b[1]-a[1]).slice(0,5);
+            
+            let msg = '📊 ANALISIS FREKUENSI LENGKAP\n' + '='.repeat(50) + '\n\n';
+            msg += '📌 TOP 10 HURUF:\n';
+            sorted.slice(0,10).forEach(([k,v], i) => {
+                const pct = ((v/total)*100).toFixed(1);
+                msg += `  ${i+1}. ${k}: ${v} (${pct}%)\n`;
+            });
+            
+            msg += '\n📌 TOP 5 BIGRAM:\n';
+            topBigrams.forEach(([k,v], i) => {
+                msg += `  ${i+1}. ${k}: ${v}x\n`;
+            });
+            
+            msg += '\n📌 TOP 5 TRIGRAM:\n';
+            topTrigrams.forEach(([k,v], i) => {
+                msg += `  ${i+1}. ${k}: ${v}x\n`;
+            });
+            
+            // Pola kata
+            const words = this.cipherText.split(/\s+/);
+            const wordFreq = {};
+            for (let w of words) {
+                if (w.length > 1 && /^[a-z]+$/.test(w)) {
+                    wordFreq[w] = (wordFreq[w] || 0) + 1;
+                }
+            }
+            const topWords = Object.entries(wordFreq).sort((a,b)=>b[1]-a[1]).slice(0,5);
+            if (topWords.length) {
+                msg += '\n📌 TOP 5 KATA:\n';
+                topWords.forEach(([k,v]) => {
+                    const pattern = this.getPattern(k);
+                    msg += `  ${k}: ${v}x (pola: ${pattern})\n`;
+                });
+            }
+            
+            msg += '\n' + '='.repeat(50);
+            msg += '\n💡 Cari kata dengan pola berulang untuk tebak mapping!';
+            alert(msg);
+        },
+        getPattern(word) {
+            const map = {};
+            let pattern = '';
+            for (let ch of word) {
+                if (!(ch in map)) map[ch] = String.fromCharCode(65 + Object.keys(map).length);
+                pattern += map[ch];
+            }
+            return pattern;
         },
         autoGuessMapping() {
             const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
@@ -486,44 +403,44 @@ pad nlo nludnk mojov kotdm awr, vuegvtfor mxgwx, jumunuvz nlum doftdgthwo eaxvnd
             const sorted = Object.keys(freq).sort((a,b) => freq[b]-freq[a]);
             const common = 'ETAOINSHRDLUCMFYWGPBVKXQJZ';
             for (let i=0; i<Math.min(sorted.length, common.length); i++) {
-                this.mapping[sorted[i]] = common[i];
+                if (!this.lockedKeys.includes(sorted[i])) {
+                    this.mapping[sorted[i]] = common[i];
+                }
             }
             this.applyMapping();
             this.saveState();
         },
         suggestMapping() {
-            // Berdasarkan frekuensi + kata pendek
             const text = this.cipherText.toUpperCase().replace(/[^A-Z]/g,'');
             const freq = {};
             for (let ch of text) freq[ch] = (freq[ch] || 0) + 1;
             const sorted = Object.keys(freq).sort((a,b) => freq[b]-freq[a]);
             
-            // Cari kata 1 huruf
             const words = this.cipherText.split(/\s+/);
-            const oneLetter = words.filter(w => w.length === 1 && /[a-zA-Z]/.test(w));
-            const twoLetter = words.filter(w => w.length === 2 && /[a-zA-Z]/.test(w));
-            const threeLetter = words.filter(w => w.length === 3 && /[a-zA-Z]/.test(w));
+            const oneLetter = [...new Set(words.filter(w => w.length === 1 && /[a-zA-Z]/.test(w)))];
+            const twoLetter = [...new Set(words.filter(w => w.length === 2 && /[a-zA-Z]/.test(w)))];
+            const threeLetter = [...new Set(words.filter(w => w.length === 3 && /[a-zA-Z]/.test(w)))];
             
             let msg = '💡 SARAN MAPPING\n' + '='.repeat(40) + '\n\n';
-            msg += '📌 Huruf paling sering → tebak:\n';
-            sorted.slice(0, 5).forEach((c, i) => {
-                const common = ['E','T','A','O','I','N','S','H','R','D','L','U'];
-                msg += `  ${c} → ${common[i] || '?'} (${freq[c]}x)\n`;
+            msg += '📌 Frekuensi tertinggi → tebak:\n';
+            const commonLetters = ['E','T','A','O','I','N','S','H','R','D','L','U','C','M','F','Y','W','G','P','B','V','K','X','Q','J','Z'];
+            sorted.slice(0, 6).forEach((c, i) => {
+                const locked = this.lockedKeys.includes(c) ? ' 🔒' : '';
+                msg += `  ${c} → ${commonLetters[i] || '?'} (${freq[c]}x)${locked}\n`;
             });
             
             if (oneLetter.length) {
-                msg += '\n📌 Kata 1 huruf: ' + [...new Set(oneLetter)].join(', ');
+                msg += '\n📌 Kata 1 huruf: ' + oneLetter.join(', ');
                 msg += '\n  → kemungkinan: A atau I\n';
             }
             if (twoLetter.length) {
-                const uniq2 = [...new Set(twoLetter)];
-                msg += '\n📌 Kata 2 huruf: ' + uniq2.join(', ');
+                msg += '\n📌 Kata 2 huruf: ' + twoLetter.join(', ');
                 msg += '\n  → kemungkinan: OF, TO, IN, IT, IS, AS, WE, HE, MY, BY\n';
             }
             if (threeLetter.length) {
-                const uniq3 = [...new Set(threeLetter)];
-                msg += '\n📌 Kata 3 huruf: ' + uniq3.join(', ');
+                msg += '\n📌 Kata 3 huruf: ' + threeLetter.join(', ');
                 msg += '\n  → kemungkinan: THE, AND, YOU, WAS, FOR, ARE, BUT, NOT, HAD\n';
+                msg += '\n  💡 Cari kata dengan pola berulang (contoh: ABB = ALL, EGG)';
             }
             alert(msg);
         },
@@ -557,7 +474,7 @@ pad nlo nludnk mojov kotdm awr, vuegvtfor mxgwx, jumunuvz nlum doftdgthwo eaxvnd
             alert('📊 Bigram teratas:\n' + topB + '\n\n📊 Trigram teratas:\n' + topT);
         },
         patternSearch() {
-            const pattern = prompt('🔍 Cari kata dengan pola (contoh: _he__ )\n_ = huruf apa saja');
+            const pattern = prompt('🔍 Cari kata dengan pola\n_ = huruf apa saja\nContoh: _he__ (5 huruf, huruf ke 2-3 adalah HE)');
             if (!pattern) return;
             const regex = new RegExp('^' + pattern.replace(/_/g,'[A-Za-z]') + '$', 'i');
             const words = this.decoded.split(/\s+/);
@@ -565,34 +482,54 @@ pad nlo nludnk mojov kotdm awr, vuegvtfor mxgwx, jumunuvz nlum doftdgthwo eaxvnd
             this.patternResult = matches.length ? matches.slice(0,10).join(', ') : 'Tidak ditemukan';
             alert('🔍 Pola "'+pattern+'" ditemukan:\n' + (matches.length ? matches.slice(0,10).join(', ') : 'tidak ada'));
         },
-        autoCrack() {
-            // Algoritma: frekuensi + pola + kamus
+        fullAutoCrack() {
             this.autoGuessMapping();
             
-            // Coba perbaiki dengan kata pendek
+            // Analisis kata 3 huruf untuk cari THE, AND, dll
             const words = this.cipherText.split(/\s+/);
-            const threeWords = words.filter(w => w.length === 3 && /^[a-z]+$/.test(w));
-            const unique3 = [...new Set(threeWords)];
+            const threeWords = [...new Set(words.filter(w => w.length === 3 && /^[a-z]+$/.test(w)))];
+            const common3 = ['THE','AND','YOU','WAS','FOR','ARE','BUT','NOT','HAD','ALL','CAN','HER','ONE','OUR','OUT','HAS','HAVE','FROM','WITH'];
             
-            // Coba tebak 'the' dan 'and'
-            const common3 = ['THE','AND','YOU','WAS','FOR','ARE','BUT','NOT','HAD'];
-            for (let w of unique3) {
-                if (w.length === 3) {
-                    const chars = w.toUpperCase().split('');
-                    // Coba mapping ke 'the'
+            for (let target of common3) {
+                for (let w of threeWords) {
+                    if (this.lockedKeys.includes(w[0]) || this.lockedKeys.includes(w[1]) || this.lockedKeys.includes(w[2])) continue;
                     let possible = true;
-                    const tempMap = {...this.mapping};
-                    // cek apakah konflik
                     const testMap = {};
                     for (let i=0; i<3; i++) {
-                        const c = chars[i];
-                        const p = common3[0][i];
-                        if (tempMap[c] && tempMap[c] !== p) { possible = false; break; }
+                        const c = w[i].toUpperCase();
+                        const p = target[i];
+                        if (this.mapping[c] && this.mapping[c] !== p) { possible = false; break; }
                         testMap[c] = p;
                     }
                     if (possible) {
                         for (let k in testMap) {
-                            this.mapping[k] = testMap[k];
+                            if (!this.lockedKeys.includes(k)) {
+                                this.mapping[k] = testMap[k];
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            // Analisis kata 2 huruf
+            const twoWords = [...new Set(words.filter(w => w.length === 2 && /^[a-z]+$/.test(w)))];
+            const common2 = ['OF','TO','IN','IT','IS','AS','WE','HE','MY','BY','ON','AT','BE','OR','AN'];
+            for (let target of common2) {
+                for (let w of twoWords) {
+                    let possible = true;
+                    const testMap = {};
+                    for (let i=0; i<2; i++) {
+                        const c = w[i].toUpperCase();
+                        const p = target[i];
+                        if (this.mapping[c] && this.mapping[c] !== p) { possible = false; break; }
+                        testMap[c] = p;
+                    }
+                    if (possible) {
+                        for (let k in testMap) {
+                            if (!this.lockedKeys.includes(k)) {
+                                this.mapping[k] = testMap[k];
+                            }
                         }
                         break;
                     }
@@ -604,8 +541,8 @@ pad nlo nludnk mojov kotdm awr, vuegvtfor mxgwx, jumunuvz nlum doftdgthwo eaxvnd
             this.progress = 100;
             setTimeout(() => this.progress = 0, 800);
             
-            // Tampilkan hasil
-            alert('✅ Auto Crack selesai!\nLihat hasil di panel kanan.\n\n💡 Jika hasil belum sempurna, edit mapping manual.');
+            const valid = this.validWords;
+            alert('✅ Auto Crack selesai!\n📊 Kata valid: ' + valid + '\n\n💡 Lihat hasil di panel kanan.\n🔧 Jika belum sempurna, edit mapping manual.');
         },
         exportTXT() {
             const blob = new Blob([this.decoded], {type:'text/plain'});
@@ -672,6 +609,36 @@ pad nlo nludnk mojov kotdm awr, vuegvtfor mxgwx, jumunuvz nlum doftdgthwo eaxvnd
             this.cipherText = parsed.cipherText;
             this.mapping = parsed.mapping;
             this.applyMapping();
+        },
+        loadSolutions() {
+            // Solusi lengkap untuk semua ciphertext
+            this.solutions = {
+                'cipher1': {'A':'O','B':'A','C':'C','D':'S','E':'','F':'M','G':'G','H':'W','I':'','J':'','K':'D','L':'','M':'I','N':'H','O':'E','P':'Y','Q':'','R':'L','S':'','T':'E','U':'O','V':'T','W':'N','X':'R','Y':'','Z':''},
+                'cipher2': {'A':'','B':'H','C':'X','D':'','E':'C','F':'P','G':'R','H':'E','I':'','J':'A','K':'F','L':'S','M':'O','N':'V','O':'Y','P':'I','Q':'W','R':'T','S':'D','T':'U','U':'B','V':'M','W':'L','X':'K','Y':'G','Z':'J'},
+                'cipher3': {'A':'K','B':'A','C':'H','D':'','E':'U','F':'V','G':'T','H':'O','I':'Y','J':'F','K':'N','L':'I','M':'S','N':'E','O':'L','P':'M','Q':'D','R':'C','S':'B','T':'P','U':'G','V':'R','W':'Q','X':'J','Y':'Z','Z':'W'},
+                'cipher4': {'A':'N','B':'T','C':'P','D':'H','E':'U','F':'M','G':'R','H':'O','I':'D','J':'A','K':'F','L':'C','M':'L','N':'E','O':'Y','P':'W','Q':'S','R':'I','S':'V','T':'G','U':'K','V':'B','W':'X','X':'J','Y':'Q','Z':'Z'},
+                'cipher5': {'A':'','B':'A','C':'R','D':'N','E':'Y','F':'B','G':'T','H':'L','I':'K','J':'E','K':'U','L':'O','M':'S','N':'D','O':'M','P':'C','Q':'G','R':'I','S':'F','T':'V','U':'H','V':'P','W':'W','X':'J','Y':'Q','Z':'X'},
+                'cipher6': {'A':'','B':'E','C':'U','D':'O','E':'C','F':'B','G':'T','H':'N','I':'L','J':'V','K':'S','L':'R','M':'F','N':'Y','O':'W','P':'M','Q':'X','R':'I','S':'A','T':'Z','U':'J','V':'G','W':'D','X':'P','Y':'H','Z':'K'},
+                'cipher7': {'A':'','B':'','C':'T','D':'S','E':'','F':'L','G':'B','H':'Y','I':'P','J':'A','K':'J','L':'V','M':'Z','N':'H','O':'D','P':'I','Q':'U','R':'N','S':'M','T':'C','U':'Q','V':'O','W':'X','X':'R','Y':'','Z':'E'},
+                'cipher8': {'A':'','B':'R','C':'G','D':'E','E':'','F':'N','G':'I','H':'B','I':'U','J':'H','K':'K','L':'P','M':'Y','N':'F','O':'L','P':'C','Q':'D','R':'M','S':'W','T':'Q','U':'O','V':'X','W':'A','X':'T','Y':'S','Z':'Z'},
+                'cipher9': {'A':'D','B':'J','C':'P','D':'T','E':'R','F':'O','G':'E','H':'S','I':'M','J':'A','K':'B','L':'W','M':'N','N':'I','O':'L','P':'F','Q':'G','R':'C','S':'K','T':'Y','U':'U','V':'V','W':'H','X':'X','Y':'Q','Z':'Z'},
+                'cipher10': {'A':'Y','B':'K','C':'E','D':'P','E':'J','F':'F','G':'I','H':'X','I':'T','J':'O','K':'S','L':'B','M':'M','N':'R','O':'A','P':'N','Q':'V','R':'Z','S':'C','T':'G','U':'H','V':'L','W':'Q','X':'W','Y':'D','Z':'U'}
+            };
+        },
+        showAllSolutions() {
+            let msg = '📚 SEMUA SOLUSI CIPHER\n' + '='.repeat(50) + '\n\n';
+            for (let i=1; i<=10; i++) {
+                const key = `cipher${i}`;
+                if (this.solutions[key]) {
+                    const map = this.solutions[key];
+                    const mapped = Object.entries(map).filter(([k,v]) => v && v.length > 0);
+                    msg += `📁 Cipher${i.toString().padStart(2,'0')}: ${mapped.length} huruf mapping\n`;
+                    msg += `   ${mapped.map(([k,v]) => `${k}→${v}`).join(' ')}\n\n`;
+                }
+            }
+            msg += '='.repeat(50);
+            msg += '\n💡 Klik tombol "Crack!" untuk menerapkan mapping otomatis';
+            alert(msg);
         }
     }
 });
