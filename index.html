@@ -1,1 +1,771 @@
-sss
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Simple Substitution Cipher Cracker</title>
+  <!-- CSS terintegrasi -->
+  <style>
+    /* ----- Reset & Dasar Dark Mode ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    body {
+      background: #0b0e14;
+      color: #e8edf5;
+      display: flex;
+      min-height: 100vh;
+      transition: background 0.2s;
+    }
+    /* Scrollbar gelap */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #1e2630; }
+    ::-webkit-scrollbar-thumb { background: #3a4755; border-radius: 12px; }
+
+    /* ----- Sidebar ----- */
+    .sidebar {
+      width: 260px;
+      background: #141a22;
+      border-right: 1px solid #2a3340;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    .sidebar h2 {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      color: #b6cdff;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #2a3340;
+      padding-bottom: 12px;
+    }
+    .sidebar button, .sidebar .file-label {
+      background: #1f2a36;
+      border: none;
+      color: #d6e2f5;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid transparent;
+    }
+    .sidebar button:hover, .sidebar .file-label:hover {
+      background: #2b3a4a;
+      border-color: #4f6a88;
+      color: white;
+    }
+    .sidebar button.primary {
+      background: #2a4b7a;
+      color: white;
+      justify-content: center;
+    }
+    .sidebar button.primary:hover {
+      background: #3a5f94;
+    }
+    .sidebar .file-label {
+      display: flex;
+      justify-content: center;
+    }
+    .file-label input[type="file"] { display: none; }
+    .sidebar .divider {
+      border-top: 1px solid #26303d;
+      margin: 8px 0;
+    }
+
+    /* ----- Konten utama ----- */
+    .main {
+      flex: 1;
+      padding: 24px 28px;
+      overflow-y: auto;
+      max-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .panel {
+      background: #151e28;
+      border-radius: 18px;
+      padding: 20px 24px;
+      border: 1px solid #25303e;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+    }
+    .panel h3 {
+      font-weight: 500;
+      font-size: 18px;
+      color: #b4ceff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      align-items: center;
+    }
+    textarea, input {
+      background: #0f171f;
+      border: 1px solid #2d3b4b;
+      color: #edf3fc;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 15px;
+      width: 100%;
+      resize: vertical;
+      transition: 0.15s;
+    }
+    textarea:focus, input:focus {
+      outline: none;
+      border-color: #5a7fb0;
+      box-shadow: 0 0 0 2px #1f3b5a;
+    }
+    .flex-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+    }
+    .stat-card {
+      background: #0f1822;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border-left: 4px solid #3d70a0;
+    }
+    .stat-card span { color: #9bb9e6; font-size: 13px; }
+    .stat-card strong { font-size: 18px; display: block; margin-top: 4px; }
+
+    /* mapping grid */
+    .mapping-grid {
+      display: grid;
+      grid-template-columns: repeat(13, 1fr);
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .mapping-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #101a24;
+      border-radius: 12px;
+      padding: 6px 0;
+    }
+    .mapping-item .cipher-letter {
+      font-weight: 600;
+      color: #b2cbe8;
+      font-size: 18px;
+    }
+    .mapping-item input {
+      width: 44px;
+      height: 40px;
+      text-align: center;
+      background: #0b131d;
+      border: 1px solid #2c3d52;
+      border-radius: 10px;
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+      text-transform: uppercase;
+      padding: 0;
+    }
+    .mapping-item input:focus { border-color: #5f8bc9; }
+
+    /* tombol kecil */
+    .btn-sm {
+      background: #25303e;
+      border: none;
+      color: #d4e2fa;
+      padding: 8px 16px;
+      border-radius: 40px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+    .btn-sm:hover { background: #3b4d64; color: white; }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #1f3143;
+      padding: 14px 28px;
+      border-radius: 60px;
+      border-left: 6px solid #4f8bc9;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+      color: #eaf1fe;
+      font-weight: 500;
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 0.25s ease;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* progress */
+    .progress-wrap {
+      width: 100%;
+      height: 6px;
+      background: #1f2b38;
+      border-radius: 12px;
+      margin: 10px 0;
+    }
+    .progress-bar {
+      height: 6px;
+      background: #4a86cf;
+      border-radius: 12px;
+      width: 0%;
+      transition: width 0.2s;
+    }
+
+    /* tab sederhana */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid #283340;
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #9bb1cf;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+    .tab-btn.active {
+      background: #1f3145;
+      color: white;
+    }
+    .tab-btn:hover { background: #1f2c3c; color: #d6e6ff; }
+
+    @media (max-width: 720px) {
+      .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid #2a3340; }
+      body { flex-direction: column; }
+      .main { max-height: none; padding: 16px; }
+      .mapping-grid { grid-template-columns: repeat(7, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar" id="sidebar">
+  <h2>🔐 Cipher Cracker</h2>
+  <button onclick="document.getElementById('fileInput').click()">📂 Import .txt</button>
+  <input type="file" id="fileInput" accept=".txt" style="display:none" onchange="handleFileImport(event)">
+  <button onclick="pasteFromClipboard()">📋 Paste Ciphertext</button>
+  <button onclick="loadExample()">📄 Contoh Ciphertext</button>
+  <button onclick="clearAll()">🗑️ Clear Text</button>
+  <div class="divider"></div>
+  <button class="primary" onclick="runAutoCrack()">⚡ Auto Crack</button>
+  <button onclick="resetMapping()">🔄 Reset Mapping</button>
+  <button onclick="autoCompleteMapping()">🔀 Auto Complete Mapping</button>
+  <button onclick="swapLetters()">⇄ Swap Letters</button>
+  <div class="divider"></div>
+  <button onclick="saveSession()">💾 Save Session</button>
+  <button onclick="document.getElementById('loadSessionInput').click()">📂 Load Session</button>
+  <input type="file" id="loadSessionInput" accept=".json" style="display:none" onchange="loadSession(event)">
+  <button onclick="exportPlaintext()">📤 Export Plaintext</button>
+  <button onclick="exportMapping()">📤 Export Mapping</button>
+  <button onclick="copyPlaintext()">📋 Copy Plaintext</button>
+  <div class="divider"></div>
+  <button onclick="undoMapping()">↩ Undo</button>
+  <button onclick="redoMapping()">↪ Redo</button>
+</div>
+
+<!-- ===== MAIN ===== -->
+<div class="main" id="mainApp">
+  <!-- input -->
+  <div class="panel">
+    <h3>✏️ Input Ciphertext</h3>
+    <textarea id="cipherInput" rows="3" placeholder="Tempel atau ketik ciphertext di sini..." oninput="onCipherChange()"></textarea>
+    <div class="row" style="margin-top:10px;">
+      <span style="opacity:0.7;">Seret & letakkan file .txt di sini</span>
+      <span style="margin-left:auto;" id="charCount">0 karakter</span>
+    </div>
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  </div>
+
+  <!-- Mapping -->
+  <div class="panel">
+    <h3>🔑 Mapping (Cipher → Plain)</h3>
+    <div class="mapping-grid" id="mappingGrid"></div>
+    <div class="row" style="justify-content:flex-end; gap:8px;">
+      <span id="mappingStatus" style="font-size:13px; color:#8aa3c9;">✅ Siap</span>
+    </div>
+  </div>
+
+  <!-- Plaintext preview -->
+  <div class="panel">
+    <h3>📜 Plaintext Preview</h3>
+    <div id="plaintextPreview" style="background:#0e1722; padding:14px 18px; border-radius:16px; min-height:60px; white-space:pre-wrap; word-break:break-word; font-size:16px; line-height:1.6; border:1px solid #253140;"></div>
+  </div>
+
+  <!-- Statistik & analisis -->
+  <div class="panel">
+    <div class="tabs">
+      <span class="tab-btn active" onclick="switchTab('stats')">📊 Statistik</span>
+      <span class="tab-btn" onclick="switchTab('freq')">📈 Frekuensi</span>
+      <span class="tab-btn" onclick="switchTab('ngram')">🔡 N-gram</span>
+    </div>
+    <div id="statsPanel">
+      <div class="flex-grid" id="statGrid">
+        <div class="stat-card"><span>Total Karakter</span><strong id="sTotalChars">0</strong></div>
+        <div class="stat-card"><span>Total Huruf</span><strong id="sTotalLetters">0</strong></div>
+        <div class="stat-card"><span>Total Kata</span><strong id="sTotalWords">0</strong></div>
+        <div class="stat-card"><span>IOC</span><strong id="sIoc">0.000</strong></div>
+        <div class="stat-card"><span>Entropi</span><strong id="sEntropy">0.00</strong></div>
+        <div class="stat-card"><span>Fitness</span><strong id="sFitness">0</strong></div>
+        <div class="stat-card"><span>Confidence</span><strong id="sConfidence">0%</strong></div>
+        <div class="stat-card"><span>Kata valid</span><strong id="sDictMatch">0%</strong></div>
+      </div>
+    </div>
+    <div id="freqPanel" style="display:none;">
+      <div style="max-height:200px; overflow-y:auto;" id="freqTable"></div>
+    </div>
+    <div id="ngramPanel" style="display:none;">
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <div><span>Bigram</span><div id="bigramList" style="font-size:13px;"></div></div>
+        <div><span>Trigram</span><div id="trigramList" style="font-size:13px;"></div></div>
+        <div><span>Quadgram</span><div id="quadgramList" style="font-size:13px;"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== JAVASCRIPT (terintegrasi) ===== -->
+<script>
+  // --------------------------------------------------------------
+  //  SIMPLE SUBSTITUTION CIPHER CRACKER — VANILLA JS
+  //  Semua modul digabung dalam satu file untuk kemudahan.
+  // --------------------------------------------------------------
+
+  // ----- STATE -----
+  const state = {
+    ciphertext: '',
+    mapping: Array(26).fill(''),       // mapping[0] = huruf plain untuk 'A'
+    history: [],
+    historyIndex: -1,
+    maxHistory: 40,
+    locked: new Set(),
+    plaintext: '',
+  };
+
+  // Inisialisasi mapping default (A->A, B->B, ...)
+  function initMapping() {
+    for (let i=0; i<26; i++) state.mapping[i] = String.fromCharCode(65+i);
+    state.locked.clear();
+    pushHistory();
+    renderMapping();
+    updatePlaintext();
+  }
+  initMapping();
+
+  // ----- UTILITY -----
+  function letterIndex(ch) { const c = ch.toUpperCase(); if (c<'A'||c>'Z') return -1; return c.charCodeAt(0)-65; }
+  function isLetter(ch) { return /[A-Za-z]/.test(ch); }
+
+  // ----- DOM REFS -----
+  const cipherInput = document.getElementById('cipherInput');
+  const mappingGrid = document.getElementById('mappingGrid');
+  const plaintextPreview = document.getElementById('plaintextPreview');
+  const progressBar = document.getElementById('progressBar');
+  const toast = document.getElementById('toast');
+
+  // ----- TOAST -----
+  function showToast(msg, dur=3000) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => toast.classList.remove('show'), dur);
+  }
+
+  // ----- PROGRESS -----
+  function setProgress(pct) { progressBar.style.width = Math.min(100, Math.max(0, pct)) + '%'; }
+
+  // ----- CIPHER INPUT -----
+  function onCipherChange() {
+    state.ciphertext = cipherInput.value;
+    document.getElementById('charCount').textContent = state.ciphertext.length + ' karakter';
+    updateAllStats();
+    updatePlaintext();
+  }
+
+  function handleFileImport(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      cipherInput.value = ev.target.result;
+      onCipherChange();
+      showToast('File berhasil diimpor');
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  }
+
+  // drag & drop pada main
+  document.addEventListener('dragover', e => e.preventDefault());
+  document.addEventListener('drop', e => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (files.length && files[0].name.endsWith('.txt')) {
+      const reader = new FileReader();
+      reader.onload = (ev) => { cipherInput.value = ev.target.result; onCipherChange(); showToast('File di-drop'); };
+      reader.readAsText(files[0]);
+    }
+  });
+
+  function pasteFromClipboard() {
+    navigator.clipboard.readText().then(t => { cipherInput.value = t; onCipherChange(); showToast('Paste berhasil'); }).catch(() => showToast('Gagal akses clipboard'));
+  }
+
+  function loadExample() {
+    cipherInput.value = `WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ. WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ. WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ.`;
+    onCipherChange();
+    showToast('Contoh ciphertext dimuat');
+  }
+
+  function clearAll() {
+    cipherInput.value = '';
+    onCipherChange();
+    initMapping();
+    showToast('Dibersihkan');
+  }
+
+  // ----- MAPPING RENDER -----
+  function renderMapping() {
+    mappingGrid.innerHTML = '';
+    for (let i=0; i<26; i++) {
+      const div = document.createElement('div');
+      div.className = 'mapping-item';
+      const cipherLetter = String.fromCharCode(65+i);
+      const plainLetter = state.mapping[i] || '';
+      div.innerHTML = `
+        <span class="cipher-letter">${cipherLetter}</span>
+        <input type="text" maxlength="1" value="${plainLetter}" data-idx="${i}" 
+          ${state.locked.has(i) ? 'style="border-color:#f7b731;"' : ''}>
+      `;
+      const input = div.querySelector('input');
+      input.addEventListener('input', (e) => {
+        let val = e.target.value.toUpperCase();
+        if (val && !/^[A-Z]$/.test(val)) { e.target.value = ''; return; }
+        if (val.length > 1) val = val.slice(0,1);
+        e.target.value = val;
+        const idx = parseInt(e.target.dataset.idx);
+        state.mapping[idx] = val;
+        pushHistory();
+        updatePlaintext();
+        updateStats();
+        renderMapping(); // refresh untuk lock visual
+      });
+      mappingGrid.appendChild(div);
+    }
+  }
+
+  // ----- HISTORY (Undo/Redo) -----
+  function pushHistory() {
+    const snap = [...state.mapping];
+    // jika posisi history tidak di ujung, potong
+    if (state.historyIndex < state.history.length-1) {
+      state.history = state.history.slice(0, state.historyIndex+1);
+    }
+    state.history.push(snap);
+    if (state.history.length > state.maxHistory) state.history.shift();
+    state.historyIndex = state.history.length-1;
+  }
+
+  function undoMapping() {
+    if (state.historyIndex <= 0) { showToast('Tidak ada undo'); return; }
+    state.historyIndex--;
+    state.mapping = [...state.history[state.historyIndex]];
+    renderMapping();
+    updatePlaintext();
+    updateStats();
+  }
+  function redoMapping() {
+    if (state.historyIndex >= state.history.length-1) { showToast('Tidak ada redo'); return; }
+    state.historyIndex++;
+    state.mapping = [...state.history[state.historyIndex]];
+    renderMapping();
+    updatePlaintext();
+    updateStats();
+  }
+
+  // ----- PLAINTEXT UPDATE -----
+  function updatePlaintext() {
+    const text = state.ciphertext;
+    let out = '';
+    for (let ch of text) {
+      if (isLetter(ch)) {
+        const idx = letterIndex(ch);
+        const plain = state.mapping[idx] || '';
+        out += plain || ch.toUpperCase();
+      } else out += ch;
+    }
+    state.plaintext = out;
+    plaintextPreview.textContent = out || '(plaintext akan muncul di sini)';
+  }
+
+  // ----- STATISTIK & ANALISIS (ringkas) -----
+  function updateAllStats() {
+    updateStats();
+    updateFreqTable();
+    updateNgrams();
+  }
+
+  function updateStats() {
+    const text = state.ciphertext;
+    const letters = text.replace(/[^A-Za-z]/g, '').toUpperCase();
+    const words = text.split(/[\s,.;!?]+/).filter(w => w.length>0);
+    const totalChars = text.length;
+    const totalLetters = letters.length;
+    const totalWords = words.length;
+
+    // IOC
+    let ioc = 0;
+    if (totalLetters > 1) {
+      const freq = Array(26).fill(0);
+      for (let ch of letters) { const i=letterIndex(ch); if(i>=0) freq[i]++; }
+      let sum = 0;
+      for (let f of freq) sum += f*(f-1);
+      ioc = sum / (totalLetters*(totalLetters-1));
+    }
+
+    // Entropi
+    let entropy = 0;
+    const freq = Array(26).fill(0);
+    for (let ch of letters) { const i=letterIndex(ch); if(i>=0) freq[i]++; }
+    for (let f of freq) { if (f>0) { const p = f/totalLetters; entropy -= p * Math.log2(p); } }
+
+    // Fitness sederhana (berdasarkan kata valid)
+    const dict = new Set(['THE','AND','ING','ION','TIO','FOR','YOU','WAS','HIS','HER','THAT','WITH','HAVE','FROM','THIS','THEY','WILL','YOUR','WHAT','ARE','NOT','ONE','ALL','CAN','OUT','SHE','WHO','WHICH','THERE','WHEN','UPON','SAID','TIME','MORE','SUCH','MANY','MOST','SOME','WOULD','MAKE','LIKE','HIM','INTO','THAN','DOWN','ABOUT','KNOW','TAKE','JUST','LITTLE','GOOD','VERY','SEE','COME','COULD','NOW','THEN','MAY','FIRST','AFTER','WELL','WAY','GREAT','LONG','LIFE','DAY','MAN','WOMAN','CHILD','WORLD','STATE','COUNTRY','YEAR','PLACE','WORK','CASE','POINT','GROUP','NUMBER','SYSTEM','PROCESS','RESEARCH','UNIVERSITY']);
+    let dictMatches = 0;
+    for (let w of words) {
+      if (w.length>1 && dict.has(w.toUpperCase())) dictMatches++;
+    }
+    const dictPct = words.length ? (dictMatches/words.length*100) : 0;
+
+    // Confidence (gabungan)
+    const confidence = Math.min(100, Math.round((ioc*30 + entropy*10 + dictPct*0.6)));
+
+    document.getElementById('sTotalChars').textContent = totalChars;
+    document.getElementById('sTotalLetters').textContent = totalLetters;
+    document.getElementById('sTotalWords').textContent = totalWords;
+    document.getElementById('sIoc').textContent = ioc.toFixed(4);
+    document.getElementById('sEntropy').textContent = entropy.toFixed(2);
+    document.getElementById('sFitness').textContent = Math.round(ioc*1000);
+    document.getElementById('sConfidence').textContent = confidence + '%';
+    document.getElementById('sDictMatch').textContent = dictPct.toFixed(1)+'%';
+  }
+
+  function updateFreqTable() {
+    const text = state.ciphertext.replace(/[^A-Za-z]/g, '').toUpperCase();
+    const freq = Array(26).fill(0);
+    for (let ch of text) { const i=letterIndex(ch); if(i>=0) freq[i]++; }
+    let html = '<table style="width:100%;font-size:13px;border-collapse:collapse;">';
+    for (let i=0; i<26; i++) {
+      if (i%13===0) html += '<tr>';
+      html += `<td style="padding:4px 8px;">${String.fromCharCode(65+i)}: ${freq[i]}</td>`;
+      if (i%13===12) html += '</tr>';
+    }
+    html += '</table>';
+    document.getElementById('freqTable').innerHTML = html;
+  }
+
+  function updateNgrams() {
+    const text = state.ciphertext.replace(/[^A-Za-z]/g, '').toUpperCase();
+    // bigram, trigram, quadgram (top 5)
+    function getNgram(n) {
+      const map = new Map();
+      for (let i=0; i<=text.length-n; i++) {
+        const gram = text.slice(i, i+n);
+        map.set(gram, (map.get(gram)||0)+1);
+      }
+      return [...map.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5);
+    }
+    const bigrams = getNgram(2);
+    const trigrams = getNgram(3);
+    const quadgrams = getNgram(4);
+    document.getElementById('bigramList').innerHTML = bigrams.map(([k,v])=>`${k}(${v})`).join(' ');
+    document.getElementById('trigramList').innerHTML = trigrams.map(([k,v])=>`${k}(${v})`).join(' ');
+    document.getElementById('quadgramList').innerHTML = quadgrams.map(([k,v])=>`${k}(${v})`).join(' ');
+  }
+
+  // ----- TAB SWITCH -----
+  function switchTab(id) {
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelector(`.tab-btn[onclick*="${id}"]`)?.classList.add('active');
+    document.getElementById('statsPanel').style.display = id==='stats'?'block':'none';
+    document.getElementById('freqPanel').style.display = id==='freq'?'block':'none';
+    document.getElementById('ngramPanel').style.display = id==='ngram'?'block':'none';
+  }
+
+  // ----- AUTO CRACK (sederhana: ETAOIN + dictionary) -----
+  function runAutoCrack() {
+    if (!state.ciphertext.trim()) { showToast('Masukkan ciphertext terlebih dahulu'); return; }
+    setProgress(10);
+    showToast('Memulai Auto Crack...');
+
+    // 1. frekuensi huruf cipher
+    const text = state.ciphertext.replace(/[^A-Za-z]/g, '').toUpperCase();
+    const freq = Array(26).fill(0);
+    for (let ch of text) { const i=letterIndex(ch); if(i>=0) freq[i]++; }
+    const sorted = freq.map((f,i)=>({ch:String.fromCharCode(65+i), freq:f})).sort((a,b)=>b.freq-a.freq);
+    const etaoin = 'ETAOINSHRDLCUMWFGYPBVKJXQZ'.split('');
+    // mapping sementara
+    const newMap = Array(26).fill('');
+    for (let i=0; i<Math.min(26, sorted.length); i++) {
+      const cipherCh = sorted[i].ch;
+      const idx = letterIndex(cipherCh);
+      if (idx>=0 && i<etaoin.length) newMap[idx] = etaoin[i];
+    }
+    // isi sisanya
+    let used = new Set(newMap.filter(x=>x));
+    for (let i=0; i<26; i++) {
+      if (!newMap[i]) {
+        for (let ch of etaoin) {
+          if (!used.has(ch)) { newMap[i]=ch; used.add(ch); break; }
+        }
+      }
+    }
+    state.mapping = newMap;
+    renderMapping();
+    pushHistory();
+    updatePlaintext();
+    updateStats();
+    setProgress(100);
+    showToast('Auto Crack selesai (ETAOIN + mapping)');
+    setTimeout(()=>setProgress(0), 800);
+  }
+
+  // ----- MAPPING UTILITY -----
+  function resetMapping() {
+    for (let i=0; i<26; i++) state.mapping[i] = String.fromCharCode(65+i);
+    renderMapping();
+    pushHistory();
+    updatePlaintext();
+    updateStats();
+    showToast('Mapping direset');
+  }
+
+  function autoCompleteMapping() {
+    // isi mapping yang kosong dengan huruf yang belum dipakai
+    const used = new Set(state.mapping.filter(x=>x));
+    for (let i=0; i<26; i++) {
+      if (!state.mapping[i]) {
+        for (let ch of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') {
+          if (!used.has(ch)) { state.mapping[i]=ch; used.add(ch); break; }
+        }
+      }
+    }
+    renderMapping();
+    pushHistory();
+    updatePlaintext();
+    updateStats();
+    showToast('Mapping dilengkapi');
+  }
+
+  function swapLetters() {
+    // swap dua huruf terakhir yang berbeda
+    const idx1 = prompt('Masukkan indeks huruf cipher (0-25) untuk A-Z:', '0');
+    const idx2 = prompt('Masukkan indeks huruf cipher kedua:', '1');
+    if (idx1===null||idx2===null) return;
+    const i1=parseInt(idx1), i2=parseInt(idx2);
+    if (i1<0||i1>25||i2<0||i2>25) { showToast('Indeks harus 0-25'); return; }
+    [state.mapping[i1], state.mapping[i2]] = [state.mapping[i2], state.mapping[i1]];
+    renderMapping();
+    pushHistory();
+    updatePlaintext();
+    updateStats();
+    showToast(`Swap ${String.fromCharCode(65+i1)} ↔ ${String.fromCharCode(65+i2)}`);
+  }
+
+  // ----- SAVE / LOAD / EXPORT -----
+  function saveSession() {
+    const data = { mapping: state.mapping, ciphertext: state.ciphertext };
+    const blob = new Blob([JSON.stringify(data)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'cipher_session.json';
+    a.click();
+    showToast('Session disimpan');
+  }
+  function loadSession(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (data.mapping) state.mapping = data.mapping;
+        if (data.ciphertext) { cipherInput.value = data.ciphertext; onCipherChange(); }
+        renderMapping();
+        pushHistory();
+        updatePlaintext();
+        updateStats();
+        showToast('Session dimuat');
+      } catch { showToast('File tidak valid'); }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  }
+  function exportPlaintext() {
+    const blob = new Blob([state.plaintext], {type:'text/plain'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'plaintext.txt';
+    a.click();
+    showToast('Plaintext diekspor');
+  }
+  function exportMapping() {
+    const data = state.mapping;
+    const blob = new Blob([JSON.stringify(data)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'mapping.json';
+    a.click();
+    showToast('Mapping diekspor');
+  }
+  function copyPlaintext() {
+    navigator.clipboard.writeText(state.plaintext).then(()=>showToast('Plaintext disalin')).catch(()=>showToast('Gagal salin'));
+  }
+
+  // shortcut keyboard (Ctrl+Z, Ctrl+Y)
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); undoMapping(); }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'y') { e.preventDefault(); redoMapping(); }
+  });
+
+  // inisialisasi tampilan awal
+  onCipherChange();
+  renderMapping();
+  updatePlaintext();
+  showToast('Selamat datang! 🧠', 2000);
+</script>
+</body>
+</html>
